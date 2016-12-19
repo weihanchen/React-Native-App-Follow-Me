@@ -1,6 +1,6 @@
 React-Native-App-Follow-Me
 ===
-This app will help your friends stay up-to-date with members as they travel
+This application will help keep the car team traveling
 ## Build/run the projects
 ### General requirements before running project
 * `npm install` install all dependencies
