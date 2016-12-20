@@ -29,7 +29,7 @@ class Splash extends React.Component {
         return (
             <View style={styles.container}>
                 <Animatable.View style={styles.logoView} animation="fadeInUp" delay={500} duration={1500} easing="ease-out">
-                    <Icon name="location-arrow" size={30} color={MainStyle.color.lightblue} />
+                    <Icon name="location-arrow" size={30} color={MainStyle.color.skyblue} />
                     <Text style={styles.logoText}>Follow Me</Text>
                 </Animatable.View>
             </View>

@@ -7,11 +7,7 @@ export default StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: MainStyle.color.black,
-        paddingTop: 80,
-        paddingBottom: 80,
-        paddingLeft: 50,
-        paddingRight: 50
+        backgroundColor: MainStyle.color.black
     },
     logoView: {
         height: 200,
@@ -22,7 +18,7 @@ export default StyleSheet.create({
     },
     logoText: {
         fontSize: MainStyle.font.large,
-        color: MainStyle.color.lightblue,
+        color: MainStyle.color.skyblue,
         backgroundColor: 'transparent',
         marginBottom: 20
     }

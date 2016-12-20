@@ -7,6 +7,7 @@ export default {
   },
   color: {
     black: '#000',
-    lightblue: '#6bc0f6'
+    lightgreen: '#e0edf6',
+    skyblue: '#6fbbec'
   }
 }

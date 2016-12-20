@@ -1,10 +1,16 @@
 'use strict';
 
-import React from 'react';
+import React from 'react'
 import {
   View,
   Text
-} from 'react-native';
+} from 'react-native'
+
+//components
+import {
+  MenuBody
+} from '../components/Menu'
+
 class MenuContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -19,7 +25,7 @@ class MenuContainer extends React.Component {
   render() {
     return (
       <View style={{flex:1}}>
-        <Text>View</Text>
+        <MenuBody></MenuBody>
       </View>
     );
   }
