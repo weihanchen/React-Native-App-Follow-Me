@@ -10,17 +10,27 @@ export default StyleSheet.create({
         backgroundColor: MainStyle.color.skyblue
     },
     item: {
-        margin: 10,
-        padding: 10,
-        borderWidth: 1,
+        backgroundColor: MainStyle.color.lightgreen,
         borderColor: '#0a8acd',
+        borderRadius: 6,
         borderStyle: 'solid',
-        borderRadius: 6
+        borderWidth: 1,
+        flexDirection: 'row',
+        margin: 10,
+        padding: 10
+    },
+    itemContainer: {
+        flexDirection: 'row'
+    },
+    itemIcon: {
+        justifyContent: 'center',
+        marginRight: 15,
+        marginLeft: 15
     },
     itemTitle: {
-      fontSize: MainStyle.font.large
+        fontSize: MainStyle.font.large
     },
     itemSubTitle: {
-      fontSize: MainStyle.font.small
+        fontSize: MainStyle.font.small
     }
 })
