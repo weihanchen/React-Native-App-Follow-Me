@@ -9,6 +9,9 @@ export default StyleSheet.create({
         // alignItems: 'center',
         backgroundColor: MainStyle.color.skyblue
     },
+    icon: {
+      fontSize: MainStyle.font.huge
+    },
     item: {
         backgroundColor: MainStyle.color.lightgreen,
         borderColor: '#0a8acd',

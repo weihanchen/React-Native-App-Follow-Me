@@ -5,7 +5,8 @@ import React, {
 } from 'react'
 import {
   View,
-  Text
+  Text,
+  StyleSheet
 } from 'react-native'
 //components
 import {
@@ -27,11 +28,17 @@ class CreateContainer extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <CreateBody></CreateBody>
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+})
 
 export default CreateContainer

@@ -7,7 +7,6 @@ import React, {
 import {Button, View, Text, TouchableOpacity, TouchableHighlight} from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
-import MainStyle from '../../stylesheets'
 import styles from './styles'
 class MenuBody extends Component {
     constructor(props) {
@@ -34,18 +33,18 @@ class MenuBody extends Component {
                 <TouchableOpacity onPress={this.onCreateGroup.bind(this)} style={styles.item} activeOpacity={0.8}>
                     <View style={styles.itemContainer}>
                         <View style={styles.itemIcon}>
-                            <Icon name="users" size={MainStyle.font.huge}/>
+                            <Icon name="users" style={styles.icon}/>
                         </View>
                         <View>
                             <Text style={styles.itemTitle}>創建車隊</Text>
-                            <Text style={styles.itemSubTitle}>車隊名稱、用戶ID、結束時間</Text>
+                            <Text style={styles.itemSubTitle}>車隊名稱、用戶ID、結束時間、終點</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.onAddGroup.bind(this)} style={styles.item} activeOpacity={0.8}>
                     <View style={styles.itemContainer}>
                         <View style={styles.itemIcon}>
-                            <Icon name="plus" size={MainStyle.font.huge}/>
+                            <Icon name="plus" style={styles.icon} />
                         </View>
                         <View>
                             <Text style={styles.itemTitle}>加入車隊</Text>
@@ -56,7 +55,7 @@ class MenuBody extends Component {
                 <TouchableOpacity onPress={this.onSetting.bind(this)} style={styles.item} activeOpacity={0.8}>
                   <View style={styles.itemContainer}>
                       <View style={styles.itemIcon}>
-                          <Icon name="cog" size={MainStyle.font.huge}/>
+                          <Icon name="cog" style={styles.icon} />
                       </View>
                       <View>
                           <Text style={styles.itemTitle}>設定</Text>

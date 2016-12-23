@@ -3,7 +3,8 @@ React-Native-App-Follow-Me
 This application will help keep the car team traveling
 ## Requirements
 * [Nodejs 7.1.0+](https://nodejs.org/en/)
-* [Npm 3.10.9+](https://www.npmjs.com/)
+* [NPM 3.10.9+](https://www.npmjs.com/)
+
 ## Build/run the projects
 ### General requirements before running project
 `$ npm install` install all dependencies
