@@ -1,19 +1,32 @@
 'use strict'
 
-import React from 'react'
+import React, {
+  Component,
+  PropTypes
+} from 'react'
 import {Button, View, Text, TouchableOpacity, TouchableHighlight} from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 import MainStyle from '../../stylesheets'
 import styles from './styles'
-class MenuBody extends React.Component {
+class MenuBody extends Component {
     constructor(props) {
         super(props)
     }
     componentDidMount() {}
     componentWillUnmount() {}
 
-    onCreateGroup() {}
+    onAddGroup() {
+
+    }
+
+    onCreateGroup() {
+      this.props.navigateToCreateGroup();
+    }
+
+    onSetting() {
+
+    }
 
     render() {
         return (
@@ -29,7 +42,7 @@ class MenuBody extends React.Component {
                         </View>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this.onCreateGroup.bind(this)} style={styles.item} activeOpacity={0.8}>
+                <TouchableOpacity onPress={this.onAddGroup.bind(this)} style={styles.item} activeOpacity={0.8}>
                     <View style={styles.itemContainer}>
                         <View style={styles.itemIcon}>
                             <Icon name="plus" size={MainStyle.font.huge}/>
@@ -40,7 +53,7 @@ class MenuBody extends React.Component {
                         </View>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this.onCreateGroup.bind(this)} style={styles.item} activeOpacity={0.8}>
+                <TouchableOpacity onPress={this.onSetting.bind(this)} style={styles.item} activeOpacity={0.8}>
                   <View style={styles.itemContainer}>
                       <View style={styles.itemIcon}>
                           <Icon name="cog" size={MainStyle.font.huge}/>
@@ -55,4 +68,9 @@ class MenuBody extends React.Component {
         )
     }
 }
+
+MenuBody.propTypes = {
+  navigateToCreateGroup: PropTypes.func
+}
+
 export default MenuBody

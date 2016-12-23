@@ -18,8 +18,8 @@ class Splash extends React.Component {
         this.timer = setTimeout(() => {
             InteractionManager.runAfterInteractions(() => {
                 navigator.resetTo({component: MenuContainer, name: 'MenuContainer'});
-            });
-        }, 500);
+            })
+        }, 1000)
     }
     componentWillUnmount() {
         this.timer && clearTimeout(this.timer)
