@@ -11,13 +11,15 @@ This application will help keep the car team traveling
 
 ## Mobile Apps(Android & iOS)
 ### Start with development server
-`$ npm start`
+>1. Open an emulator(Android Studio/AVD Manager)
+>2. `$ npm start`
+
 ### Running the Mobile Apps
 ### iOS
 Pending
 ### Android
 >1. [Offical document](http://facebook.github.io/react-native/docs/getting-started.html)
->2. Open an emulator(Android Studio/AVD Manager)
->3. `$ npm run dev-andriod`
+>2. `$ npm run dev-andriod`
+>3. on emulator then press `ctrl + m` can use reload、live reload、hot reload、remote debug
 
 Todo...
