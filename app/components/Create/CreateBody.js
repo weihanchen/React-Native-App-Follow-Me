@@ -13,6 +13,10 @@ import MapView from 'react-native-maps'
 import moment from 'moment'
 import styles from './styles'
 
+import {
+  timeUtils
+} from '../../utils'
+
 class CreateBody extends Component {
     constructor(props) {
         super(props)
@@ -22,7 +26,7 @@ class CreateBody extends Component {
             endTimeDateText: endDate.format('YYYY/MM/DD'),
             endTimeHour: endDate.hours(),
             endTimeMinute: endDate.minute(),
-            endTimeText: _formatTime(endDate.hours(), endDate.minute()),
+            endTimeText: endDate.format('HH:mm'),
             groupName: '',
             userName: '',
             endLocation: ''
@@ -35,20 +39,20 @@ class CreateBody extends Component {
         ? number = null;
 
     componentDidMount() {
-        // navigator.geolocation.getCurrentPosition((position) => {
-        //     var initialPosition = JSON.stringify(position);
-        //     console.log(initialPosition)
-        //     this.setState({initialPosition});
-        // }, (error) => console.log(error.message), {
-        //     enableHighAccuracy: true,
-        //     timeout: 10000,
-        //     maximumAge: 1000
-        // });
-        // this.watchID = navigator.geolocation.watchPosition((position) => {
-        //     let lastPosition = JSON.stringify(position);
-        //     console.log(lastPosition)
-        //     this.setState({lastPosition});
-        // });
+        navigator.geolocation.getCurrentPosition((position) => {
+            var initialPosition = JSON.stringify(position);
+            console.log(initialPosition)
+            this.setState({initialPosition});
+        }, (error) => console.log(error.message), {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 1000
+        });
+        this.watchID = navigator.geolocation.watchPosition((position) => {
+            let lastPosition = JSON.stringify(position);
+            console.log(lastPosition)
+            this.setState({lastPosition});
+        });
     }
 
     componentWillUnmount() {
@@ -75,7 +79,7 @@ class CreateBody extends Component {
             const {action, minute, hour} = await TimePickerAndroid.open(options)
             var newState = {}
             if (action === TimePickerAndroid.timeSetAction) {
-                newState[`${stateKey}Text`] = _formatTime(hour, minute)
+                newState[`${stateKey}Text`] = timeUtils.toHHmm(hour, minute)
                 newState[`${stateKey}Hour`] = hour
                 newState[`${stateKey}Minute`] = minute
             }
@@ -128,11 +132,5 @@ class CreateBody extends Component {
 }
 
 CreateBody.propTypes = {}
-
-function _formatTime(hour, minute) {
-    return hour + ':' + (minute < 10
-        ? '0' + minute
-        : minute)
-}
 
 export default CreateBody
