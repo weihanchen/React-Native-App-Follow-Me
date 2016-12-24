@@ -85,27 +85,6 @@ class CreateBody extends Component {
         }
     }
 
-    startPositionSection (status, errorMessage) {
-        let indicator, tipText
-        if (status === 'loading'){
-          indicator = <ActivityIndicator color={mainStyle.color.navy} style={styles.startPositionItem} />
-          tipText = <Text style={styles.tipText}>正在取得您目前的位置...</Text>
-       } else if (status === 'success') {
-          indicator = <Icon name='map-marker' style={[styles.startPositionItem, styles.itemText]} />
-          tipText = <Text style={styles.title}>已套用您目前的位置</Text>
-       } else if (status === 'error'){
-          indicator = <Icon name='times' style={[styles.startPositionItem, styles.errorText]} />
-          tipText = <Text style={styles.errorText}>{errorMessage}</Text>
-       }
-       return (
-           <View style={styles.startPosition}>
-              <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
-              {indicator}
-              {tipText}
-           </View>
-       )
-    }
-
     render() {
         const {location} = this.props
         console.log(location)
@@ -141,11 +120,33 @@ class CreateBody extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-              {this.startPositionSection(location.status, location.error)}
+              {_startPositionSection(location.status, location.error)}
                 <Text style={styles.title}>終點</Text>
             </View>
         )
     }
+}
+
+//private methods
+const _startPositionSection = (status, errorMessage) =>{
+    let indicator, tipText
+    if (status === 'loading'){
+      indicator = <ActivityIndicator color={mainStyle.color.navy} style={styles.startPositionItem} />
+      tipText = <Text style={styles.tipText}>正在取得您目前的位置...</Text>
+   } else if (status === 'success') {
+      indicator = <Icon name='map-marker' style={[styles.startPositionItem, styles.itemText]} />
+      tipText = <Text style={styles.title}>已套用您目前的位置</Text>
+   } else if (status === 'error'){
+      indicator = <Icon name='times' style={[styles.startPositionItem, styles.errorText]} />
+      tipText = <Text style={styles.errorText}>{errorMessage}</Text>
+   }
+   return (
+       <View style={styles.startPosition}>
+          <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
+          {indicator}
+          {tipText}
+       </View>
+   )
 }
 
 CreateBody.propTypes = {
