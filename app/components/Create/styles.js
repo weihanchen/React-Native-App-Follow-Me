@@ -23,6 +23,9 @@ export default StyleSheet.create({
     fontSize: MainStyle.font.large,
     color: MainStyle.color.navy
   },
+  startPosition: {
+    flexDirection: 'row'
+  },
   title: {
     fontSize: MainStyle.font.medium,
     fontWeight: 'bold'

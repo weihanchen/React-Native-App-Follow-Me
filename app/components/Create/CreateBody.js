@@ -16,17 +16,18 @@ import styles from './styles'
 class CreateBody extends Component {
     constructor(props) {
         super(props)
-        let date = new Date();
+        let endDate = moment(new Date()).add(2,'hours');
         this.state = {
-            endTimeDate: date,
-            endTimeDateText: moment(date).format('YYYY/MM/DD'),
-            endTimeHour: 2,
-            endTimeMinute: 0,
-            endTimeText: '02:00',
+            endTimeDate: endDate.date(),
+            endTimeDateText: endDate.format('YYYY/MM/DD'),
+            endTimeHour: endDate.hours(),
+            endTimeMinute: endDate.minute(),
+            endTimeText: _formatTime(endDate.hours(), endDate.minute()),
             groupName: '',
             userName: '',
             endLocation: ''
         }
+        console.log(this.state)
 
     }
 
@@ -34,20 +35,20 @@ class CreateBody extends Component {
         ? number = null;
 
     componentDidMount() {
-        navigator.geolocation.getCurrentPosition((position) => {
-            var initialPosition = JSON.stringify(position);
-            console.log(initialPosition)
-            this.setState({initialPosition});
-        }, (error) => console.log(error.message), {
-            enableHighAccuracy: true,
-            timeout: 20000,
-            maximumAge: 1000
-        });
-        this.watchID = navigator.geolocation.watchPosition((position) => {
-            let lastPosition = JSON.stringify(position);
-            console.log(lastPosition)
-            this.setState({lastPosition});
-        });
+        // navigator.geolocation.getCurrentPosition((position) => {
+        //     var initialPosition = JSON.stringify(position);
+        //     console.log(initialPosition)
+        //     this.setState({initialPosition});
+        // }, (error) => console.log(error.message), {
+        //     enableHighAccuracy: true,
+        //     timeout: 10000,
+        //     maximumAge: 1000
+        // });
+        // this.watchID = navigator.geolocation.watchPosition((position) => {
+        //     let lastPosition = JSON.stringify(position);
+        //     console.log(lastPosition)
+        //     this.setState({lastPosition});
+        // });
     }
 
     componentWillUnmount() {
@@ -116,6 +117,9 @@ class CreateBody extends Component {
                             </View>
                         </View>
                     </TouchableOpacity>
+                </View>
+                <View style={styles.startPosition}>
+                  <Text style={styles.title}>起點</Text>
                 </View>
                 <Text style={styles.title}>終點</Text>
             </View>
