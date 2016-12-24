@@ -1,44 +1,52 @@
 'use strict'
-import React, {
-  Component,
-  PropTypes
-} from 'react'
-import {
-  View,
-  Text,
-  StyleSheet
-} from 'react-native'
+import React, {Component, PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {View, Text, StyleSheet} from 'react-native'
+//actions
+import {requestGeolocation} from '../actions'
 //components
-import {
-  CreateBody
-} from '../components/Create/index.js'
+import {CreateBody} from '../components/Create/index.js'
 
 class CreateContainer extends Component {
-  constructor(props) {
-    super(props)
-  }
+    constructor(props) {
+        super(props)
+    }
 
-  componentDidMount() {
-    
-  }
+    componentDidMount() {
+        this.props.requestGeolocation()
+    }
 
-  componentWillUnmount() {
+    render() {
+        const {location} = this.props
+        console.log(location)
+        return (
+            <View style={styles.container}>
+                <CreateBody location={location}></CreateBody>
+            </View>
+        )
+    }
+}
 
-  }
+const mapStateToProps = (state) => {
+    return {location: state.location}
+}
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <CreateBody></CreateBody>
-      </View>
-    )
-  }
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        requestGeolocation
+    }, dispatch)
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
+    container: {
+        flex: 1
+    }
 })
 
-export default CreateContainer
+CreateContainer.propTypes = {
+    location: PropTypes.object,
+    requestGeolocation: PropTypes.func
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateContainer)

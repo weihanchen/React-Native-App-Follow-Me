@@ -1,1 +1,3 @@
-export * from './group';
+export const REQUEST_FAILED = 'REQUEST_FAILED'
+export * from './group'
+export * from './location'

@@ -1,3 +1,6 @@
-export default function* rootSaga(){
-  yield []
+import {
+    watchRequestGeolocation
+} from './location'
+export default function* rootSaga() {
+    yield [watchRequestGeolocation()]
 }

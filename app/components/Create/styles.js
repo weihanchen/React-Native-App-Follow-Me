@@ -15,6 +15,10 @@ export default StyleSheet.create({
     flexDirection: 'row',
     marginRight: 20
   },
+  errorText: {
+    color: MainStyle.color.danger,
+    fontSize: MainStyle.font.large
+  },
   itemIcon: {
     justifyContent: 'center',
     marginRight: 10
@@ -25,6 +29,12 @@ export default StyleSheet.create({
   },
   startPosition: {
     flexDirection: 'row'
+  },
+  startPositionItem: {
+    marginRight: 10
+  },
+  tipText: {
+    color: MainStyle.color.navy
   },
   title: {
     fontSize: MainStyle.font.medium,

@@ -1,26 +1,32 @@
 'use strict'
 import React, {Component, PropTypes} from 'react'
+
+//plugins
 import {
+    ActivityIndicator,
     DatePickerAndroid,
     Text,
     TextInput,
     TimePickerAndroid,
+    ToastAndroid,
     TouchableOpacity,
     View
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import MapView from 'react-native-maps'
 import moment from 'moment'
+import MapView from 'react-native-maps'
+
+//stylesheets
+import mainStyle from '../../stylesheets'
 import styles from './styles'
 
-import {
-  timeUtils
-} from '../../utils'
+//utils
+import {timeUtils} from '../../utils'
 
 class CreateBody extends Component {
     constructor(props) {
         super(props)
-        let endDate = moment(new Date()).add(2,'hours');
+        let endDate = moment(new Date()).add(2, 'hours');
         this.state = {
             endTimeDate: endDate.date(),
             endTimeDateText: endDate.format('YYYY/MM/DD'),
@@ -31,23 +37,13 @@ class CreateBody extends Component {
             userName: '',
             endLocation: ''
         }
-        console.log(this.state)
-
     }
 
     watchID :
         ? number = null;
 
     componentDidMount() {
-        navigator.geolocation.getCurrentPosition((position) => {
-            var initialPosition = JSON.stringify(position);
-            console.log(initialPosition)
-            this.setState({initialPosition});
-        }, (error) => console.log(error.message), {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 1000
-        });
+        ToastAndroid.show('正在取得您目前的位置...', ToastAndroid.SHORT);
         this.watchID = navigator.geolocation.watchPosition((position) => {
             let lastPosition = JSON.stringify(position);
             console.log(lastPosition)
@@ -89,7 +85,30 @@ class CreateBody extends Component {
         }
     }
 
+    startPositionSection (status, errorMessage) {
+        let indicator, tipText
+        if (status === 'loading'){
+          indicator = <ActivityIndicator color={mainStyle.color.navy} style={styles.startPositionItem} />
+          tipText = <Text style={styles.tipText}>正在取得您目前的位置...</Text>
+       } else if (status === 'success') {
+          indicator = <Icon name='map-marker' style={[styles.startPositionItem, styles.itemText]} />
+          tipText = <Text style={styles.title}>已套用您目前的位置</Text>
+       } else if (status === 'error'){
+          indicator = <Icon name='times' style={[styles.startPositionItem, styles.errorText]} />
+          tipText = <Text style={styles.errorText}>{errorMessage}</Text>
+       }
+       return (
+           <View style={styles.startPosition}>
+              <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
+              {indicator}
+              {tipText}
+           </View>
+       )
+    }
+
     render() {
+        const {location} = this.props
+        console.log(location)
         return (
             <View style={styles.container}>
                 <Text style={styles.title}>請輸入車隊名稱</Text>
@@ -101,7 +120,7 @@ class CreateBody extends Component {
                     <TouchableOpacity onPress={this.showDatePicker.bind(this, 'endTime', {date: this.state.endTimeDate})}>
                         <View style={styles.endTimeItem}>
                             <View style={styles.itemIcon}>
-                                <Icon name="calendar" style={styles.itemText}/>
+                                <Icon name='calendar' style={styles.itemText}/>
                             </View>
                             <View>
                                 <Text style={styles.itemText}>{this.state.endTimeDateText}</Text>
@@ -114,7 +133,7 @@ class CreateBody extends Component {
                     })} activeOpacity={0.7}>
                         <View style={styles.endTimeItem}>
                             <View style={styles.itemIcon}>
-                                <Icon name="clock-o" style={styles.itemText}/>
+                                <Icon name='clock-o' style={styles.itemText}/>
                             </View>
                             <View>
                                 <Text style={styles.itemText}>{this.state.endTimeText}</Text>
@@ -122,15 +141,15 @@ class CreateBody extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.startPosition}>
-                  <Text style={styles.title}>起點</Text>
-                </View>
+              {this.startPositionSection(location.status, location.error)}
                 <Text style={styles.title}>終點</Text>
             </View>
         )
     }
 }
 
-CreateBody.propTypes = {}
+CreateBody.propTypes = {
+    location: PropTypes.object
+}
 
 export default CreateBody
