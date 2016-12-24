@@ -19,7 +19,7 @@ This application will help keep the car team traveling
 Pending
 ### Android
 >1. [Offical document](http://facebook.github.io/react-native/docs/getting-started.html)
->2. `$ npm run dev-andriod`
+>2. `$ npm run dev-andriod && npm run log-android`
 >3. on emulator then press `ctrl + m` can use reload、live reload、hot reload、remote debug
 
 Todo...

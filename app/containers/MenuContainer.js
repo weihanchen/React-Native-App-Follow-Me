@@ -1,7 +1,7 @@
 'use strict'
 
-import React, {Component} from 'react'
-import {View, Text, InteractionManager,StyleSheet} from 'react-native'
+import React, {Component, PropTypes} from 'react'
+import {InteractionManager, Text, View, StyleSheet} from 'react-native'
 
 //components
 import {MenuBody} from '../components/Menu'
@@ -13,14 +13,14 @@ class MenuContainer extends Component {
         super(props);
     }
 
-    componentDidMount() {}
-    componentWillUnmount() {}
+    componentDidMount() {
+    }
 
     navigateToCreateGroup() {
-        const {navigator} = this.props;
+        const {navigator} = this.props
         InteractionManager.runAfterInteractions(() => {
-            navigator.resetTo({ name: 'CreateContainer', component: CreateContainer });
-        })
+            navigator.push({component: CreateContainer})
+        }, 1000)
     }
 
     render() {
@@ -33,9 +33,13 @@ class MenuContainer extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
+    container: {
+        flex: 1
+    }
 })
+
+MenuContainer.propTypes = {
+  navigator: PropTypes.object
+}
 
 export default MenuContainer

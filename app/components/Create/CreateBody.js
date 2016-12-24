@@ -28,19 +28,31 @@ class CreateBody extends Component {
             endLocation: ''
         }
 
-
     }
 
-    watchID: ?number = null;
+    watchID :
+        ? number = null;
 
     componentDidMount() {
+        navigator.geolocation.getCurrentPosition((position) => {
+            var initialPosition = JSON.stringify(position);
+            console.log(initialPosition)
+            this.setState({initialPosition});
+        }, (error) => console.log(error.message), {
+            enableHighAccuracy: true,
+            timeout: 20000,
+            maximumAge: 1000
+        });
         this.watchID = navigator.geolocation.watchPosition((position) => {
             let lastPosition = JSON.stringify(position);
+            console.log(lastPosition)
             this.setState({lastPosition});
         });
     }
 
-    componentWillUnmount() {}
+    componentWillUnmount() {
+        navigator.geolocation.clearWatch(this.watchID);
+    }
 
     showDatePicker = async(stateKey, options) => {
         try {
