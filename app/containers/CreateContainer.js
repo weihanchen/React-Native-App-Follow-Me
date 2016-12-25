@@ -19,7 +19,6 @@ class CreateContainer extends Component {
 
     render() {
         const {location} = this.props
-        console.log(location)
         return (
             <View style={styles.container}>
                 <CreateBody location={location}></CreateBody>

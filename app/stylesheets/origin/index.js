@@ -11,6 +11,7 @@ export default {
     danger: '#ed5565',
     lightgreen: '#e0edf6',
     navy: '#1ab394',
-    skyblue: '#43adf1'
+    skyblue: '#43adf1',
+    white: '#000'
   }
 }

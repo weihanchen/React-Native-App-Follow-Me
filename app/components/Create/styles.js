@@ -2,9 +2,22 @@ import {StyleSheet} from 'react-native'
 import MainStyle from '../../stylesheets'
 
 export default StyleSheet.create({
+  btnSubmit: {
+    borderRadius: 8,
+    borderColor: MainStyle.color.navy,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    margin: 10,
+    padding: 10
+  },
   container: {
       flex: 1,
       padding: 20
+  },
+  endAddressItem: {
+    flexDirection: 'row',
   },
   endTime: {
     flexDirection: 'row',
@@ -27,14 +40,22 @@ export default StyleSheet.create({
     fontSize: MainStyle.font.large,
     color: MainStyle.color.navy
   },
+  map: {
+    height: 250,
+    margin: 10,
+    borderWidth: 1,
+    borderColor: '#000000',
+  },
   startPosition: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 25,
+    marginTop: 10
   },
   startPositionItem: {
     marginRight: 10
   },
   tipText: {
-    color: MainStyle.color.navy
+    color: MainStyle.color.skyblue
   },
   title: {
     fontSize: MainStyle.font.medium,
