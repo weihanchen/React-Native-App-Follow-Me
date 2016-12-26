@@ -74,7 +74,11 @@ class CreateBody extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.geocoding.status === 'success') {
           const coordinate = nextProps.geocoding.coordinate
-          this.setState({coordinate})
+          const region =  Object.assign({}, this.state.region, {
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude
+          })
+          this.setState({coordinate,region})
         }
     }
 
