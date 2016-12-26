@@ -2,6 +2,9 @@ import {StyleSheet} from 'react-native'
 import MainStyle from '../../stylesheets'
 
 export default StyleSheet.create({
+  smallGap: {
+    marginRight: 5
+  },
   btnSubmit: {
     borderRadius: 8,
     borderColor: MainStyle.color.navy,
@@ -18,6 +21,10 @@ export default StyleSheet.create({
   },
   endAddressSearch: {
     flexDirection: 'row',
+    alignItems: 'center'
+  },
+  endAddressSearchText: {
+    flex: 1
   },
   endTime: {
     flexDirection: 'row',

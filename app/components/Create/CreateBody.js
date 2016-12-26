@@ -84,9 +84,9 @@ class CreateBody extends Component {
 
     createGroup() {
         if (this.state.groupName.length <= 0) {
-          ToastAndroid.show('請輸入您的車隊名稱', ToastAndroid.CENTER)
-        }else if (this.state.userName.length <= 0) {
-          ToastAndroid.show('請輸入您的暱稱', ToastAndroid.CENTER)
+            ToastAndroid.show('請輸入您的車隊名稱', ToastAndroid.CENTER)
+        } else if (this.state.userName.length <= 0) {
+            ToastAndroid.show('請輸入您的暱稱', ToastAndroid.CENTER)
         }
     }
 
@@ -160,15 +160,14 @@ class CreateBody extends Component {
                     {_startPositionSection(location.status, location.error)}
                     <Text style={styles.title}>請輸入您的終點</Text>
                     <View style={styles.endAddressSearch}>
-                        <TextInput value={this.state.endAddress} style={{
-                            flexGrow: 5
-                        }} onChangeText={(endAddress) => this.setState({endAddress})}></TextInput>
-
+                        <TextInput value={this.state.endAddress} style={styles.endAddressSearchText} onChangeText={(endAddress) => this.setState({endAddress})}></TextInput>
+                        <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8}>
+                            <Icon name='search' size={mainStyle.font.medium} style={styles.smallGap}></Icon>
+                            <Text >搜尋</Text>
+                        </TouchableOpacity>
                     </View>
                     <MapView region={this.state.region} onRegionChange={(region) => this.setState({region})} style={styles.map}>
-                        <MapView.Marker draggable title="請長按並拖拉"
-                                        coordinate={this.state.coordinate}
-                                        onDragEnd={(e) => this.setState({coordinate: e.nativeEvent.coordinate})}/>
+                        <MapView.Marker draggable title="請長按並拖拉" coordinate={this.state.coordinate} onDragEnd={(e) => this.setState({coordinate: e.nativeEvent.coordinate})}/>
                     </MapView>
                     <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8} onPress={this.createGroup.bind(this)}>
                         <Text style={styles.title}>確定創建車隊</Text>
