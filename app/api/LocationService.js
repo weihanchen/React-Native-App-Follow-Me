@@ -8,7 +8,7 @@ export default class LocationService {
             reject(error)
         }, {
             enableHighAccuracy: true,
-            timeout: 10000,
+            timeout: 30000,
             maximumAge: 1000
         });
       })

@@ -11,19 +11,18 @@ This application will help keep the car team traveling
 * [react-native-maps](https://github.com/airbnb/react-native-maps)
 * [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)
 
-## Build/run the projects
+## Development
 ### General requirements before running project
 >1. `$ npm install` install all dependencies
 >2. `$ npm run link` link with android libraries
 
-## Mobile Apps Development(Android & iOS)
 ### Start with server
 >1. Open an emulator(Android Studio/AVD Manager)
 >2. `$ npm start`
 
 ### Running the Mobile Apps
 
-### Android
+#### Android
 >1. [Offical document](http://facebook.github.io/react-native/docs/getting-started.html)
 >2. Modify your google map api key in `./android/app/src/main/AndroidManifest.xml`
 ```xml
@@ -32,7 +31,7 @@ This application will help keep the car team traveling
 >3. `$ npm run dev-andriod`
 >4. on emulator then press `ctrl + m` can use reload、live reload、hot reload、remote debug
 
-### iOS
+#### iOS
 Pending...
 
 ## Resources ##

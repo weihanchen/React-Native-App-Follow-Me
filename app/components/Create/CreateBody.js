@@ -61,12 +61,10 @@ class CreateBody extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.coordinate !== nextProps.coordinate) {
-            this.state.coordinate.timing({
-                ...nextProps.coordinate,
-                duration: 500
-            }).start();
+        if (nextProps.location.status === 'error') {
+            ToastAndroid.show('請開啟定位服務', ToastAndroid.CENTER)
         }
+        console.log(nextProps.location)
     }
 
     componentWillUnmount() {
@@ -76,6 +74,8 @@ class CreateBody extends Component {
     onRegionChange(region) {
         // this.setState({region})
     }
+
+    onSearchAdress() {}
 
     showDatePicker = async(stateKey, options) => {
         try {
@@ -110,55 +110,56 @@ class CreateBody extends Component {
     render() {
         const {location} = this.props
         return (
-            <ScrollView style={styles.container}>
-                <Text style={styles.title}>請輸入車隊名稱</Text>
-                <TextInput value={this.state.groupName} onChangeText={(groupName) => this.setState({groupName})}></TextInput>
-                <Text style={styles.title}>請輸入您的暱稱</Text>
-                <TextInput value={this.state.userName}></TextInput>
-                <Text style={styles.title}>車隊結束時間</Text>
-                <View style={styles.endTime}>
-                    <TouchableOpacity onPress={this.showDatePicker.bind(this, 'endTime', {date: this.state.endTimeDate})}>
-                        <View style={styles.endTimeItem}>
-                            <View style={styles.itemIcon}>
-                                <Icon name='calendar' style={styles.itemText}/>
+            <ScrollView>
+                <View style={styles.container}>
+                    <Text style={styles.title}>請輸入車隊名稱</Text>
+                    <TextInput value={this.state.groupName} maxLength={10} onChangeText={(groupName) => this.setState({groupName})}></TextInput>
+                    <Text style={styles.title}>請輸入您的暱稱</Text>
+                    <TextInput value={this.state.userName} maxLength={10}></TextInput>
+                    <Text style={styles.title}>車隊結束時間</Text>
+                    <View style={styles.endTime}>
+                        <TouchableOpacity onPress={this.showDatePicker.bind(this, 'endTime', {date: this.state.endTimeDate})}>
+                            <View style={styles.endTimeItem}>
+                                <View style={styles.itemIcon}>
+                                    <Icon name='calendar' style={styles.itemText}/>
+                                </View>
+                                <View>
+                                    <Text style={styles.itemText}>{this.state.endTimeDateText}</Text>
+                                </View>
                             </View>
-                            <View>
-                                <Text style={styles.itemText}>{this.state.endTimeDateText}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={this.showTimePicker.bind(this, 'endTime', {
+                            hour: this.state.endTimeHour,
+                            minute: this.state.endTimeMinute
+                        })} activeOpacity={0.7}>
+                            <View style={styles.endTimeItem}>
+                                <View style={styles.itemIcon}>
+                                    <Icon name='clock-o' style={styles.itemText}/>
+                                </View>
+                                <View>
+                                    <Text style={styles.itemText}>{this.state.endTimeText}</Text>
+                                </View>
                             </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.showTimePicker.bind(this, 'endTime', {
-                        hour: this.state.endTimeHour,
-                        minute: this.state.endTimeMinute
-                    })} activeOpacity={0.7}>
-                        <View style={styles.endTimeItem}>
-                            <View style={styles.itemIcon}>
-                                <Icon name='clock-o' style={styles.itemText}/>
-                            </View>
-                            <View>
-                                <Text style={styles.itemText}>{this.state.endTimeText}</Text>
-                            </View>
-                        </View>
+                        </TouchableOpacity>
+                    </View>
+                    {_startPositionSection(location.status, location.error)}
+                    <Text style={styles.title}>請輸入您的終點</Text>
+                    <View style={styles.endAddressSearch}>
+                        <TextInput value={this.state.endAddress} style={{
+                            flexGrow: 5
+                        }}></TextInput>
+
+                    </View>
+                    <MapView region={this.state.region} onRegionChange={this.onRegionChange} style={styles.map}/>
+                    <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8}>
+                        <Text style={styles.title}>確定創建車隊</Text>
                     </TouchableOpacity>
                 </View>
-                {_startPositionSection(location.status, location.error)}
-                <Text style={styles.title}>請輸入您的終點</Text>
-                <View style={styles.endAddressItem}>
-                    <TextInput value={this.state.endAddress}></TextInput>
-                    <TouchableOpacity activeOpacity={0.5}>
-                        <Icon.Button name='search' backgroundColor={mainStyle.color.navy} onPress={this.loginWithFacebook}>
-                            搜尋
-                        </Icon.Button>
-                    </TouchableOpacity>
-                </View>
-                <MapView region={this.state.region} onRegionChange={this.onRegionChange} style={styles.map}/>
-                <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8}>
-                    <Text style={styles.title}>確定創建車隊</Text>
-                </TouchableOpacity>
             </ScrollView>
         )
     }
 }
+//<MapView region={this.state.region} onRegionChange={this.onRegionChange} style={styles.map}/>
 
 //private methods
 const _startPositionSection = (status, errorMessage) => {
