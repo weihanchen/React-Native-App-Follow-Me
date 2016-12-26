@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {View, Text, StyleSheet} from 'react-native'
 //actions
-import {requestGeolocation} from '../actions'
+import {requestGeolocation, requestGeocoding} from '../actions'
 //components
 import {CreateBody} from '../components/Create/index.js'
 
@@ -17,22 +17,27 @@ class CreateContainer extends Component {
         this.props.requestGeolocation()
     }
 
+    handleSearchAddress(address) {
+        this.props.requestGeocoding(address)
+    }
+
     render() {
-        const {location} = this.props
+        const {location, geocoding} = this.props
         return (
             <View style={styles.container}>
-                <CreateBody location={location}></CreateBody>
+                <CreateBody location={location} geocoding={geocoding} handleSearchAddress={this.handleSearchAddress.bind(this)}></CreateBody>
             </View>
         )
     }
 }
 
 const mapStateToProps = (state) => {
-    return {location: state.location}
+    return {location: state.location, geocoding: state.geocoding}
 }
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
+        requestGeocoding,
         requestGeolocation
     }, dispatch)
 }
@@ -45,6 +50,7 @@ const styles = StyleSheet.create({
 
 CreateContainer.propTypes = {
     location: PropTypes.object,
+    requestGeocoding: PropTypes.func,
     requestGeolocation: PropTypes.func
 }
 

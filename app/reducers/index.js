@@ -1,10 +1,13 @@
 import {
 	combineReducers
 } from 'redux'
-import location from './location'
+import geocoding from './geocoding'
 import group from './group'
+import location from './location'
+
 
 export default combineReducers({
-	location,
-	group
+	geocoding,
+	group,
+	location
 })

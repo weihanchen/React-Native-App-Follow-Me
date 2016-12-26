@@ -72,25 +72,32 @@ class CreateBody extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.location.status === 'error') {
-            ToastAndroid.show('請開啟定位服務', ToastAndroid.CENTER)
+        if (nextProps.geocoding.status === 'success') {
+          const coordinate = nextProps.geocoding.coordinate
+          this.setState({coordinate})
         }
-        console.log(nextProps.location)
     }
 
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID)
     }
 
-    createGroup() {
+    onCreateGroup() {
         if (this.state.groupName.length <= 0) {
-            ToastAndroid.show('請輸入您的車隊名稱', ToastAndroid.CENTER)
+            ToastAndroid.show('請輸入您的車隊名稱', ToastAndroid.SHORT)
         } else if (this.state.userName.length <= 0) {
-            ToastAndroid.show('請輸入您的暱稱', ToastAndroid.CENTER)
+            ToastAndroid.show('請輸入您的暱稱', ToastAndroid.SHORT)
         }
     }
 
-    onSearchAdress() {}
+    onSearchAdress() {
+        let endAddress = this.state.endAddress
+        if (endAddress.length <= 0) {
+            ToastAndroid.show('請輸入地址', ToastAndroid.SHORT)
+            return
+        }
+        this.props.handleSearchAddress(endAddress)
+    }
 
     showDatePicker = async(stateKey, options) => {
         try {
@@ -123,7 +130,7 @@ class CreateBody extends Component {
     }
 
     render() {
-        const {location} = this.props
+        const {location, geocoding} = this.props
         return (
             <ScrollView>
                 <View style={styles.container}>
@@ -161,15 +168,14 @@ class CreateBody extends Component {
                     <Text style={styles.title}>請輸入您的終點</Text>
                     <View style={styles.endAddressSearch}>
                         <TextInput value={this.state.endAddress} style={styles.endAddressSearchText} onChangeText={(endAddress) => this.setState({endAddress})}></TextInput>
-                        <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8}>
-                            <Icon name='search' size={mainStyle.font.medium} style={styles.smallGap}></Icon>
-                            <Text >搜尋</Text>
+                        <TouchableOpacity activeOpacity={0.8} onPress={this.onSearchAdress.bind(this)}>
+                            {_searchAddressButton(geocoding.status, geocoding.error)}
                         </TouchableOpacity>
                     </View>
                     <MapView region={this.state.region} onRegionChange={(region) => this.setState({region})} style={styles.map}>
                         <MapView.Marker draggable title="請長按並拖拉" coordinate={this.state.coordinate} onDragEnd={(e) => this.setState({coordinate: e.nativeEvent.coordinate})}/>
                     </MapView>
-                    <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8} onPress={this.createGroup.bind(this)}>
+                    <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8} onPress={this.onCreateGroup.bind(this)}>
                         <Text style={styles.title}>確定創建車隊</Text>
                     </TouchableOpacity>
                 </View>
@@ -180,30 +186,61 @@ class CreateBody extends Component {
 //<MapView region={this.state.region} onRegionChange={this.onRegionChange} style={styles.map}/>
 
 //private methods
-const _startPositionSection = (status, errorMessage) => {
-    let indicator,
-        tipText
-    if (status === 'loading') {
-        indicator = <ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>
-        tipText = <Text style={styles.tipText}>正在取得您目前的位置...</Text>
-    } else if (status === 'success') {
-        indicator = <Icon name='map-marker' style={[styles.startPositionItem, styles.itemText]}/>
-        tipText = <Text style={styles.title}>已使用您目前的位置</Text>
-    } else if (status === 'error') {
-        indicator = <Icon name='times' style={[styles.startPositionItem, styles.errorText]}/>
-        tipText = <Text style={styles.errorText}>{errorMessage}</Text>
-    }
-    return (
-        <View style={styles.startPosition}>
-            <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
-            {indicator}
-            {tipText}
+const _searchAddressButton = (status, errorMessage) => {
+    const defaultTemplate = (
+        <View style={styles.btnSubmit}>
+            <Icon name='search' size={mainStyle.font.medium} style={styles.smallGap}></Icon>
+            <Text >搜尋</Text>
         </View>
     )
+    const renderStatus = {
+        init: () => defaultTemplate,
+        loading: () => (<ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>),
+        success: () => defaultTemplate,
+        error: () => {
+            ToastAndroid.show(errorMessage, ToastAndroid.SHORT)
+            return defaultTemplate
+        }
+    }
+    return renderStatus[status]()
+}
+
+const _startPositionSection = (status, errorMessage) => {
+
+    const renderStatus = {
+        init: () => (<View></View>),
+        loading: () => (
+          <View style={styles.startPosition}>
+            <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
+            <ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>
+            <Text style={styles.tipText}>正在取得您目前的位置...</Text>
+          </View>
+        ),
+        success: () => (
+          <View style={styles.startPosition}>
+            <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
+            <Icon name='map-marker' style={[styles.startPositionItem, styles.itemText]}/>
+            <Text style={styles.title}>已使用您目前的位置</Text>
+          </View>
+        ),
+        error: () => {
+            ToastAndroid.show('請開啟定位服務', ToastAndroid.SHORT)
+            return (
+              <View style={styles.startPosition}>
+                <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
+                <Icon name='times' style={[styles.startPositionItem, styles.errorText]}/>
+                <Text style={styles.errorText}>{errorMessage}</Text>
+              </View>
+            )
+        }
+    }
+    return renderStatus[status]()
 }
 
 CreateBody.propTypes = {
-    location: PropTypes.object
+    geocoding: PropTypes.object,
+    location: PropTypes.object,
+    handleSearchAddress: PropTypes.func
 }
 
 export default CreateBody

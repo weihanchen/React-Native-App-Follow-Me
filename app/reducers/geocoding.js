@@ -1,11 +1,12 @@
+'use strict'
 import {
     REQUEST_FAILED,
-    REQUEST_GEOLOCATION,
-    REQUEST_GEOLOCATION_SUCCESS
+    REQUEST_GEOCODING,
+    REQUEST_GEOCODING_SUCCESS
 } from '../actions'
-const location = (state = {
+const geocoding = (state = {
     error: null,
-    coords: null,
+    coordinate: null,
     status: 'init'
 }, action) => {
     switch (action.type) {
@@ -15,20 +16,20 @@ const location = (state = {
                 error: action.error
             })
             break
-        case REQUEST_GEOLOCATION:
+        case REQUEST_GEOCODING:
             return Object.assign({}, state, {
                 status: 'loading',
                 error: null
             })
             break
-        case REQUEST_GEOLOCATION_SUCCESS:
+        case REQUEST_GEOCODING_SUCCESS:
             return Object.assign({}, state, {
                 status: 'success',
-                coords: action.location.coords
+                coordinate: action.geocoding
             })
             break
         default:
             return state
     }
 }
-export default location
+export default geocoding
