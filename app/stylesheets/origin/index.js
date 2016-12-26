@@ -12,6 +12,6 @@ export default {
     lightgreen: '#e0edf6',
     navy: '#1ab394',
     skyblue: '#43adf1',
-    white: '#000'
+    white: '#fff'
   }
 }
