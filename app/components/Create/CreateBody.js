@@ -4,8 +4,10 @@ import React, {Component, PropTypes} from 'react'
 //plugins
 import {
     ActivityIndicator,
+    Animated,
     Button,
     DatePickerAndroid,
+    Dimensions,
     ScrollView,
     Text,
     TextInput,
@@ -25,12 +27,22 @@ import styles from './styles'
 //utils
 import {timeUtils} from '../../utils'
 
+const screen = Dimensions.get('window')
+const ASPECT_RATIO = screen.width / screen.height
+const LATITUDE = 23.5998314
+const LONGITUDE = 120.4588275
+const LATITUDE_DELTA = 0.0122
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
+
 class CreateBody extends Component {
     constructor(props) {
         super(props)
         let endDate = moment(new Date()).add(2, 'hours');
         this.state = {
-            coordinate: new MapView.AnimatedRegion({latitude: 23.5998314, longitude: 120.4588275}),
+            coordinate: {
+                latitude: LATITUDE,
+                longitude: LONGITUDE
+            },
             endAddress: '',
             endTimeDate: endDate.date(),
             endTimeDateText: endDate.format('YYYY/MM/DD'),
@@ -39,11 +51,10 @@ class CreateBody extends Component {
             endTimeText: endDate.format('HH:mm'),
             groupName: '',
             region: {
-                latitude: 23.5998314,
-                longitude: 120.4588275,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-
+                latitude: LATITUDE,
+                longitude: LONGITUDE,
+                latitudeDelta: LATITUDE_DELTA,
+                longitudeDelta: LONGITUDE_DELTA
             },
             userName: ''
         }
@@ -71,8 +82,12 @@ class CreateBody extends Component {
         navigator.geolocation.clearWatch(this.watchID)
     }
 
-    onRegionChange(region) {
-        // this.setState({region})
+    createGroup() {
+        if (this.state.groupName.length <= 0) {
+          ToastAndroid.show('請輸入您的車隊名稱', ToastAndroid.CENTER)
+        }else if (this.state.userName.length <= 0) {
+          ToastAndroid.show('請輸入您的暱稱', ToastAndroid.CENTER)
+        }
     }
 
     onSearchAdress() {}
@@ -115,7 +130,7 @@ class CreateBody extends Component {
                     <Text style={styles.title}>請輸入車隊名稱</Text>
                     <TextInput value={this.state.groupName} maxLength={10} onChangeText={(groupName) => this.setState({groupName})}></TextInput>
                     <Text style={styles.title}>請輸入您的暱稱</Text>
-                    <TextInput value={this.state.userName} maxLength={10}></TextInput>
+                    <TextInput value={this.state.userName} maxLength={10} onChangeText={(userName) => this.setState({userName})}></TextInput>
                     <Text style={styles.title}>車隊結束時間</Text>
                     <View style={styles.endTime}>
                         <TouchableOpacity onPress={this.showDatePicker.bind(this, 'endTime', {date: this.state.endTimeDate})}>
@@ -147,11 +162,15 @@ class CreateBody extends Component {
                     <View style={styles.endAddressSearch}>
                         <TextInput value={this.state.endAddress} style={{
                             flexGrow: 5
-                        }}></TextInput>
+                        }} onChangeText={(endAddress) => this.setState({endAddress})}></TextInput>
 
                     </View>
-                    <MapView region={this.state.region} onRegionChange={this.onRegionChange} style={styles.map}/>
-                    <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8}>
+                    <MapView region={this.state.region} onRegionChange={(region) => this.setState({region})} style={styles.map}>
+                        <MapView.Marker draggable title="請長按並拖拉"
+                                        coordinate={this.state.coordinate}
+                                        onDragEnd={(e) => this.setState({coordinate: e.nativeEvent.coordinate})}/>
+                    </MapView>
+                    <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8} onPress={this.createGroup.bind(this)}>
                         <Text style={styles.title}>確定創建車隊</Text>
                     </TouchableOpacity>
                 </View>
