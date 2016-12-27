@@ -36,11 +36,10 @@ Pending...
 
 ## Resources ##
 * google place search： [geocoding](https://developers.google.com/maps/documentation/geocoding/intro?hl=zh-tw#JSON)
+* Emulator's location: [Mock Location Plugin](http://www.jesusamieiro.com/android-studio-simulate-multiple-gps-points-with-mock-location-plugin/)
 
 ## Troubleshooting ##
 >1.   Unknown source file : UNEXPECTED TOP-LEVEL EXCEPTION:
 ```
 $  cd android/ && ./gradlew clean && cd .. && react-native run-android
 ```
-
->2. Emulator's location can see [here](http://www.jesusamieiro.com/android-studio-simulate-multiple-gps-points-with-mock-location-plugin/)
