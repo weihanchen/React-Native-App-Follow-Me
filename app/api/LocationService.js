@@ -22,8 +22,7 @@ export default class LocationService {
     requestGeolocation() {
         return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition((position) => {
-                var initialPosition = JSON.stringify(position)
-                resolve(initialPosition)
+                resolve(position)
             }, (error) => {
                 reject(error.message)
             }, {

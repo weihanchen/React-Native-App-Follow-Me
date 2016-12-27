@@ -23,7 +23,6 @@ class CreateContainer extends Component {
 
     render() {
         const {location, geocoding} = this.props
-        console.log(geocoding)
         return (
             <View style={styles.container}>
                 <CreateBody location={location} geocoding={geocoding} handleSearchAddress={this.handleSearchAddress.bind(this)}></CreateBody>

@@ -5,7 +5,7 @@ import {
 } from '../actions'
 const location = (state = {
     error: null,
-    coords: null,
+    coordinate: null,
     status: 'init'
 }, action) => {
     switch (action.type) {
@@ -24,7 +24,10 @@ const location = (state = {
         case REQUEST_GEOLOCATION_SUCCESS:
             return Object.assign({}, state, {
                 status: 'success',
-                coords: action.location.coords
+                coordinate: {
+                  latitude: action.location.coords.latitude,
+                  longitude: action.location.coords.longitude
+                }
             })
             break
         default:

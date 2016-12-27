@@ -29,8 +29,8 @@ import {timeUtils} from '../../utils'
 
 const screen = Dimensions.get('window')
 const ASPECT_RATIO = screen.width / screen.height
-const LATITUDE = 23.5998314
-const LONGITUDE = 120.4588275
+const LATITUDE = 23.6010548
+const LONGITUDE = 120.4536408
 const LATITUDE_DELTA = 0.0122
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
@@ -39,11 +39,8 @@ class CreateBody extends Component {
         super(props)
         let endDate = moment(new Date()).add(2, 'hours');
         this.state = {
-            coordinate: {
-                latitude: LATITUDE,
-                longitude: LONGITUDE
-            },
             endAddress: '',
+            endPosition: {},
             endTimeDate: endDate.date(),
             endTimeDateText: endDate.format('YYYY/MM/DD'),
             endTimeHour: endDate.hours(),
@@ -56,6 +53,7 @@ class CreateBody extends Component {
                 latitudeDelta: LATITUDE_DELTA,
                 longitudeDelta: LONGITUDE_DELTA
             },
+            startPosition: {},
             userName: ''
         }
     }
@@ -73,12 +71,14 @@ class CreateBody extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.geocoding.status === 'success') {
-          const coordinate = nextProps.geocoding.coordinate
-          const region =  Object.assign({}, this.state.region, {
-            latitude: coordinate.latitude,
-            longitude: coordinate.longitude
-          })
-          this.setState({coordinate,region})
+            const coordinate = nextProps.geocoding.coordinate
+            const region = Object.assign({}, this.state.region, coordinate)
+            this.setState({endPosition: coordinate, region})
+        }
+        if (nextProps.location.status === 'success') {
+          const coordinate = nextProps.location.coordinate
+          const region = Object.assign({}, this.state.region, coordinate)
+          this.setState({startPosition: coordinate, endPosition: coordinate, region})
         }
     }
 
@@ -177,7 +177,7 @@ class CreateBody extends Component {
                         </TouchableOpacity>
                     </View>
                     <MapView region={this.state.region} onRegionChange={(region) => this.setState({region})} style={styles.map}>
-                        <MapView.Marker draggable title="請長按並拖拉" coordinate={this.state.coordinate} onDragEnd={(e) => this.setState({coordinate: e.nativeEvent.coordinate})}/>
+                        <MapView.Marker draggable title="請長按並拖拉" coordinate={this.state.endPosition} onDragEnd={(e) => this.setState({endPosition: e.nativeEvent.coordinate})}/>
                     </MapView>
                     <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8} onPress={this.onCreateGroup.bind(this)}>
                         <Text style={styles.title}>確定創建車隊</Text>
@@ -212,29 +212,31 @@ const _searchAddressButton = (status, errorMessage) => {
 const _startPositionSection = (status, errorMessage) => {
 
     const renderStatus = {
-        init: () => (<View></View>),
+        init: () => (
+            <View></View>
+        ),
         loading: () => (
-          <View style={styles.startPosition}>
-            <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
-            <ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>
-            <Text style={styles.tipText}>正在取得您目前的位置...</Text>
-          </View>
+            <View style={styles.startPosition}>
+                <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
+                <ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>
+                <Text style={styles.tipText}>正在取得您目前的位置...</Text>
+            </View>
         ),
         success: () => (
-          <View style={styles.startPosition}>
-            <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
-            <Icon name='map-marker' style={[styles.startPositionItem, styles.itemText]}/>
-            <Text style={styles.title}>已使用您目前的位置</Text>
-          </View>
+            <View style={styles.startPosition}>
+                <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
+                <Icon name='map-marker' style={[styles.startPositionItem, styles.itemText]}/>
+                <Text style={styles.title}>已使用您目前的位置</Text>
+            </View>
         ),
         error: () => {
             ToastAndroid.show('請開啟定位服務', ToastAndroid.SHORT)
             return (
-              <View style={styles.startPosition}>
-                <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
-                <Icon name='times' style={[styles.startPositionItem, styles.errorText]}/>
-                <Text style={styles.errorText}>{errorMessage}</Text>
-              </View>
+                <View style={styles.startPosition}>
+                    <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
+                    <Icon name='times' style={[styles.startPositionItem, styles.errorText]}/>
+                    <Text style={styles.errorText}>{errorMessage}</Text>
+                </View>
             )
         }
     }
