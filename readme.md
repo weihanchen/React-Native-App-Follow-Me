@@ -42,4 +42,5 @@ Pending...
 ```
 $  cd android/ && ./gradlew clean && cd .. && react-native run-android
 ```
+
 >2. Emulator's location can see [here](http://www.jesusamieiro.com/android-studio-simulate-multiple-gps-points-with-mock-location-plugin/)

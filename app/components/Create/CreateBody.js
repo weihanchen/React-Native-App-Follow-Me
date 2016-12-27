@@ -40,7 +40,10 @@ class CreateBody extends Component {
         let endDate = moment(new Date()).add(2, 'hours');
         this.state = {
             endAddress: '',
-            endPosition: {},
+            endPosition: {
+              latitude: LATITUDE,
+              longitude: LONGITUDE
+            },
             endTimeDate: endDate.date(),
             endTimeDateText: endDate.format('YYYY/MM/DD'),
             endTimeHour: endDate.hours(),
@@ -76,9 +79,9 @@ class CreateBody extends Component {
             this.setState({endPosition: coordinate, region})
         }
         if (nextProps.location.status === 'success') {
-          const coordinate = nextProps.location.coordinate
-          const region = Object.assign({}, this.state.region, coordinate)
-          this.setState({startPosition: coordinate, endPosition: coordinate, region})
+            const coordinate = nextProps.location.coordinate
+            const region = Object.assign({}, this.state.region, coordinate)
+            this.setState({startPosition: coordinate, endPosition: coordinate, region})
         }
     }
 
@@ -190,6 +193,7 @@ class CreateBody extends Component {
 //<MapView region={this.state.region} onRegionChange={this.onRegionChange} style={styles.map}/>
 
 //private methods
+
 const _searchAddressButton = (status, errorMessage) => {
     const defaultTemplate = (
         <View style={styles.btnSubmit}>
@@ -210,7 +214,6 @@ const _searchAddressButton = (status, errorMessage) => {
 }
 
 const _startPositionSection = (status, errorMessage) => {
-
     const renderStatus = {
         init: () => (
             <View></View>
