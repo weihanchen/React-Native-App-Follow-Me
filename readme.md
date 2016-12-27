@@ -25,9 +25,9 @@ This application will help keep the car team traveling
 #### Android
 >1. [Offical document](http://facebook.github.io/react-native/docs/getting-started.html)
 >2. Modify your google map api key in `./android/app/src/main/AndroidManifest.xml`
-```xml
-<meta-data android:name="com.google.android.geo.API_KEY" android:value="YOUR_API_KEY"/>
-```
+  ```xml
+  <meta-data android:name="com.google.android.geo.API_KEY" android:value="YOUR_API_KEY"/>
+  ```
 >3. `$ npm run dev-andriod`
 >4. on emulator then press `ctrl + m` can use reload、live reload、hot reload、remote debug
 
@@ -40,6 +40,6 @@ Pending...
 
 ## Troubleshooting ##
 >1.   Unknown source file : UNEXPECTED TOP-LEVEL EXCEPTION:
-```
-$  cd android/ && ./gradlew clean && cd .. && react-native run-android
-```
+  ```
+  $  cd android/ && ./gradlew clean && cd .. && react-native run-android
+  ```
