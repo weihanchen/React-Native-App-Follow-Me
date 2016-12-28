@@ -7,4 +7,8 @@ export default class FirebaseService {
   constructor() {
     this.rootRef = Firebase.ref('followme')
   }
+
+  requestCreateGroup(groupName, startPosition, endPosition, leader) {
+
+  }
 }
