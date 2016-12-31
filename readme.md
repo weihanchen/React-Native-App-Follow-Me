@@ -41,13 +41,13 @@ Pending...
 * Emulator's location: [Mock Location Plugin](http://www.jesusamieiro.com/android-studio-simulate-multiple-gps-points-with-mock-location-plugin/)
 
 ## Troubleshooting ##
-* Unknown source file : UNEXPECTED TOP-LEVEL EXCEPTION:
+### Unknown source file : UNEXPECTED TOP-LEVEL EXCEPTION:
 
   ```
   $  cd android/ && ./gradlew clean && cd .. && react-native run-android
   ```
 
-* Running on real device cause Execution failed for task ':app:installDebug'.
+### Running on real device cause Execution failed for task ':app:installDebug'.
 
 trying some step like(recommand):
 >1. `$ adb install ./android/app/build/outputs/apk/app-debug.apk`
