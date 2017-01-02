@@ -79,7 +79,7 @@ class CreateBody extends Component {
             const region = Object.assign({}, this.state.region, coordinate)
             this.setState({endPosition: coordinate, region})
           },
-          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT) 
+          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
         }
         const locationStatusFun = {
           success: () => {
@@ -198,7 +198,6 @@ class CreateBody extends Component {
         )
     }
 }
-//<MapView region={this.state.region} onRegionChange={this.onRegionChange} style={styles.map}/>
 
 //private methods
 
