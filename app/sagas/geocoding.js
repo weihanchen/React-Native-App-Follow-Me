@@ -6,8 +6,8 @@ import {
     call
 } from 'redux-saga/effects'
 import {
-    REQUEST_FAILED,
     REQUEST_GEOCODING,
+    REQUEST_GEOCODING_FAILED,
     REQUEST_GEOCODING_SUCCESS
 } from '../actions'
 import {
@@ -28,7 +28,7 @@ export function* requestGeocodingFlow(action) {
         })
     } catch (error) {
         yield put({
-            type: REQUEST_FAILED,
+            type: REQUEST_GEOCODING_FAILED,
             error
         })
     }

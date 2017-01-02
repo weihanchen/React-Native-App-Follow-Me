@@ -73,16 +73,24 @@ class CreateBody extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.geocoding.status === 'success') {
+        const geocodingStatusFun = {
+          success: () => {
             const coordinate = nextProps.geocoding.coordinate
             const region = Object.assign({}, this.state.region, coordinate)
             this.setState({endPosition: coordinate, region})
+          },
+          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT) 
         }
-        if (nextProps.location.status === 'success') {
+        const locationStatusFun = {
+          success: () => {
             const coordinate = nextProps.location.coordinate
             const region = Object.assign({}, this.state.region, coordinate)
             this.setState({startPosition: coordinate, endPosition: coordinate, region})
+          },
+          error: (error) => ToastAndroid.show('請開啟定位服務', ToastAndroid.SHORT)
         }
+        if (geocodingStatusFun.hasOwnProperty(nextProps.geocoding.status)) geocodingStatusFun[nextProps.geocoding.status]()
+        if (locationStatusFun.hasOwnProperty(nextProps.location.status)) locationStatusFun[nextProps.location.status]()
     }
 
     componentWillUnmount() {
@@ -206,7 +214,6 @@ const _searchAddressButton = (status, errorMessage) => {
         loading: () => (<ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>),
         success: () => defaultTemplate,
         error: () => {
-            ToastAndroid.show(errorMessage, ToastAndroid.SHORT)
             return defaultTemplate
         }
     }
@@ -233,7 +240,6 @@ const _startPositionSection = (status, errorMessage) => {
             </View>
         ),
         error: () => {
-            ToastAndroid.show('請開啟定位服務', ToastAndroid.SHORT)
             return (
                 <View style={styles.startPosition}>
                     <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
