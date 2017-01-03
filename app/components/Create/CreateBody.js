@@ -41,8 +41,8 @@ class CreateBody extends Component {
         this.state = {
             endAddress: '',
             endPosition: {
-              latitude: LATITUDE,
-              longitude: LONGITUDE
+                latitude: LATITUDE,
+                longitude: LONGITUDE
             },
             endTimeDate: endDate.date(),
             endTimeDateText: endDate.format('YYYY/MM/DD'),
@@ -74,23 +74,31 @@ class CreateBody extends Component {
 
     componentWillReceiveProps(nextProps) {
         const geocodingStatusFun = {
-          success: () => {
-            const coordinate = nextProps.geocoding.coordinate
-            const region = Object.assign({}, this.state.region, coordinate)
-            this.setState({endPosition: coordinate, region})
-          },
-          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
+            success: () => {
+                const coordinate = nextProps.geocoding.coordinate
+                const region = Object.assign({}, this.state.region, coordinate)
+                this.setState({endPosition: coordinate, region})
+            },
+            error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
+        }
+        const groupStatusFun = {
+            success: () => {},
+            error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
         }
         const locationStatusFun = {
-          success: () => {
-            const coordinate = nextProps.location.coordinate
-            const region = Object.assign({}, this.state.region, coordinate)
-            this.setState({startPosition: coordinate, endPosition: coordinate, region})
-          },
-          error: (error) => ToastAndroid.show('請開啟定位服務', ToastAndroid.SHORT)
+            success: () => {
+                const coordinate = nextProps.location.coordinate
+                const region = Object.assign({}, this.state.region, coordinate)
+                this.setState({startPosition: coordinate, endPosition: coordinate, region})
+            },
+            error: (error) => ToastAndroid.show('請開啟定位服務', ToastAndroid.SHORT)
         }
-        if (geocodingStatusFun.hasOwnProperty(nextProps.geocoding.status)) geocodingStatusFun[nextProps.geocoding.status]()
-        if (locationStatusFun.hasOwnProperty(nextProps.location.status)) locationStatusFun[nextProps.location.status]()
+        if (geocodingStatusFun.hasOwnProperty(nextProps.geocoding.status))
+            geocodingStatusFun[nextProps.geocoding.status]()
+        if (groupStatusFun.hasOwnProperty(nextProps.group.status))
+            groupStatusFun[nextProps.group.status]()
+        if (locationStatusFun.hasOwnProperty(nextProps.location.status))
+            locationStatusFun[nextProps.location.status]()
     }
 
     componentWillUnmount() {
@@ -103,12 +111,12 @@ class CreateBody extends Component {
         } else if (this.state.userName.length <= 0) {
             ToastAndroid.show('請輸入您的暱稱', ToastAndroid.SHORT)
         }
-        const endTimeDate = moment(this.state.endTimeDate)
-        const groupName = this.state.groupName,
-              userName = this.state.userName,
-              startPosition = this.state.startPosition,
-              endPosition = this.state.endPosition,
-              expiredTime = new Date(endTimeDate.get('year'), endTimeDate.get('month') + 1, endTimeDate.get('date'), this.state.endTimeHour, this.state.endTimeMinute)
+        const endTimeDate = moment(this.state.endTimeDate),
+            groupName = this.state.groupName,
+            userName = this.state.userName,
+            startPosition = this.state.startPosition,
+            endPosition = this.state.endPosition,
+            expiredTime = new Date(endTimeDate.get('year'), endTimeDate.get('month') + 1, endTimeDate.get('date'), this.state.endTimeHour, this.state.endTimeMinute)
         this.props.handleCreateGroup(groupName, userName, expiredTime, startPosition, endPosition)
     }
 
@@ -152,7 +160,7 @@ class CreateBody extends Component {
     }
 
     render() {
-        const {location, geocoding} = this.props
+        const {location, geocoding, group} = this.props
         return (
             <ScrollView>
                 <View style={styles.container}>
@@ -198,7 +206,7 @@ class CreateBody extends Component {
                         <MapView.Marker draggable title="請長按並拖拉" coordinate={this.state.endPosition} onDragEnd={(e) => this.setState({endPosition: e.nativeEvent.coordinate})}/>
                     </MapView>
                     <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8} onPress={this.onCreateGroup.bind(this)}>
-                        <Text style={styles.title}>確定創建車隊</Text>
+                        {_createGroupBtnSection(group.status)}
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -207,6 +215,19 @@ class CreateBody extends Component {
 }
 
 //private methods
+
+const _createGroupBtnSection = (status) => {
+    const defaultTemplate = (
+        <Text style={styles.title}>確定創建車隊</Text>
+    )
+    const renderStatus = {
+        init: () => defaultTemplate,
+        loading: () => (<ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>),
+        success: () => defaultTemplate,
+        error: () => defaultTemplate
+    }
+    return renderStatus[status]()
+}
 
 const _searchAddressButton = (status, errorMessage) => {
     const defaultTemplate = (
@@ -260,6 +281,7 @@ const _startPositionSection = (status, errorMessage) => {
 
 CreateBody.propTypes = {
     geocoding: PropTypes.object,
+    group: PropTypes.object,
     location: PropTypes.object,
     handleCreateGroup: PropTypes.func,
     handleSearchAddress: PropTypes.func

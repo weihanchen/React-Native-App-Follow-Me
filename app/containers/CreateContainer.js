@@ -26,10 +26,10 @@ class CreateContainer extends Component {
     }
 
     render() {
-        const {location, geocoding} = this.props
+        const {location, geocoding, group} = this.props
         return (
             <View style={styles.container}>
-                <CreateBody location={location} geocoding={geocoding}
+                <CreateBody location={location} geocoding={geocoding} group={group}
                             handleSearchAddress={this.handleSearchAddress.bind(this)} handleCreateGroup={this.handleCreateGroup.bind(this)}>
                 </CreateBody>
             </View>
@@ -38,7 +38,7 @@ class CreateContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return {location: state.location, geocoding: state.geocoding}
+    return {location: state.location, geocoding: state.geocoding, group: state.group}
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
 
 CreateContainer.propTypes = {
     geocoding: PropTypes.object,
+    group: PropTypes.object,
     location: PropTypes.object,
     requestCreateGroup: PropTypes.func,
     requestGeocoding: PropTypes.func,

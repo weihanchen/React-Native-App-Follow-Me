@@ -24,7 +24,6 @@ export default class FirebaseService {
         return groupRef.once('value')
             .then(snapshot => {
                 return new Promise((resolve, reject) => {
-                    console.log(snapshot.val())
                     const canCreate = snapshot.val() === null
                     if (!canCreate) reject('該群組名稱已經存在')
                     resolve()

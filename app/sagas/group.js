@@ -26,7 +26,6 @@ export function* requestCreateGroupFlow(action) {
             type: REQUEST_CREATEGROUP_SUCCESS
         })
     } catch (error) {
-        console.log(error)
         yield put({
             type: REQUEST_CREATEGROUP_FAILED,
             error
