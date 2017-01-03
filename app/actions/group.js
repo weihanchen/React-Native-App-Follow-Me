@@ -7,6 +7,8 @@ export function requestCreateGroup(groupName, username, expiredTime, startPositi
     type: REQUEST_CREATEGROUP,
     groupName,
     username,
-    expiredTime
+    expiredTime,
+    startPosition,
+    endPosition
   }
 }

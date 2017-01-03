@@ -1,5 +1,7 @@
 import {
-  REQUEST_CREATE_GROUP
+  REQUEST_CREATEGROUP,
+  REQUEST_CREATEGROUP_FAILED,
+  REQUEST_CREATEGROUP_SUCCESS
 } from '../actions';
 
 export default function group(state = {
@@ -7,9 +9,20 @@ export default function group(state = {
   status: 'init'
 }, action) {
   switch (action.type) {
-    case REQUEST_CREATE_GROUP:
+    case REQUEST_CREATEGROUP:
       return Object.assign({}, state, {
           status: 'loading'
+      })
+      break
+    case REQUEST_CREATEGROUP_FAILED:
+      return Object.assign({}, state, {
+          status: 'error',
+          error: action.error
+      })
+      break
+    case REQUEST_CREATEGROUP_SUCCESS:
+      return Object.assign({}, state, {
+          status: 'success'
       })
       break
     default:

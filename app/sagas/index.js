@@ -1,4 +1,7 @@
 import {
+    watchRequestCreateGroup
+} from './group'
+import {
     watchRequestGeolocation
 } from './location'
 import {
@@ -7,7 +10,9 @@ import {
 
 
 export default function* rootSaga() {
-    yield [watchRequestGeolocation(),
+    yield [
+        watchRequestCreateGroup(),
+        watchRequestGeolocation(),
         watchRequestGeocoding()
     ]
 }

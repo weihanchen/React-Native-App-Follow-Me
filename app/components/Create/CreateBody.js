@@ -103,6 +103,13 @@ class CreateBody extends Component {
         } else if (this.state.userName.length <= 0) {
             ToastAndroid.show('請輸入您的暱稱', ToastAndroid.SHORT)
         }
+        const endTimeDate = moment(this.state.endTimeDate)
+        const groupName = this.state.groupName,
+              userName = this.state.userName,
+              startPosition = this.state.startPosition,
+              endPosition = this.state.endPosition,
+              expiredTime = new Date(endTimeDate.get('year'), endTimeDate.get('month') + 1, endTimeDate.get('date'), this.state.endTimeHour, this.state.endTimeMinute)
+        this.props.handleCreateGroup(groupName, userName, expiredTime, startPosition, endPosition)
     }
 
     onSearchAdress() {
@@ -254,6 +261,7 @@ const _startPositionSection = (status, errorMessage) => {
 CreateBody.propTypes = {
     geocoding: PropTypes.object,
     location: PropTypes.object,
+    handleCreateGroup: PropTypes.func,
     handleSearchAddress: PropTypes.func
 }
 

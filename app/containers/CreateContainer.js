@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {View, Text, StyleSheet} from 'react-native'
 //actions
-import {requestGeolocation, requestGeocoding} from '../actions'
+import {requestCreateGroup, requestGeolocation, requestGeocoding} from '../actions'
 //components
 import {CreateBody} from '../components/Create/index.js'
 
@@ -17,6 +17,10 @@ class CreateContainer extends Component {
         this.props.requestGeolocation()
     }
 
+    handleCreateGroup(groupName, username, expiredTime, startPosition, endPosition) {
+        this.props.requestCreateGroup(groupName, username, expiredTime, startPosition, endPosition)
+    }
+
     handleSearchAddress(address) {
         this.props.requestGeocoding(address)
     }
@@ -25,7 +29,9 @@ class CreateContainer extends Component {
         const {location, geocoding} = this.props
         return (
             <View style={styles.container}>
-                <CreateBody location={location} geocoding={geocoding} handleSearchAddress={this.handleSearchAddress.bind(this)}></CreateBody>
+                <CreateBody location={location} geocoding={geocoding}
+                            handleSearchAddress={this.handleSearchAddress.bind(this)} handleCreateGroup={this.handleCreateGroup.bind(this)}>
+                </CreateBody>
             </View>
         )
     }
@@ -37,6 +43,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
+        requestCreateGroup,
         requestGeocoding,
         requestGeolocation
     }, dispatch)
@@ -51,6 +58,7 @@ const styles = StyleSheet.create({
 CreateContainer.propTypes = {
     geocoding: PropTypes.object,
     location: PropTypes.object,
+    requestCreateGroup: PropTypes.func,
     requestGeocoding: PropTypes.func,
     requestGeolocation: PropTypes.func
 }
