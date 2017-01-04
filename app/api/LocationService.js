@@ -3,6 +3,12 @@ import {
     LANGUAGE
 } from '../config'
 import checkStatus from './googleHelper'
+const geo_options = {
+  enableHighAccuracy: true,
+  maximumAge        : 30000,
+  timeout           : 27000
+}
+
 export default class LocationService {
     //取得地理編碼，透過google maps geocoding api將地理位址轉為座標
     requestGeocoding(address) {
@@ -27,7 +33,7 @@ export default class LocationService {
                 reject(error.message)
             }, {
                 enableHighAccuracy: true,
-                timeout: 10000,
+                timeout: 30000,
                 maximumAge: 1000
             });
         })
