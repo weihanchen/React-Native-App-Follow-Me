@@ -5,6 +5,7 @@ import {
     put,
     call
 } from 'redux-saga/effects'
+
 import {
     REQUEST_CREATEGROUP,
     REQUEST_CREATEGROUP_FAILED,
@@ -13,6 +14,8 @@ import {
 import {
     FirebaseService
 } from '../api'
+
+
 
 export function* watchRequestCreateGroup() {
     yield call(takeEvery, REQUEST_CREATEGROUP, requestCreateGroupFlow)
@@ -25,6 +28,7 @@ export function* requestCreateGroupFlow(action) {
         yield put({
             type: REQUEST_CREATEGROUP_SUCCESS
         })
+
     } catch (error) {
         yield put({
             type: REQUEST_CREATEGROUP_FAILED,

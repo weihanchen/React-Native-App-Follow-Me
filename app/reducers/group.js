@@ -22,7 +22,7 @@ export default function group(state = {
       break
     case REQUEST_CREATEGROUP_SUCCESS:
       return Object.assign({}, state, {
-          status: 'success'
+          status: 'create_success'
       })
       break
     default:

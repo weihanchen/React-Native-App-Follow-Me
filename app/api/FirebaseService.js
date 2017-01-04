@@ -1,4 +1,7 @@
 import * as Firebase from 'firebase'
+import {
+  AsyncStorage
+} from 'react-native'
 const firebaseConfig = {
     databaseURL: 'https://followmeapp-50e32.firebaseio.com'
 }
@@ -31,5 +34,7 @@ export default class FirebaseService {
             })
             .then(() => userRef.set(user))
             .then(() => groupRef.set(group))
+            .then(() => AsyncStorage.setItem('groupId', groupId))
+            .then(() => AsyncStorage.setItem('userId', userId))
     }
 }

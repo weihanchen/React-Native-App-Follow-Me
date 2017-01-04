@@ -67,9 +67,15 @@ class CreateBody extends Component {
    componentDidMount() {
       ToastAndroid.show('正在取得您目前的位置...', ToastAndroid.SHORT)
       this.watchID = navigator.geolocation.watchPosition((position) => {
+         console.log(position)
          let lastPosition = JSON.stringify(position)
          this.setState({lastPosition})
-      });
+      }, (error) => console.log(error), {
+         enableHighAccuracy: true,
+         timeout: 1000,
+         maximumAge: 1000
+      })
+
    }
 
    componentWillReceiveProps(nextProps) {
@@ -82,7 +88,7 @@ class CreateBody extends Component {
          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
       const groupStatusFun = {
-         success: () => {},
+         create_success: () => {},
          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
       const locationStatusFun = {
@@ -226,7 +232,7 @@ const _createGroupBtnSection = (status) => {
    const renderStatus = {
       init: () => defaultTemplate,
       loading: () => (<ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>),
-      success: () => defaultTemplate,
+      create_success: () => defaultTemplate,
       error: () => defaultTemplate
    }
    return renderStatus[status]()

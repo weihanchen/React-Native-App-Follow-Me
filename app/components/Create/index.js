@@ -1,9 +1,9 @@
 import CreateBody from './CreateBody'
 
 export default {
-  CreateBody
+   CreateBody
 }
 
 export {
-  CreateBody
+   CreateBody
 }
