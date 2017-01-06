@@ -44,7 +44,7 @@ class CreateBody extends Component {
             latitude: LATITUDE,
             longitude: LONGITUDE
          },
-         endTimeDate: endDate.date(),
+         endTimeDate: endDate,
          endTimeDateText: endDate.format('YYYY/MM/DD'),
          endTimeHour: endDate.hours(),
          endTimeMinute: endDate.minute(),
@@ -67,7 +67,6 @@ class CreateBody extends Component {
    componentDidMount() {
       ToastAndroid.show('正在取得您目前的位置...', ToastAndroid.SHORT)
       this.watchID = navigator.geolocation.watchPosition((position) => {
-         console.log(position)
          let lastPosition = JSON.stringify(position)
          this.setState({lastPosition})
       }, (error) => console.log(error), {
@@ -119,12 +118,13 @@ class CreateBody extends Component {
       } else if (this.props.location.status != 'success') {
          ToastAndroid.show('請開啟定位服務', ToastAndroid.SHORT)
       } else {
+
          const endTimeDate = moment(this.state.endTimeDate),
             groupName = this.state.groupName,
             userName = this.state.userName,
             startPosition = this.state.startPosition,
             endPosition = this.state.endPosition,
-            expiredTime = new Date(endTimeDate.get('year'), endTimeDate.get('month') + 1, endTimeDate.get('date'), this.state.endTimeHour, this.state.endTimeMinute)
+            expiredTime = new Date(endTimeDate.get('year'), endTimeDate.get('month') + 1, endTimeDate.get('date'), this.state.endTimeHour, this.state.endTimeMinute).getTime()
          this.props.handleCreateGroup(groupName, userName, expiredTime, startPosition, endPosition)
       }
    }

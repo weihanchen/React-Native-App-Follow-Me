@@ -18,6 +18,7 @@ export default class FirebaseService {
           groupName,
           leader: userId,
           expiredTime,
+          updatedTime: new Date().getTime(),
           startPosition,
           endPosition
         })
