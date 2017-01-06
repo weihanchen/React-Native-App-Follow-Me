@@ -50,9 +50,10 @@ Pending...
 ### Running on real device cause Execution failed for task ':app:installDebug'.
 
 trying some step like(recommand):
->1. `$ adb reverse tcp:8081 tcp:8081`
->2. `$ adb install ./android/app/build/outputs/apk/app-debug.apk`
->3. `$ npm run log-android`
+>1. `$ adb install ./android/app/build/outputs/apk/app-debug.apk`
+>2. `$ adb reverse tcp:8081 tcp:8081`
+>3. `$ npm start`
+>4. `$ npm run log-android`
 
 or edit android/build.grandle
 ```
