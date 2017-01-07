@@ -51,9 +51,10 @@ Pending...
 
 trying some step like(recommand):
 >1. `$ adb install ./android/app/build/outputs/apk/app-debug.apk`
->2. `$ adb reverse tcp:8081 tcp:8081`
->3. `$ npm start`
->4. `$ npm run log-android`
+>2. open the app
+>3. `$ adb reverse tcp:8081 tcp:8081`
+>4. `$ npm start`
+>5. `$ npm run log-android`
 
 or edit android/build.grandle
 ```

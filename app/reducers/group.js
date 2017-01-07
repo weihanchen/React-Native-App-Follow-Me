@@ -26,6 +26,6 @@ export default function group(state = {
       })
       break
     default:
-      return state;
+      return state
   }
 }

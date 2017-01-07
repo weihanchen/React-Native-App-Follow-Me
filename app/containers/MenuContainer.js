@@ -1,45 +1,67 @@
 'use strict'
 
 import React, {Component, PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import {InteractionManager, Text, View, StyleSheet} from 'react-native'
-
+//actions
+import {requestCheckIdentify} from '../actions'
 //components
 import {MenuBody} from '../components/Menu'
 import Splash from '../components/Splash';
 import CreateContainer from './CreateContainer'
+import TravelContainer from './TravelContainer'
 
 class MenuContainer extends Component {
-    constructor(props) {
-        super(props);
-    }
+   constructor(props) {
+      super(props);
+   }
 
-    componentDidMount() {
-    }
+   componentDidMount() {
+      this.props.requestCheckIdentify()
+   }
 
-    navigateToCreateGroup() {
-        const {navigator} = this.props
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({component: CreateContainer})
-        }, 1000)
-    }
+   componentWillReceiveProps(nextProps) {
+      if (nextProps.identify.status === 'success') {
+        navigator.resetTo({component: CreateContainer})
+      }
+   }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <MenuBody navigateToCreateGroup={this.navigateToCreateGroup.bind(this)}></MenuBody>
-            </View>
-        );
-    }
+   navigateToCreateGroup() {
+      const {navigator} = this.props
+      InteractionManager.runAfterInteractions(() => {
+         navigator.push({component: CreateContainer})
+      }, 1000)
+   }
+
+   render() {
+      return (
+         <View style={styles.container}>
+            <MenuBody navigateToCreateGroup={this.navigateToCreateGroup.bind(this)}></MenuBody>
+         </View>
+      );
+   }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    }
+   container: {
+      flex: 1
+   }
 })
 
-MenuContainer.propTypes = {
-  navigator: PropTypes.object
+const mapStateToProps = (state) => {
+    return {identify: state.identify}
 }
 
-export default MenuContainer
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        requestCheckIdentify
+    }, dispatch)
+}
+
+MenuContainer.propTypes = {
+   navigator: PropTypes.object,
+   requestCheckIdentify: PropTypes.func
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuContainer)
