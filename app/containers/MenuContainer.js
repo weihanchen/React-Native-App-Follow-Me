@@ -22,8 +22,11 @@ class MenuContainer extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
+     const {navigator} = this.props
       if (nextProps.identify.status === 'success') {
-        navigator.resetTo({component: CreateContainer})
+        InteractionManager.runAfterInteractions(() => {
+           navigator.push({component: TravelContainer})
+        }, 1000)
       }
    }
 
