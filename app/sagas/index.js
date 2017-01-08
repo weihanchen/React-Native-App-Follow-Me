@@ -2,7 +2,8 @@ import {
    watchRequestCheckIdentity
 } from './identify'
 import {
-   watchRequestCreateGroup
+   watchRequestCreateGroup,
+   watchRequestFetchGroup
 } from './group'
 import {
    watchRequestGeocoding
@@ -15,6 +16,7 @@ export default function* rootSaga() {
    yield [
       watchRequestCheckIdentity(),
       watchRequestCreateGroup(),
+      watchRequestFetchGroup(),
       watchRequestGeolocation(),
       watchRequestGeocoding()
    ]

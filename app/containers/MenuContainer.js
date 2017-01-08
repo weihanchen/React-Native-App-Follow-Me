@@ -19,13 +19,17 @@ class MenuContainer extends Component {
 
    componentDidMount() {
       this.props.requestCheckIdentify()
+
    }
 
    componentWillReceiveProps(nextProps) {
      const {navigator} = this.props
       if (nextProps.identify.status === 'success') {
         InteractionManager.runAfterInteractions(() => {
-           navigator.push({component: TravelContainer})
+           navigator.push({component: TravelContainer, passProps: {
+              groupId: nextProps.identify.groupId,
+              userId: nextProps.identify.userId
+           }})
         }, 1000)
       }
    }

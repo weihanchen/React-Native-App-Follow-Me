@@ -22,7 +22,9 @@ export default function identify(state = {
          break
       case CHECK_IDENTIFY_SUCCESS:
          return Object.assign({}, state, {
-            status: 'success'
+            status: 'success',
+            groupId: action.identify.groupId,
+            userId: action.identify.userId
          })
       default:
          return state

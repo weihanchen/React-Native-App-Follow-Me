@@ -23,12 +23,13 @@ export function* watchRequestCheckIdentity() {
 
 export function* requestCheckIdentityFlow() {
    try {
-      const isIdentify = yield call(storageService.checkIdExist)
-      if (isIdentify) {
+      const identify = yield call(storageService.checkIdExist)
+      if (identify.isIdentify) {
         yield put({
-          type: CHECK_IDENTIFY_SUCCESS
+          type: CHECK_IDENTIFY_SUCCESS,
+          identify
         })
-      }else  throw new Error('not identity');
+      }else  throw new Error('not identify');
    } catch (error) {
       yield put({
          type: CHECK_IDENTIFY_FAILED,

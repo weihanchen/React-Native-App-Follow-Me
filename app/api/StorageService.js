@@ -8,6 +8,6 @@ export default class StorageService {
               .then(groupId => AsyncStorage.getItem('userId').then(userId => {
                 return {groupId, userId}
               }))
-              .then(identity => identity.groupId != undefined && identity.userId != undefined)
+              .then(identify => Object.assign({}, identify, {isIdentify: identify.groupId != undefined && identify.userId != undefined}))
    }
 }
