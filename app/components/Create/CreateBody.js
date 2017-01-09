@@ -18,7 +18,7 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
-import MapView from 'react-native-maps'
+import MapView, {Marker} from 'react-native-maps'
 
 //stylesheets
 import mainStyle from '../../stylesheets'
@@ -212,7 +212,7 @@ class CreateBody extends Component {
                   </TouchableOpacity>
                </View>
                <MapView region={this.state.region} onRegionChange={(region) => this.setState({region})} style={styles.map}>
-                  <MapView.Marker draggable title="請長按並拖拉" coordinate={this.state.endPosition} onDragEnd={(e) => this.setState({endPosition: e.nativeEvent.coordinate})}/>
+                  <Marker draggable title="請長按並拖拉" coordinate={this.state.endPosition} onDragEnd={(e) => this.setState({endPosition: e.nativeEvent.coordinate})}/>
                </MapView>
                <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8} onPress={this.onCreateGroup.bind(this)}>
                   {_createGroupBtnSection(group.status)}

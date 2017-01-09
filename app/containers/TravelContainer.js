@@ -5,6 +5,8 @@ import {bindActionCreators} from 'redux'
 import {View, Text, StyleSheet} from 'react-native'
 //actions
 import {requestFetchGroup} from '../actions'
+//components
+import {TravelMap} from '../components/Travel'
 
 class TravelContainer extends Component {
    constructor(props) {
@@ -23,7 +25,7 @@ class TravelContainer extends Component {
    render() {
       return (
          <View style={styles.container}>
-            <Text>TravelContainer</Text>
+            <TravelMap></TravelMap>
          </View>
       )
    }
