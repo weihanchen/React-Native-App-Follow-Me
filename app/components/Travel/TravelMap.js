@@ -5,9 +5,12 @@ import React, {
 } from 'react'
 //plugins
 import {
-  Dimensions
+  Dimensions,
+  Text,
+  View
 } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
+import Icon from 'react-native-vector-icons/FontAwesome'
 //stylesheets
 import styles from './styles'
 const screen = Dimensions.get('window')
@@ -21,12 +24,19 @@ class TravelMap extends Component {
    constructor(props) {
       super(props)
       this.state = {
+        end: {
+          key: '終點',
+          coordinate: {
+            latitude: 23.606352,
+            longitude: 120.456137
+          }
+        },
         members: [
           {
             key: 'andy',
             coordinate: {
               latitude: 23.6010548,
-              longitude: 120.4536355
+              longitude: 120.4536408
             }
           },
           {
@@ -42,6 +52,13 @@ class TravelMap extends Component {
            longitude: LONGITUDE,
            latitudeDelta: LATITUDE_DELTA,
            longitudeDelta: LONGITUDE_DELTA
+        },
+        self: {
+          key: '暐翰',
+          coordinate: {
+            latitude: 23.599505,
+            longitude: 120.453994
+          }
         }
       }
    }
@@ -49,7 +66,26 @@ class TravelMap extends Component {
    render() {
       return (
         <MapView style={styles.container} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
-          {this.state.members.map(member => <Marker {...member}/>)}
+          <Marker {...this.state.self}>
+            <View style={styles.member}>
+              <Icon name='user' style={styles.selfText}/>
+              <Text style={styles.selfText}>{this.state.self.key}</Text>
+            </View>
+          </Marker>
+          <Marker {...this.state.end}>
+            <View style={styles.end}>
+              <Icon name='flag' style={styles.endText}/>
+              <Text style={styles.endText}>{this.state.end.key}</Text>
+            </View>
+          </Marker>
+          {this.state.members.map(member => (
+            <Marker {...member}>
+              <View style={styles.member}>
+                <Icon name='user' style={styles.memberText}/>
+                <Text style={styles.memberText}>{member.key}</Text>
+              </View>
+            </Marker>
+          ))}
         </MapView>
       )
    }

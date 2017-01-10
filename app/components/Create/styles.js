@@ -51,7 +51,7 @@ export default StyleSheet.create({
     height: 250,
     margin: 10,
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#000000'
   },
   startPosition: {
     flexDirection: 'row',

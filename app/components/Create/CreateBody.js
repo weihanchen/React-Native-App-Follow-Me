@@ -233,6 +233,7 @@ const _createGroupBtnSection = (status) => {
       init: () => defaultTemplate,
       loading: () => (<ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>),
       create_success: () => defaultTemplate,
+      request_success: () => defaultTemplate,
       error: () => defaultTemplate
    }
    return renderStatus[status]()

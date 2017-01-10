@@ -8,6 +8,8 @@ export default {
   },
   color: {
     black: '#000',
+    blue: '#20378c',
+    coffee: '#775838',
     danger: '#ed5565',
     lightgreen: '#e0edf6',
     navy: '#1ab394',
