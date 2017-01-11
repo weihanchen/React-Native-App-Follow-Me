@@ -9,10 +9,11 @@ import {
   Text,
   View
 } from 'react-native'
-import MapView, { Marker } from 'react-native-maps'
+import MapView, { Marker, Polyline } from 'react-native-maps'
 import Icon from 'react-native-vector-icons/FontAwesome'
 //stylesheets
 import styles from './styles'
+import mainStyle from '../../stylesheets'
 const screen = Dimensions.get('window')
 const ASPECT_RATIO = screen.width / screen.height
 const LATITUDE = 23.6010548
@@ -24,6 +25,30 @@ class TravelMap extends Component {
    constructor(props) {
       super(props)
       this.state = {
+        directions: [
+          {
+            latitude: 23.5995618,
+            longitude: 120.4539282
+          },
+          {
+            latitude: 23.5989997,
+            longitude: 120.4521823
+          },
+          {
+            latitude: 23.5999215,
+            longitude: 120.4512186
+          },
+          {
+            latitude: 23.6007993,
+            longitude: 120.4504531
+          },{
+            latitude: 23.6058912,
+            longitude: 120.4532576
+          },{
+            latitude: 23.6063343,
+            longitude: 120.4561407
+          }
+        ],
         end: {
           key: '終點',
           coordinate: {
@@ -62,10 +87,11 @@ class TravelMap extends Component {
         }
       }
    }
-
+//api example: https://maps.googleapis.com/maps/api/directions/json?origin=23.599505,120.453994&destination=23.606352,120.456137&key=AIzaSyBrupj_7GBHd1xhgPWnZdtdxTBV8LIfLGM
    render() {
       return (
         <MapView style={styles.container} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
+          <Polyline coordinates={this.state.directions} strokeWidth={5} strokeColor={mainStyle.color.skyblue}></Polyline>
           <Marker {...this.state.self}>
             <View style={styles.member}>
               <Icon name='user' style={styles.selfText}/>
