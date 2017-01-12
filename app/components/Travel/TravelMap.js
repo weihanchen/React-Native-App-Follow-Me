@@ -79,7 +79,7 @@ class TravelMap extends Component {
            longitudeDelta: LONGITUDE_DELTA
         },
         self: {
-          key: '暐翰',
+          key: 'weihanchen',
           coordinate: {
             latitude: 23.599505,
             longitude: 120.453994
