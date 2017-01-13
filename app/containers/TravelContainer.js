@@ -16,6 +16,14 @@ class TravelContainer extends Component {
    componentDidMount() {
       const groupId = this.props.groupId
       this.props.requestFetchGroup(groupId)
+      this.watchID = navigator.geolocation.watchPosition((position) => {
+         let lastPosition = JSON.stringify(position)
+         console.log(lastPosition)
+      }, (error) => console.log(error), {
+         enableHighAccuracy: true,
+         timeout: 1000,
+         maximumAge: 1000
+      })
    }
 
    componentWillReceiveProps(nextProps) {

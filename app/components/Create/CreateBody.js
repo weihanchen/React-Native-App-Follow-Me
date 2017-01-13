@@ -8,6 +8,7 @@ import {
    Button,
    DatePickerAndroid,
    Dimensions,
+   InteractionManager,
    ScrollView,
    Text,
    TextInput,
@@ -66,15 +67,6 @@ class CreateBody extends Component {
 
    componentDidMount() {
       ToastAndroid.show('正在取得您目前的位置...', ToastAndroid.SHORT)
-      this.watchID = navigator.geolocation.watchPosition((position) => {
-         let lastPosition = JSON.stringify(position)
-         this.setState({lastPosition})
-      }, (error) => console.log(error), {
-         enableHighAccuracy: true,
-         timeout: 1000,
-         maximumAge: 1000
-      })
-
    }
 
    componentWillReceiveProps(nextProps) {
@@ -87,7 +79,9 @@ class CreateBody extends Component {
          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
       const groupStatusFun = {
-         create_success: () => {},
+         create_success: () => {
+            this.props.handleCheckIdentify()
+         },
          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
       const locationStatusFun = {
@@ -293,6 +287,7 @@ CreateBody.propTypes = {
    geocoding: PropTypes.object,
    group: PropTypes.object,
    location: PropTypes.object,
+   handleCheckIdentify: PropTypes.func,
    handleCreateGroup: PropTypes.func,
    handleSearchAddress: PropTypes.func
 }

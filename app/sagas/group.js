@@ -31,7 +31,7 @@ export function* requestCreateGroupFlow(action) {
    try {
       yield call(firebaseService.requestCreateGroup, action.groupName, action.username, action.expiredTime, action.startPosition, action.endPosition)
       yield put({
-         type: REQUEST_CREATEGROUP_SUCCESS
+         type: REQUEST_CREATEGROUP_SUCCESS,
       })
 
    } catch (error) {

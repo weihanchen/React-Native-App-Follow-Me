@@ -30,7 +30,10 @@ export default class FirebaseService {
                reject('該群組名稱已經存在')
             resolve()
          })
-      }).then(() => userRef.set(user)).then(() => groupRef.set(group)).then(() => AsyncStorage.setItem('groupId', groupId)).then(() => AsyncStorage.setItem('userId', userId))
+      }).then(() => userRef.set(user))
+        .then(() => groupRef.set(group))
+        .then(() => AsyncStorage.setItem('groupId', groupId))
+        .then(() => AsyncStorage.setItem('userId', userId))
    }
 
    requestFetchGroup(groupId) {

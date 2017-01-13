@@ -42,18 +42,18 @@ class TravelMap extends Component {
             latitude: 23.6007993,
             longitude: 120.4504531
           },{
-            latitude: 23.6058912,
-            longitude: 120.4532576
+            latitude: 23.6019542,
+            longitude: 120.450971
           },{
-            latitude: 23.6063343,
-            longitude: 120.4561407
+            latitude: 23.602096,
+            longitude: 120.4532781
           }
         ],
         end: {
           key: '終點',
           coordinate: {
-            latitude: 23.606352,
-            longitude: 120.456137
+            latitude: 23.602298,
+            longitude: 120.453306
           }
         },
         members: [
@@ -91,7 +91,7 @@ class TravelMap extends Component {
    render() {
       return (
         <MapView style={styles.container} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
-          <Polyline coordinates={this.state.directions} strokeWidth={5} strokeColor={mainStyle.color.skyblue}></Polyline>
+          <Polyline coordinates={this.state.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
           <Marker {...this.state.self}>
             <View style={styles.member}>
               <Icon name='user' style={styles.selfText}/>
