@@ -30,7 +30,7 @@ class MenuContainer extends Component {
               groupId: nextProps.identify.groupId,
               userId: nextProps.identify.userId
            }})
-        }, 1000)
+        }, 100)
       }
    }
 

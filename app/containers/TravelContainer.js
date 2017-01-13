@@ -13,6 +13,9 @@ class TravelContainer extends Component {
       super(props)
    }
 
+   watchID :
+      ? number = null
+
    componentDidMount() {
       const groupId = this.props.groupId
       this.props.requestFetchGroup(groupId)
@@ -26,8 +29,8 @@ class TravelContainer extends Component {
       })
    }
 
-   componentWillReceiveProps(nextProps) {
-      console.log(nextProps.group)
+   componentWillUnmount() {
+      navigator.geolocation.clearWatch(this.watchID)
    }
 
    render() {

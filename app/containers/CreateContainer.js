@@ -7,6 +7,7 @@ import {InteractionManager, View, Text, StyleSheet} from 'react-native'
 import {requestCheckIdentify, requestCreateGroup, requestGeolocation, requestGeocoding} from '../actions'
 //components
 import {CreateBody} from '../components/Create/index.js'
+import MenuContainer from './MenuContainer'
 import TravelContainer from './TravelContainer'
 
 class CreateContainer extends Component {
@@ -18,27 +19,17 @@ class CreateContainer extends Component {
       this.props.requestGeolocation()
    }
 
-   componentWillReceiveProps(nextProps) {
-      const {navigator} = this.props
-      if (nextProps.identify.status === 'success') {
-         InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-               component: TravelContainer,
-               passProps: {
-                  groupId: nextProps.identify.groupId,
-                  userId: nextProps.identify.userId
-               }
-            })
-         }, 1000)
-      }
-   }
-
    handleCreateGroup(groupName, username, expiredTime, startPosition, endPosition) {
       this.props.requestCreateGroup(groupName, username, expiredTime, startPosition, endPosition)
    }
 
-   handleCheckIdentify() {
-      this.props.requestCheckIdentify();
+   handleCreateSuccess() {
+     const {navigator} = this.props
+     InteractionManager.runAfterInteractions(() => {
+        navigator.push({
+           component: MenuContainer,
+        })
+     }, 1000)
    }
 
    handleSearchAddress(address) {
@@ -49,7 +40,7 @@ class CreateContainer extends Component {
       const {location, geocoding, group} = this.props
       return (
          <View style={styles.container}>
-            <CreateBody location={location} geocoding={geocoding} group={group} handleCheckIdentify={this.handleCheckIdentify.bind(this)} handleSearchAddress={this.handleSearchAddress.bind(this)} handleCreateGroup={this.handleCreateGroup.bind(this)}></CreateBody>
+            <CreateBody location={location} geocoding={geocoding} group={group} handleCreateSuccess={this.handleCreateSuccess.bind(this)} handleSearchAddress={this.handleSearchAddress.bind(this)} handleCreateGroup={this.handleCreateGroup.bind(this)}></CreateBody>
          </View>
       )
    }

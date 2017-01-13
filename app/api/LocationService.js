@@ -14,6 +14,7 @@ export default class LocationService {
          .then(checkStatus)
          .then(response => response.json())
          .then(body => {
+            if (body.results.length <= 0) throw body.status
             const location = body.results[0].geometry.location
             return {
                latitude: location.lat,

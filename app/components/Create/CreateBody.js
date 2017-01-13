@@ -62,9 +62,6 @@ class CreateBody extends Component {
       }
    }
 
-   watchID :
-      ? number = null
-
    componentDidMount() {
       ToastAndroid.show('正在取得您目前的位置...', ToastAndroid.SHORT)
    }
@@ -80,7 +77,7 @@ class CreateBody extends Component {
       }
       const groupStatusFun = {
          create_success: () => {
-            this.props.handleCheckIdentify()
+            this.props.handleCreateSuccess()
          },
          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
@@ -93,15 +90,11 @@ class CreateBody extends Component {
          error: (error) => ToastAndroid.show('請開啟定位服務', ToastAndroid.SHORT)
       }
       if (geocodingStatusFun.hasOwnProperty(nextProps.geocoding.status) && nextProps.geocoding.status != this.props.geocoding.status)
-         geocodingStatusFun[nextProps.geocoding.status]()
+         geocodingStatusFun[nextProps.geocoding.status](nextProps.geocoding.error)
       if (groupStatusFun.hasOwnProperty(nextProps.group.status) && nextProps.group.status != this.props.group.status)
          groupStatusFun[nextProps.group.status]()
       if (locationStatusFun.hasOwnProperty(nextProps.location.status) && nextProps.location.status != this.props.location.status)
          locationStatusFun[nextProps.location.status]()
-   }
-
-   componentWillUnmount() {
-      navigator.geolocation.clearWatch(this.watchID)
    }
 
    onCreateGroup() {
@@ -287,8 +280,8 @@ CreateBody.propTypes = {
    geocoding: PropTypes.object,
    group: PropTypes.object,
    location: PropTypes.object,
-   handleCheckIdentify: PropTypes.func,
    handleCreateGroup: PropTypes.func,
+   handleCreateSuccess: PropTypes.func,
    handleSearchAddress: PropTypes.func
 }
 
