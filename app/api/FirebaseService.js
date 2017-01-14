@@ -1,5 +1,6 @@
 import * as Firebase from 'firebase'
 import {AsyncStorage} from 'react-native'
+import {ERROR_MESSAGE} from '../config'
 const firebaseConfig = {
    databaseURL: 'https://followmeapp-50e32.firebaseio.com'
 }
@@ -27,21 +28,28 @@ export default class FirebaseService {
          return new Promise((resolve, reject) => {
             const canCreate = snapshot.val() === null
             if (!canCreate)
-               reject('該群組名稱已經存在')
+               reject(ERROR_MESSAGE.GROUP_EXIST)
             resolve()
          })
-      }).then(() => userRef.set(user))
-        .then(() => groupRef.set(group))
-        .then(() => AsyncStorage.setItem('groupId', groupId))
-        .then(() => AsyncStorage.setItem('userId', userId))
+      }).then(() => userRef.set(user)).then(() => groupRef.set(group)).then(() => AsyncStorage.setItem('groupId', groupId)).then(() => AsyncStorage.setItem('userId', userId))
    }
 
    requestFetchGroup(groupId) {
       const groupRef = Firebase.database().ref(`groups/${groupId}`)
       return groupRef.once('value').then(snapshot => {
-         const isExists = snapshot.exists()
-         if (!isExists)
-            throw new Error('該群組不存在')
+         const isExist = snapshot.exists()
+         if (!isExist)
+            throw ERROR_MESSAGE.GROUP_NOT_EXIST
+         return snapshot.val()
+      })
+   }
+
+   requestFetchUser(userId) {
+      const userRef = Firebase.database().ref(`users/${userId}`)
+      return userRef.once('value').then(snapshot => {
+         const isExist = snapshot.exists()
+         if (!isExist)
+            throw ERROR_MESSAGE.USER_NOT_EXIST
          return snapshot.val()
       })
    }

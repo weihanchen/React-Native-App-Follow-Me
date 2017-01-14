@@ -1,35 +1,35 @@
 import {
-    takeEvery
+   takeEvery
 } from 'redux-saga'
 import {
-    put,
-    call
+   put,
+   call
 } from 'redux-saga/effects'
 import {
-    REQUEST_GEOLOCATION,
-    REQUEST_GEOLOCATION_FAILED,
-    REQUEST_GEOLOCATION_SUCCESS
+   REQUEST_GEOLOCATION,
+   REQUEST_GEOLOCATION_FAILED,
+   REQUEST_GEOLOCATION_SUCCESS
 } from '../actions'
 import {
-    LocationService
+   LocationService
 } from '../api'
 
 export function* watchRequestGeolocation() {
-    yield call(takeEvery, REQUEST_GEOLOCATION, requestGeolocationFlow)
+   yield call(takeEvery, REQUEST_GEOLOCATION, requestGeolocationFlow)
 }
 
 export function* requestGeolocationFlow(action) {
-    try {
-        const locationService = new LocationService()
-        const location = yield call(locationService.requestGeolocation)
-        yield put({
-            type: REQUEST_GEOLOCATION_SUCCESS,
-            location
-        })
-    } catch (error) {
-        yield put({
-            type: REQUEST_GEOLOCATION_FAILED,
-            error
-        })
-    }
+   try {
+      const locationService = new LocationService()
+      const location = yield call(locationService.requestGeolocation)
+      yield put({
+         type: REQUEST_GEOLOCATION_SUCCESS,
+         location
+      })
+   } catch (error) {
+      yield put({
+         type: REQUEST_GEOLOCATION_FAILED,
+         error
+      })
+   }
 }
