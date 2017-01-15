@@ -6,25 +6,41 @@ import {
    call
 } from 'redux-saga/effects'
 import {
-   REQUEST_TRAVEL_DATA,
-   REQUEST_TRAVEL_DATA_FAILED,
-   REQUEST_TRAVEL_DATA_SUCCESS
+   REQUEST_TRAVEL_MARKERS,
+   REQUEST_TRAVEL_MARKERS_FAILED,
+   REQUEST_TRAVEL_MARKERS_SUCCESS
 } from '../actions'
 import {
    FirebaseService
 } from '../api'
+import {MARKER_TYPE} from '../config'
 const firebaseService = new FirebaseService()
-
-export function* watchRequestTravelData() {
-   yield call(takeEvery, REQUEST_TRAVEL_DATA, requestTravelDataFlow)
+export function* watchRequestTravelMarkers() {
+   yield call(takeEvery, REQUEST_TRAVEL_MARKERS, requestTravelMarkersFlow)
 }
 
-export function* requestTravelDataFlow(action) {
+export function* requestTravelMarkersFlow(action) {
    try {
-
+      let currentUser = yield call(firebaseService.requestFetchUser, action.currentUid)
+      let leader = yield call(firebaseService.requestFetchUser, action.leaderId)
+      let members = yield call(firebaseService.requestFetchUsers, action.members)
+      currentUser.type = MARKER_TYPE.SELF
+      leader.type = MARKER_TYPE.LEADER
+      members = members
+         .filter(member => member.username != currentUser.username)
+         .map(member => Object.assign({}, member, {
+            type: MARKER_TYPE.MEMBER
+         }))
+      let markers = [currentUser]
+      markers.push(...members)
+      if (leader.username != currentUser.username) markers.push(leader)
+      yield put({
+         type: REQUEST_TRAVEL_MARKERS_SUCCESS,
+         markers
+      })
    } catch (error) {
       yield put({
-         type: REQUEST_GEOLOCATION_FAILED,
+         type: REQUEST_TRAVEL_MARKERS_FAILED,
          error
       })
    }

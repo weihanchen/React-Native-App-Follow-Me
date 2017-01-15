@@ -5,8 +5,13 @@ const firebaseConfig = {
    databaseURL: 'https://followmeapp-50e32.firebaseio.com'
 }
 Firebase.initializeApp(firebaseConfig)
-export default class FirebaseService {
+class FirebaseService {
    constructor() {}
+
+   onGroupChanged(groupName, callback) {
+      const groupRef = Firebase.database().ref(`groups/${groupName}`)
+      groupRef.on('child_changed', callback)
+   }
 
    requestCreateGroup(groupName, username, expiredTime, startPosition, endPosition) {
       const groupId = `${groupName}`
@@ -22,8 +27,12 @@ export default class FirebaseService {
          endPosition
       })
       const user = Object.assign({}, {
-         username
-      }, startPosition)
+         username,
+         coordinate: {
+           latitude: startPosition.latitude,
+           longitude: startPosition.longitude
+         }
+      })
       return groupRef.once('value').then(snapshot => {
          return new Promise((resolve, reject) => {
             const canCreate = snapshot.val() === null
@@ -38,19 +47,34 @@ export default class FirebaseService {
       const groupRef = Firebase.database().ref(`groups/${groupId}`)
       return groupRef.once('value').then(snapshot => {
          const isExist = snapshot.exists()
+         const value = snapshot.val()
          if (!isExist)
             throw ERROR_MESSAGE.GROUP_NOT_EXIST
-         return snapshot.val()
+         return Object.assign({}, value, {
+            members: Object.keys(value.members)
+         })
       })
    }
 
-   requestFetchUser(userId) {
-      const userRef = Firebase.database().ref(`users/${userId}`)
-      return userRef.once('value').then(snapshot => {
-         const isExist = snapshot.exists()
-         if (!isExist)
-            throw ERROR_MESSAGE.USER_NOT_EXIST
-         return snapshot.val()
-      })
+   requestFetchUser = (userId) => (_fetchUser(userId))
+
+   requestFetchUsers(userIdList) {
+      const self = this
+      const usersRef = Firebase.database().ref(`users`)
+      const promiseArr = []
+      userIdList.forEach(userId => promiseArr.push(_fetchUser(userId)))
+      return Promise.all(promiseArr)
    }
 }
+
+const _fetchUser = (userId) => {
+   const userRef = Firebase.database().ref(`users/${userId}`)
+   return userRef.once('value').then(snapshot => {
+      const isExist = snapshot.exists()
+      if (!isExist)
+         throw ERROR_MESSAGE.USER_NOT_EXIST
+      return Object.assign({}, snapshot.val(), {key: snapshot.key})
+   })
+}
+
+export default FirebaseService

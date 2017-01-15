@@ -4,19 +4,29 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {View, Text, StyleSheet} from 'react-native'
 //actions
-import {requestFetchGroup} from '../actions'
+import {requestFetchGroup, requestFetchTravelMarkers} from '../actions'
 //components
 import {TravelMap} from '../components/Travel'
+//service
+import {FirebaseService} from '../api'
+
+const firebaseService = new FirebaseService()
 
 class TravelContainer extends Component {
    constructor(props) {
       super(props)
+      this.state = {
+         memberIdList: [],
+         leaderId: '',
+         currentUid: ''
+      }
    }
 
    watchID :
       ? number = null
 
    componentDidMount() {
+      this.state.currentUid = this.props.userId
       const groupId = this.props.groupId
       this.props.requestFetchGroup(groupId)
       this.watchID = navigator.geolocation.watchPosition((position) => {
@@ -27,6 +37,18 @@ class TravelContainer extends Component {
          timeout: 1000,
          maximumAge: 1000
       })
+      firebaseService.onGroupChanged(groupId, () => {
+        console.log('changed')
+        return this.props.requestFetchTravelMarkers(this.state.currentUid, this.state.leaderId, this.state.memberIdList)
+      })
+   }
+
+   componentWillReceiveProps(nextProps) {
+      if (this.props.group.status != nextProps.group.status && nextProps.group.status === 'request_success') {
+         this.state.leaderId = nextProps.group.leader
+         this.state.memberIdList = nextProps.group.members
+         this.props.requestFetchTravelMarkers(this.state.currentUid, this.state.leaderId, this.state.memberIdList)
+      }
    }
 
    componentWillUnmount() {
@@ -34,33 +56,38 @@ class TravelContainer extends Component {
    }
 
    render() {
+      const {travel} = this.props
       return (
          <View style={styles.container}>
-            <TravelMap></TravelMap>
+            <TravelMap travel={travel}></TravelMap>
          </View>
       )
    }
 }
 
 const mapStateToProps = (state) => {
-    return {group: state.group}
+   return {group: state.group, travel: state.travel}
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        requestFetchGroup,
-    }, dispatch)
+   return bindActionCreators({
+      requestFetchGroup,
+      requestFetchTravelMarkers
+   }, dispatch)
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    }
+   container: {
+      flex: 1
+   }
 })
 
 TravelContainer.propTypes = {
+   group: PropTypes.object,
    groupId: PropTypes.string,
-   requestFetchGroup: PropTypes.func
+   requestFetchGroup: PropTypes.func,
+   requestFetchTravelMarkers: PropTypes.func,
+   travel: PropTypes.object
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TravelContainer)

@@ -11,6 +11,9 @@ import {
 import {
    watchRequestGeolocation
 } from './location'
+import {
+   watchRequestTravelMarkers
+} from './travel'
 
 export default function* rootSaga() {
    yield [
@@ -18,6 +21,7 @@ export default function* rootSaga() {
       watchRequestCreateGroup(),
       watchRequestFetchGroup(),
       watchRequestGeolocation(),
-      watchRequestGeocoding()
+      watchRequestGeocoding(),
+      watchRequestTravelMarkers()
    ]
 }
