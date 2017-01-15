@@ -93,8 +93,7 @@ const _markerSection = (marker) => {
    const renderType = {
       self: () => (
          <View style={styles.member}>
-            <Icon name='user' style={styles.selfText}/>
-            <Text style={styles.selfText}>{marker.username}</Text>
+            <Icon name='circle' style={styles.selfText}/>
          </View>
       ),
       member: () => (
@@ -105,8 +104,8 @@ const _markerSection = (marker) => {
       ),
       leader: () => (
          <View style={styles.member}>
-            <Icon name='user' style={styles.selfText}/>
-            <Text style={styles.selfText}>{marker.username}</Text>
+            <Icon name='user' style={styles.leaderText}/>
+            <Text style={styles.leaderText}>{marker.username}</Text>
          </View>
       )
    }

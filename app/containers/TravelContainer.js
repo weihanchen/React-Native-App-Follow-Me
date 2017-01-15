@@ -38,8 +38,10 @@ class TravelContainer extends Component {
          maximumAge: 1000
       })
       firebaseService.onGroupChanged(groupId, () => {
-        console.log('changed')
         return this.props.requestFetchTravelMarkers(this.state.currentUid, this.state.leaderId, this.state.memberIdList)
+      })
+      firebaseService.onUserAdded(() => {
+        this.props.requestFetchGroup(groupId)
       })
    }
 

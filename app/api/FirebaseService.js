@@ -13,6 +13,11 @@ class FirebaseService {
       groupRef.on('child_changed', callback)
    }
 
+   onUserAdded(callback) {
+      const usersRef = Firebase.database().ref('users')
+      usersRef.on('child_added', callback)
+   }
+
    requestCreateGroup(groupName, username, expiredTime, startPosition, endPosition) {
       const groupId = `${groupName}`
       const userId = `${groupName}-${username}`
@@ -29,8 +34,8 @@ class FirebaseService {
       const user = Object.assign({}, {
          username,
          coordinate: {
-           latitude: startPosition.latitude,
-           longitude: startPosition.longitude
+            latitude: startPosition.latitude,
+            longitude: startPosition.longitude
          }
       })
       return groupRef.once('value').then(snapshot => {

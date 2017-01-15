@@ -18,6 +18,12 @@ export default StyleSheet.create({
       fontWeight: "bold",
       margin: 2
    },
+   leaderText: {
+     color: MainStyle.color.danger,
+     fontSize: MainStyle.font.medium,
+     fontWeight: "bold",
+     margin: 2
+   },
    member: {
       flexDirection: 'row'
    },
@@ -28,9 +34,8 @@ export default StyleSheet.create({
       margin: 2
    },
    selfText: {
-      color: MainStyle.color.black,
+      color: MainStyle.color.skyblue,
       fontSize: MainStyle.font.medium,
-      fontWeight: "bold",
-      margin: 2
+      fontWeight: "bold"
    }
 })
