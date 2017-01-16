@@ -8,5 +8,6 @@ export const LANGUAGE = 'zh-TW'
 export const MARKER_TYPE = {
      SELF: 'self',
      LEADER: 'leader',
-     MEMBER: 'member'
+     MEMBER: 'member',
+     END_POSITION: "endPosition"
 }

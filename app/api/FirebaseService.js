@@ -53,10 +53,11 @@ class FirebaseService {
       return groupRef.once('value').then(snapshot => {
          const isExist = snapshot.exists()
          const value = snapshot.val()
+         const members = value.hasOwnProperty('members')? Object.keys(value.members): []
          if (!isExist)
             throw ERROR_MESSAGE.GROUP_NOT_EXIST
          return Object.assign({}, value, {
-            members: Object.keys(value.members)
+            members
          })
       })
    }

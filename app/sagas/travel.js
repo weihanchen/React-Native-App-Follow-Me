@@ -24,8 +24,10 @@ export function* requestTravelMarkersFlow(action) {
       let currentUser = yield call(firebaseService.requestFetchUser, action.currentUid)
       let leader = yield call(firebaseService.requestFetchUser, action.leaderId)
       let members = yield call(firebaseService.requestFetchUsers, action.members)
+      let endPosition = action.endPosition
       currentUser.type = MARKER_TYPE.SELF
       leader.type = MARKER_TYPE.LEADER
+      endPosition.type = MARKER_TYPE.END_POSITION
       members = members
          .filter(member => member.username != currentUser.username)
          .map(member => Object.assign({}, member, {
@@ -34,6 +36,8 @@ export function* requestTravelMarkersFlow(action) {
       let markers = [currentUser]
       markers.push(...members)
       if (leader.username != currentUser.username) markers.push(leader)
+      markers.push(endPosition)
+      markers = markers.map((marker, index) => Object.assign({}, marker, {key: index}))
       yield put({
          type: REQUEST_TRAVEL_MARKERS_SUCCESS,
          markers

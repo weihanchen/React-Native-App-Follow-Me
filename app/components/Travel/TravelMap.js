@@ -107,6 +107,12 @@ const _markerSection = (marker) => {
             <Icon name='user' style={styles.leaderText}/>
             <Text style={styles.leaderText}>{marker.username}</Text>
          </View>
+      ),
+      endPosition: () =>  (
+         <View style={styles.member}>
+            <Icon name='flag' style={styles.endText}/>
+            <Text style={styles.endText}>終點</Text>
+         </View>
       )
    }
    return (

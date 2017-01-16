@@ -42,8 +42,10 @@ class CreateBody extends Component {
       this.state = {
          endAddress: '',
          endPosition: {
-            latitude: LATITUDE,
-            longitude: LONGITUDE
+            coordinate: {
+              latitude: LATITUDE,
+              longitude: LONGITUDE
+            }
          },
          endTimeDate: endDate,
          endTimeDateText: endDate.format('YYYY/MM/DD'),
@@ -71,7 +73,7 @@ class CreateBody extends Component {
          success: () => {
             const coordinate = nextProps.geocoding.coordinate
             const region = Object.assign({}, this.state.region, coordinate)
-            this.setState({endPosition: coordinate, region})
+            this.setState({endPosition: {coordinate}, region})
          },
          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
@@ -85,7 +87,7 @@ class CreateBody extends Component {
          success: () => {
             const coordinate = nextProps.location.coordinate
             const region = Object.assign({}, this.state.region, coordinate)
-            this.setState({startPosition: coordinate, endPosition: coordinate, region})
+            this.setState({startPosition: coordinate, endPosition: {coordinate}, region})
          },
          error: (error) => ToastAndroid.show('請開啟定位服務', ToastAndroid.SHORT)
       }
@@ -199,7 +201,7 @@ class CreateBody extends Component {
                   </TouchableOpacity>
                </View>
                <MapView region={this.state.region} onRegionChange={(region) => this.setState({region})} style={styles.map}>
-                  <Marker draggable title="請長按並拖拉" coordinate={this.state.endPosition} onDragEnd={(e) => this.setState({endPosition: e.nativeEvent.coordinate})}/>
+                  <Marker draggable title="請長按並拖拉" coordinate={this.state.endPosition.coordinate} onDragEnd={(e) => this.setState({endPosition: {coordinate: e.nativeEvent.coordinate}})}/>
                </MapView>
                <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8} onPress={this.onCreateGroup.bind(this)}>
                   {_createGroupBtnSection(group.status)}
