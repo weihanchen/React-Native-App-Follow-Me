@@ -18,13 +18,13 @@ class FirebaseService {
       usersRef.on('child_added', callback)
    }
 
-   requestCreateGroup(groupName, username, expiredTime, startPosition, endPosition) {
-      const groupId = `${groupName}`
-      const userId = `${groupName}-${username}`
+   requestCreateGroup(groupname, username, expiredTime, startPosition, endPosition) {
+      const groupId = `${groupname}`
+      const userId = `${groupname}-${username}`
       const groupRef = Firebase.database().ref(`groups/${groupId}`)
       const userRef = Firebase.database().ref(`users/${userId}`)
       const group = Object.assign({}, {
-         groupName,
+         groupname,
          leader: userId,
          expiredTime,
          updatedTime: new Date().getTime(),
@@ -69,6 +69,13 @@ class FirebaseService {
       const promiseArr = []
       userIdList.forEach(userId => promiseArr.push(_fetchUser(userId)))
       return Promise.all(promiseArr)
+   }
+
+   updateCoordinate(groupId, userId, coordinate) {
+      const updates= {}
+      updates[`groups/${groupId}/updatedTime`] = new Date().getTime()
+      updates[`users/${userId}/coordinate`] = Object.assign({}, coordinate)
+     return Firebase.database().ref().update(updates)
    }
 }
 

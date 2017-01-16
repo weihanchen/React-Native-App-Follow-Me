@@ -2,7 +2,7 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, ToastAndroid, StyleSheet} from 'react-native'
 //actions
 import {requestFetchGroup, requestFetchTravelMarkers} from '../actions'
 //components
@@ -16,9 +16,10 @@ class TravelContainer extends Component {
    constructor(props) {
       super(props)
       this.state = {
-         memberIdList: [],
+         currentUid: '',
+         groupId: '',
          leaderId: '',
-         currentUid: ''
+         memberIdList: []
       }
    }
 
@@ -28,14 +29,20 @@ class TravelContainer extends Component {
    componentDidMount() {
       this.state.currentUid = this.props.userId
       const groupId = this.props.groupId
+      this.state.groupId = groupId
       this.props.requestFetchGroup(groupId)
       this.watchID = navigator.geolocation.watchPosition((position) => {
-         let lastPosition = JSON.stringify(position)
-         console.log(lastPosition)
-      }, (error) => console.log(error), {
+         const coordinate = {
+           latitude: position.coords.latitude,
+           longitude: position.coords.longitude
+         }
+         console.log('listener...')
+         firebaseService.updateCoordinate(this.state.groupId, this.state.currentUid, coordinate)
+      }, (error) => ToastAndroid.show(error.message, ToastAndroid.SHORT), {
          enableHighAccuracy: true,
-         timeout: 1000,
-         maximumAge: 1000
+         distanceFilter: 10, 
+         timeout: 100,
+         maximumAge: 0
       })
       firebaseService.onGroupChanged(groupId, () => {
         return this.props.requestFetchTravelMarkers(this.state.currentUid, this.state.leaderId, this.state.memberIdList)
@@ -54,6 +61,7 @@ class TravelContainer extends Component {
    }
 
    componentWillUnmount() {
+     console.log('unmount')
       navigator.geolocation.clearWatch(this.watchID)
    }
 
