@@ -24,7 +24,9 @@ const travel = (state = {
          break
       case REQUEST_TRAVEL_MARKERS_SUCCESS:
          return Object.assign({}, state, {
-            markers: action.markers
+            status: 'success',
+            markers: action.markers,
+            currentUser: action.currentUser
          })
          break
       default:

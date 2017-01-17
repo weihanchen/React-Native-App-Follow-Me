@@ -40,7 +40,8 @@ export function* requestTravelMarkersFlow(action) {
       markers = markers.map((marker, index) => Object.assign({}, marker, {key: index}))
       yield put({
          type: REQUEST_TRAVEL_MARKERS_SUCCESS,
-         markers
+         markers,
+         currentUser
       })
    } catch (error) {
       yield put({

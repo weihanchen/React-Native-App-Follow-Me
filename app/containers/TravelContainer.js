@@ -16,6 +16,9 @@ class TravelContainer extends Component {
    constructor(props) {
       super(props)
       this.state = {
+         currentPosition: {
+
+         },
          currentUid: '',
          endPosition: {
 
@@ -42,12 +45,12 @@ class TravelContainer extends Component {
          firebaseService.updateCoordinate(this.state.groupId, this.state.currentUid, coordinate)
       }, (error) => ToastAndroid.show(error.message, ToastAndroid.SHORT), {
          enableHighAccuracy: true,
-         distanceFilter: 20,
+         distanceFilter: 5,
          timeout: 100,
          maximumAge: 0
       })
       firebaseService.onGroupChanged(groupId, () => {
-        return this.props.requestFetchTravelMarkers(this.state.currentUid, this.state.leaderId, this.state.memberIdList)
+        return this.props.requestFetchTravelMarkers(this.state.currentUid, this.state.leaderId, this.state.memberIdList, this.state.endPosition)
       })
       firebaseService.onUserAdded(() => {
         this.props.requestFetchGroup(groupId)
