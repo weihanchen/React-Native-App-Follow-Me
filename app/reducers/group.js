@@ -41,7 +41,7 @@ export default function group(state = {
       break
     case REQUEST_FETCH_GROUP_SUCCESS:
       return Object.assign({}, state, {
-          status: 'request_success'
+          status: 'fetch_success'
       }, action.group)
       break
     default:

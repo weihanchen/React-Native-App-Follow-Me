@@ -6,6 +6,7 @@ import group from './group'
 import identify from './identify'
 import location from './location'
 import travel from './travel'
+import user from './user'
 
 
 export default combineReducers({
@@ -13,5 +14,6 @@ export default combineReducers({
 	group,
 	identify,
 	location,
-	travel
+	travel,
+	user
 })

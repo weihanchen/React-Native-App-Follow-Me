@@ -14,12 +14,16 @@ import {
 import {
    watchRequestTravelMarkers
 } from './travel'
+import {
+   watchRequestFetchUser
+} from './user'
 
 export default function* rootSaga() {
    yield [
       watchRequestCheckIdentity(),
       watchRequestCreateGroup(),
       watchRequestFetchGroup(),
+      watchRequestFetchUser(),
       watchRequestGeolocation(),
       watchRequestGeocoding(),
       watchRequestTravelMarkers()
