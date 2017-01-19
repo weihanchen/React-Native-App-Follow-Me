@@ -16,6 +16,7 @@ This application will help keep the car team traveling
 ### General requirements before running project
 >1. `$ npm install` install all dependencies
 >2. `$ npm run link` link with android libraries
+>3. edit app/config.js `GOOGLE_API_KEY = 'Your API Key'`
 
 ### Start with server
 >1. Open an emulator(Android Studio/AVD Manager)
