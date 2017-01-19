@@ -20,23 +20,89 @@ class TravelMap extends Component {
       this.state = {
          directions: [
             {
-               latitude: 23.5995618,
-               longitude: 120.4539282
+               latitude: 23.59956,
+               longitude: 120.45393
             }, {
-               latitude: 23.5989997,
-               longitude: 120.4521823
+               latitude: 23.59939,
+               longitude: 120.45373
             }, {
-               latitude: 23.5999215,
-               longitude: 120.4512186
+               latitude: 23.59921,
+               longitude: 120.45349
             }, {
-               latitude: 23.6007993,
-               longitude: 120.4504531
+               latitude: 23.59908,
+               longitude: 120.45317
             }, {
-               latitude: 23.6019542,
-               longitude: 120.450971
+               latitude: 23.599,
+               longitude: 120.45279
             }, {
-               latitude: 23.602096,
-               longitude: 120.4532781
+               latitude: 23.599,
+               longitude: 120.45259
+            }, {
+               latitude: 23.59903,
+               longitude: 120.45238
+            }, {
+               latitude: 23.59903,
+               longitude: 120.45223
+            }, {
+               latitude: 23.599,
+               longitude: 120.45218
+            }, {
+               latitude: 23.59983,
+               longitude: 120.45141
+            }, {
+               latitude: 23.59991,
+               longitude: 120.45133
+            }, {
+               latitude: 23.59993,
+               longitude: 120.45127
+            }, {
+               latitude: 23.59992,
+               longitude: 120.45122
+            }, {
+               latitude: 23.60001,
+               longitude: 120.45115
+            }, {
+               latitude: 23.60012,
+               longitude: 120.45109
+            }, {
+               latitude: 23.6008,
+               longitude: 120.45045
+            }, {
+               latitude: 23.60195,
+               longitude: 120.45097
+            }, {
+               latitude: 23.60321,
+               longitude: 120.45173
+            }, {
+               latitude: 23.60425,
+               longitude: 120.45235
+            }, {
+               latitude: 23.60468,
+               longitude: 120.45259
+            }, {
+               latitude: 23.60564,
+               longitude: 120.45319
+            }, {
+               latitude: 23.60579,
+               longitude: 120.45325
+            }, {
+               latitude: 23.60584,
+               longitude: 120.45326
+            }, {
+               latitude: 23.60589,
+               longitude: 120.45326
+            }, {
+               latitude: 23.6059,
+               longitude: 120.45334
+            }, {
+               latitude: 23.60616,
+               longitude: 120.45517
+            }, {
+               latitude: 23.6063,
+               longitude: 120.45597
+            }, {
+               latitude: 23.60633,
+               longitude: 120.45614
             }
          ],
          end: {
@@ -78,15 +144,13 @@ class TravelMap extends Component {
    }
    //api example: https://maps.googleapis.com/maps/api/directions/json?origin=23.599505,120.453994&destination=23.606352,120.456137&key=AIzaSyBrupj_7GBHd1xhgPWnZdtdxTBV8LIfLGM
 
-   componentWillReceiveProps(nextProps) {
-    
-   }
+   componentWillReceiveProps(nextProps) {}
 
    render() {
       const {travel} = this.props
       return (
          <MapView style={styles.container} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
-            <Polyline coordinates={this.state.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
+            <Polyline coordinates={travel.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
             {travel.markers.map(marker => _markerSection(marker))}
          </MapView>
       )
@@ -113,7 +177,7 @@ const _markerSection = (marker) => {
             <Text style={styles.leaderText}>{marker.username}</Text>
          </View>
       ),
-      endPosition: () =>  (
+      endPosition: () => (
          <View style={styles.member}>
             <Icon name='flag' style={styles.endText}/>
             <Text style={styles.endText}>終點</Text>
@@ -122,7 +186,7 @@ const _markerSection = (marker) => {
    }
    return (
       <Marker {...marker}>
-        {renderType[marker.type]()}
+         {renderType[marker.type]()}
       </Marker>
    )
 }

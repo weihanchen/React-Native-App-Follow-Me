@@ -1,4 +1,6 @@
 import {
+   REQUEST_TRAVEL_DIRECTIONS,
+   REQUEST_TRAVEL_DIRECTIONS_SUCCESS,
    REQUEST_TRAVEL_MARKERS,
    REQUEST_TRAVEL_MARKERS_FAILED,
    REQUEST_TRAVEL_MARKERS_SUCCESS
@@ -7,9 +9,21 @@ import {
 const travel = (state = {
    error: null,
    status: 'init',
+   directions: [],
    markers: []
 }, action) => {
    switch (action.type) {
+      case REQUEST_TRAVEL_DIRECTIONS:
+         return Object.assign({}, state, {
+            status: 'loading',
+            error: null
+         })
+         break
+      case REQUEST_TRAVEL_DIRECTIONS_SUCCESS:
+         return Object.assign({}, state, {
+            status: 'request_directions_success',
+            directions: action.directions
+         })
       case REQUEST_TRAVEL_MARKERS:
          return Object.assign({}, state, {
             status: 'loading',
@@ -24,7 +38,7 @@ const travel = (state = {
          break
       case REQUEST_TRAVEL_MARKERS_SUCCESS:
          return Object.assign({}, state, {
-            status: 'success',
+            status: 'request_marker_success',
             markers: action.markers,
             currentUser: action.currentUser
          })

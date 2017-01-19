@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {View, Text, ToastAndroid, StyleSheet} from 'react-native'
 //actions
-import {requestFetchTravelMarkers} from '../actions'
+import {requestTravelDirections, requestFetchTravelMarkers} from '../actions'
 //components
 import {TravelMap} from '../components/Travel'
 //service
@@ -17,6 +17,7 @@ class TravelContainer extends Component {
       super(props)
       this.state = {
          currentUser: {},
+         direction: {},
          endPosition: {},
          leaderId: '',
          memberIdList: []
@@ -33,14 +34,16 @@ class TravelContainer extends Component {
          this.state.leaderId = group.leader
          this.state.memberIdList = group.members
          this.state.endPosition = group.endPosition
+         this.state.direction = group.endPosition
          return firebaseService.requestFetchUser(userId)
       }).then(user => {
          this.state.currentUser = user
          this.props.requestFetchTravelMarkers(this.state.currentUser, this.state.leaderId, this.state.memberIdList, this.state.endPosition)
+         this.props.requestTravelDirections(user.coordinate, this.state.endPosition.coordinate, 'car') //todo: change mode dynamic
          firebaseService.onGroupChanged(groupId, () => {
             return this.props.requestFetchTravelMarkers(this.state.currentUser, this.state.leaderId, this.state.memberIdList, this.state.endPosition)
          })
-      })
+      }).catch(error => console.log(error))
       this.watchID = navigator.geolocation.watchPosition((position) => {
          const coordinate = {
             latitude: position.coords.latitude,
@@ -80,6 +83,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
    return bindActionCreators({
+      requestTravelDirections,
       requestFetchTravelMarkers
    }, dispatch)
 }
@@ -93,6 +97,7 @@ const styles = StyleSheet.create({
 TravelContainer.propTypes = {
    group: PropTypes.object,
    groupId: PropTypes.string,
+   requestDirections: PropTypes.func,
    requestFetchTravelMarkers: PropTypes.func,
    travel: PropTypes.object,
    user: PropTypes.object
