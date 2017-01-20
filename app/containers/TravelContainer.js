@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {View, Text, ToastAndroid, StyleSheet} from 'react-native'
 //actions
-import {requestTravelDirections, requestFetchTravelMarkers} from '../actions'
+import {requestTravelDirections, requestFetchTravelMarkers, requestGeolocation} from '../actions'
 //components
 import {TravelMap} from '../components/Travel'
 //service
@@ -30,16 +30,18 @@ class TravelContainer extends Component {
    componentDidMount() {
       const groupId = this.props.groupId
       const userId = this.props.userId
+
       firebaseService.requestFetchGroup(groupId).then(group => {
          this.state.leaderId = group.leader
          this.state.memberIdList = group.members
          this.state.endPosition = group.endPosition
          this.state.direction = group.endPosition
+
          return firebaseService.requestFetchUser(userId)
       }).then(user => {
          this.state.currentUser = user
          this.props.requestFetchTravelMarkers(this.state.currentUser, this.state.leaderId, this.state.memberIdList, this.state.endPosition)
-         this.props.requestTravelDirections(user.coordinate, this.state.endPosition.coordinate, 'car') //todo: change mode dynamic
+         this.props.requestGeolocation()
          firebaseService.onGroupChanged(groupId, () => {
             return this.props.requestFetchTravelMarkers(this.state.currentUser, this.state.leaderId, this.state.memberIdList, this.state.endPosition)
          })
@@ -60,10 +62,13 @@ class TravelContainer extends Component {
 
    }
 
-   componentWillReceiveProps(nextProps) {}
+   componentWillReceiveProps(nextProps) {
+      if (nextProps.location.status != this.props.location.status && nextProps.location.status === 'success') {
+        this.props.requestTravelDirections(nextProps.location.coordinate, this.state.endPosition.coordinate, 'car') //todo: change mode dynamic
+      }
+   }
 
    componentWillUnmount() {
-      console.log('unmount')
       navigator.geolocation.clearWatch(this.watchID)
    }
 
@@ -78,13 +83,14 @@ class TravelContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-   return {group: state.group, travel: state.travel, user: state.user}
+   return {group: state.group, travel: state.travel, user: state.user, location: state.location}
 }
 
 const mapDispatchToProps = (dispatch) => {
    return bindActionCreators({
       requestTravelDirections,
-      requestFetchTravelMarkers
+      requestFetchTravelMarkers,
+      requestGeolocation
    }, dispatch)
 }
 
@@ -99,6 +105,7 @@ TravelContainer.propTypes = {
    groupId: PropTypes.string,
    requestDirections: PropTypes.func,
    requestFetchTravelMarkers: PropTypes.func,
+   requestGeolocation: PropTypes.func,
    travel: PropTypes.object,
    user: PropTypes.object
 }
