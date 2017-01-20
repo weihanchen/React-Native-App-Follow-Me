@@ -3,7 +3,12 @@ import MainStyle from '../../stylesheets'
 
 export default StyleSheet.create({
    container: {
-      flex: 1
+      ...StyleSheet.absoluteFillObject,
+      justifyContent: 'flex-end',
+      alignItems: 'center'
+   },
+   map: {
+      ...StyleSheet.absoluteFillObject
    },
    end: {
       borderColor: MainStyle.color.danger,
@@ -19,10 +24,10 @@ export default StyleSheet.create({
       margin: 2
    },
    leaderText: {
-     color: MainStyle.color.danger,
-     fontSize: MainStyle.font.medium,
-     fontWeight: "bold",
-     margin: 2
+      color: MainStyle.color.danger,
+      fontSize: MainStyle.font.medium,
+      fontWeight: "bold",
+      margin: 2
    },
    member: {
       flexDirection: 'row'
@@ -37,5 +42,12 @@ export default StyleSheet.create({
       color: MainStyle.color.skyblue,
       fontSize: MainStyle.font.medium,
       fontWeight: "bold"
+   },
+   buttonContainer: {
+      flexDirection: 'column',
+      marginVertical: 20
+   },
+   button: {
+      
    }
 })

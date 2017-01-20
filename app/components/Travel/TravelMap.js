@@ -1,7 +1,7 @@
 'use strict'
 import React, {Component, PropTypes} from 'react'
 //plugins
-import {Dimensions, Text, View} from 'react-native'
+import {Dimensions, Text, TouchableOpacity, View} from 'react-native'
 import MapView, {Marker, Polyline} from 'react-native-maps'
 import Icon from 'react-native-vector-icons/FontAwesome'
 //stylesheets
@@ -18,100 +18,6 @@ class TravelMap extends Component {
    constructor(props) {
       super(props)
       this.state = {
-         directions: [
-            {
-               latitude: 23.59956,
-               longitude: 120.45393
-            }, {
-               latitude: 23.59939,
-               longitude: 120.45373
-            }, {
-               latitude: 23.59921,
-               longitude: 120.45349
-            }, {
-               latitude: 23.59908,
-               longitude: 120.45317
-            }, {
-               latitude: 23.599,
-               longitude: 120.45279
-            }, {
-               latitude: 23.599,
-               longitude: 120.45259
-            }, {
-               latitude: 23.59903,
-               longitude: 120.45238
-            }, {
-               latitude: 23.59903,
-               longitude: 120.45223
-            }, {
-               latitude: 23.599,
-               longitude: 120.45218
-            }, {
-               latitude: 23.59983,
-               longitude: 120.45141
-            }, {
-               latitude: 23.59991,
-               longitude: 120.45133
-            }, {
-               latitude: 23.59993,
-               longitude: 120.45127
-            }, {
-               latitude: 23.59992,
-               longitude: 120.45122
-            }, {
-               latitude: 23.60001,
-               longitude: 120.45115
-            }, {
-               latitude: 23.60012,
-               longitude: 120.45109
-            }, {
-               latitude: 23.6008,
-               longitude: 120.45045
-            }, {
-               latitude: 23.60195,
-               longitude: 120.45097
-            }, {
-               latitude: 23.60321,
-               longitude: 120.45173
-            }, {
-               latitude: 23.60425,
-               longitude: 120.45235
-            }, {
-               latitude: 23.60468,
-               longitude: 120.45259
-            }, {
-               latitude: 23.60564,
-               longitude: 120.45319
-            }, {
-               latitude: 23.60579,
-               longitude: 120.45325
-            }, {
-               latitude: 23.60584,
-               longitude: 120.45326
-            }, {
-               latitude: 23.60589,
-               longitude: 120.45326
-            }, {
-               latitude: 23.6059,
-               longitude: 120.45334
-            }, {
-               latitude: 23.60616,
-               longitude: 120.45517
-            }, {
-               latitude: 23.6063,
-               longitude: 120.45597
-            }, {
-               latitude: 23.60633,
-               longitude: 120.45614
-            }
-         ],
-         end: {
-            key: '終點',
-            coordinate: {
-               latitude: 23.602298,
-               longitude: 120.453306
-            }
-         },
          members: [
             {
                key: 'andy',
@@ -149,10 +55,16 @@ class TravelMap extends Component {
    render() {
       const {travel} = this.props
       return (
-         <MapView style={styles.container} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
-            <Polyline coordinates={travel.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
-            {travel.markers.map(marker => _markerSection(marker))}
-         </MapView>
+         <View style={styles.container}>
+            <MapView style={styles.map} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
+               <Polyline coordinates={travel.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
+               {travel.markers.map(marker => _markerSection(marker))}
+            </MapView>
+            <View style={styles.buttonContainer}>
+               <Icon.Button name="arrows" style={styles.button}></Icon.Button>
+               <Icon.Button name="location-arrow" style={styles.button}></Icon.Button>
+            </View>
+         </View>
       )
    }
 }
