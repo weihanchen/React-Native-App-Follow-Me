@@ -24,7 +24,7 @@ import MapView, {Marker} from 'react-native-maps'
 //stylesheets
 import mainStyle from '../../stylesheets'
 import styles from './styles'
-
+import {ERROR_MESSAGE} from '../../config'
 //utils
 import {timeUtils} from '../../utils'
 
@@ -70,18 +70,18 @@ class CreateBody extends Component {
 
    componentWillReceiveProps(nextProps) {
       const geocodingStatusFun = {
-         success: () => {
-            const coordinate = nextProps.geocoding.coordinate
+         success: (geocoding) => {
+            const coordinate = geocoding.coordinate
             const region = Object.assign({}, this.state.region, coordinate)
             this.setState({endPosition: {coordinate}, region})
          },
-         error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
+         error: (geocoding) => ToastAndroid.show(geocoding.error, ToastAndroid.SHORT)
       }
       const groupStatusFun = {
-         create_success: () => {
+         create_success: (group) => {
             this.props.handleCreateSuccess()
          },
-         error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
+         error: (group) => ToastAndroid.show(group.error, ToastAndroid.SHORT)
       }
       const locationStatusFun = {
          success: () => {
@@ -89,12 +89,12 @@ class CreateBody extends Component {
             const region = Object.assign({}, this.state.region, coordinate)
             this.setState({startPosition: coordinate, endPosition: {coordinate}, region})
          },
-         error: (error) => ToastAndroid.show('請開啟定位服務', ToastAndroid.SHORT)
+         error: () => ToastAndroid.show(ERROR_MESSAGE.POSITION_ERROR, ToastAndroid.SHORT)
       }
       if (geocodingStatusFun.hasOwnProperty(nextProps.geocoding.status) && nextProps.geocoding.status != this.props.geocoding.status)
-         geocodingStatusFun[nextProps.geocoding.status](nextProps.geocoding.error)
+         geocodingStatusFun[nextProps.geocoding.status](nextProps.geocoding)
       if (groupStatusFun.hasOwnProperty(nextProps.group.status) && nextProps.group.status != this.props.group.status)
-         groupStatusFun[nextProps.group.status]()
+         groupStatusFun[nextProps.group.status](nextProps.group)
       if (locationStatusFun.hasOwnProperty(nextProps.location.status) && nextProps.location.status != this.props.location.status)
          locationStatusFun[nextProps.location.status]()
    }

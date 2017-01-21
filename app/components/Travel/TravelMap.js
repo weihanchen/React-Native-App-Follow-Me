@@ -48,7 +48,6 @@ class TravelMap extends Component {
          }
       }
    }
-   //api example: https://maps.googleapis.com/maps/api/directions/json?origin=23.599505,120.453994&destination=23.606352,120.456137&key=AIzaSyBrupj_7GBHd1xhgPWnZdtdxTBV8LIfLGM
 
    componentWillReceiveProps(nextProps) {}
 

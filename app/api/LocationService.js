@@ -1,4 +1,5 @@
 import {
+   ERROR_MESSAGE,
    GOOGLE_API_KEY,
    GOOGLE_DIRECTIONS_URL,
    GOOGLE_GEOCODING_URL,
@@ -48,11 +49,11 @@ export default class LocationService {
          navigator.geolocation.getCurrentPosition((position) => {
             resolve(position)
          }, (error) => {
-            reject(error.message)
+            reject(ERROR_MESSAGE.POSITION_ERROR)
          }, {
             enableHighAccuracy: true,
-            timeout: 30000,
-            maximumAge: 30000
+            timeout: 15000,
+            maximumAge: 15000
          });
       })
    }

@@ -7,6 +7,8 @@ import {View, Text, ToastAndroid, StyleSheet} from 'react-native'
 import {requestTravelDirections, requestFetchTravelMarkers, requestGeolocation} from '../actions'
 //components
 import {TravelMap} from '../components/Travel'
+//config
+import {ERROR_MESSAGE} from '../config'
 //service
 import {FirebaseService} from '../api'
 
@@ -53,7 +55,7 @@ class TravelContainer extends Component {
          }
          this.state.currentUser.coordinate = coordinate
          firebaseService.updateCoordinate(groupId, userId, coordinate)
-      }, (error) => ToastAndroid.show(error.message, ToastAndroid.SHORT), {
+      }, (error) => ToastAndroid.show(ERROR_MESSAGE.POSITION_ERROR, ToastAndroid.SHORT), {
          enableHighAccuracy: true,
          distanceFilter: 2,
          timeout: 100,
@@ -63,9 +65,12 @@ class TravelContainer extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
-      if (nextProps.location.status != this.props.location.status && nextProps.location.status === 'success') {
-        this.props.requestTravelDirections(nextProps.location.coordinate, this.state.endPosition.coordinate, 'car') //todo: change mode dynamic
+      const locationStatusFun = {
+        success: () => this.props.requestTravelDirections(nextProps.location.coordinate, this.state.endPosition.coordinate, 'car'), //todo: change mode dynamic
+        error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
+      if (locationStatusFun.hasOwnProperty(nextProps.location.status) && nextProps.location.status != this.props.location.status)
+         locationStatusFun[nextProps.location.status](nextProps.location.error)
    }
 
    componentWillUnmount() {

@@ -4,8 +4,8 @@ import MainStyle from '../../stylesheets'
 export default StyleSheet.create({
    container: {
       ...StyleSheet.absoluteFillObject,
-      justifyContent: 'flex-end',
-      alignItems: 'center'
+      justifyContent: 'flex-end'
+
    },
    map: {
       ...StyleSheet.absoluteFillObject
@@ -45,9 +45,10 @@ export default StyleSheet.create({
    },
    buttonContainer: {
       flexDirection: 'column',
+      justifyContent: 'flex-end',
       marginVertical: 20
    },
    button: {
-      
+
    }
 })
