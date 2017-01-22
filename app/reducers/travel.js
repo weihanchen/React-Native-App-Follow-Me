@@ -7,10 +7,10 @@ import {
 } from '../actions'
 
 const travel = (state = {
-   error: null,
-   status: 'init',
    directions: [],
-   markers: []
+   error: null,
+   markers: [],
+   status: 'init'
 }, action) => {
    switch (action.type) {
       case REQUEST_TRAVEL_DIRECTIONS:

@@ -18,35 +18,17 @@ class TravelMap extends Component {
    constructor(props) {
       super(props)
       this.state = {
-         members: [
-            {
-               key: 'andy',
-               coordinate: {
-                  latitude: 23.6010548,
-                  longitude: 120.4536408
-               }
-            }, {
-               key: 'tina',
-               coordinate: {
-                  latitude: 23.602298,
-                  longitude: 120.451112
-               }
-            }
-         ],
          region: {
             latitude: LATITUDE,
             longitude: LONGITUDE,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA
-         },
-         self: {
-            key: 'weihanchen',
-            coordinate: {
-               latitude: 23.599505,
-               longitude: 120.453994
-            }
          }
       }
+   }
+
+   componentDidMount() {
+     this.onLocated()
    }
 
    componentWillReceiveProps(nextProps) {}
@@ -65,7 +47,7 @@ class TravelMap extends Component {
       const {travel} = this.props
       return (
          <View style={styles.container}>
-            <MapView style={styles.map} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
+            <MapView style={styles.map} region={this.state.region} >
                <Polyline coordinates={travel.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
                {travel.markers.map(marker => _markerSection(marker))}
             </MapView>
@@ -73,11 +55,11 @@ class TravelMap extends Component {
                <TouchableOpacity style={[styles.toolButton, styles.toolButtonAlert]} activeOpacity={0.6}>
                   <Icon name="bell" style={[styles.toolButtonIcon, styles.toolButtonIconAlert]}></Icon>
                </TouchableOpacity>
-               <TouchableOpacity style={styles.toolButton} activeOpacity={0.6} onPress={this.onLocated.bind(this)}>
-                  <Icon name="arrows" style={styles.toolButtonIcon}></Icon>
-               </TouchableOpacity>
                <TouchableOpacity style={styles.toolButton} activeOpacity={0.6} onPress={this.onRequestDirection.bind(this)}>
                   <Icon name="location-arrow" style={styles.toolButtonIcon}></Icon>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.toolButton} activeOpacity={0.6} onPress={this.onLocated.bind(this)}>
+                  <Icon name="arrows" style={styles.toolButtonIcon}></Icon>
                </TouchableOpacity>
             </View>
          </View>
@@ -120,7 +102,7 @@ const _markerSection = (marker) => {
 }
 
 TravelMap.propTypes = {
-  handleRequestDirection: PropTypes.func,
+   handleRequestDirection: PropTypes.func,
    travel: PropTypes.object
 }
 

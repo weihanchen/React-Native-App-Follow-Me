@@ -85,6 +85,8 @@ class TravelContainer extends Component {
       navigator.geolocation.clearWatch(this.watchID)
    }
 
+   
+
    handleRequestDirection() {
      this.props.requestTravelDirections(this.state.currentUser.coordinate, this.state.endPosition.coordinate, 'car')
    }

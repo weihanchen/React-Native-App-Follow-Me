@@ -34,6 +34,7 @@ class AppContainer extends React.Component {
             nav.pop();
             return true;
         }
+        BackAndroid.exitApp()
         return false;
     }
 
