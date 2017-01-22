@@ -4,7 +4,7 @@ import MainStyle from '../../stylesheets'
 export default StyleSheet.create({
    container: {
       ...StyleSheet.absoluteFillObject,
-      justifyContent: 'flex-end'
+      flex: 1
 
    },
    map: {
@@ -43,12 +43,35 @@ export default StyleSheet.create({
       fontSize: MainStyle.font.medium,
       fontWeight: "bold"
    },
-   buttonContainer: {
+   toolContainer: {
       flexDirection: 'column',
       justifyContent: 'flex-end',
-      marginVertical: 20
+      alignItems: 'flex-end',
+      marginRight: 20,
+      marginVertical: 25,
+      ...StyleSheet.absoluteFillObject
    },
-   button: {
-
+   toolButton: {
+      backgroundColor: MainStyle.color.white,
+      borderColor: MainStyle.color.navy,
+      borderRadius: MainStyle.radius.huge,
+      borderWidth: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 8,
+      width: 40,
+      height: 40
+   },
+   toolButtonAlert: {
+      borderColor: MainStyle.color.warning
+   },
+   toolButtonIcon: {
+      fontSize: MainStyle.font.large,
+      color: MainStyle.color.navy
+   },
+   toolButtonIconAlert: {
+      color: MainStyle.color.warning
    }
+
 })

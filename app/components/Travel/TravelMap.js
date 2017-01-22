@@ -51,6 +51,16 @@ class TravelMap extends Component {
 
    componentWillReceiveProps(nextProps) {}
 
+   onLocated() {
+      const {currentUser} = this.props
+      const region = Object.assign({}, this.state.region, currentUser.coordinate)
+      this.setState({region})
+   }
+
+   onRequestDirection() {
+      this.props.handleRequestDirection()
+   }
+
    render() {
       const {travel} = this.props
       return (
@@ -59,9 +69,16 @@ class TravelMap extends Component {
                <Polyline coordinates={travel.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
                {travel.markers.map(marker => _markerSection(marker))}
             </MapView>
-            <View style={styles.buttonContainer}>
-               <Icon.Button name="arrows" style={styles.button}></Icon.Button>
-               <Icon.Button name="location-arrow" style={styles.button}></Icon.Button>
+            <View style={styles.toolContainer}>
+               <TouchableOpacity style={[styles.toolButton, styles.toolButtonAlert]} activeOpacity={0.6}>
+                  <Icon name="bell" style={[styles.toolButtonIcon, styles.toolButtonIconAlert]}></Icon>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.toolButton} activeOpacity={0.6} onPress={this.onLocated.bind(this)}>
+                  <Icon name="arrows" style={styles.toolButtonIcon}></Icon>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.toolButton} activeOpacity={0.6} onPress={this.onRequestDirection.bind(this)}>
+                  <Icon name="location-arrow" style={styles.toolButtonIcon}></Icon>
+               </TouchableOpacity>
             </View>
          </View>
       )
@@ -103,6 +120,7 @@ const _markerSection = (marker) => {
 }
 
 TravelMap.propTypes = {
+  handleRequestDirection: PropTypes.func,
    travel: PropTypes.object
 }
 

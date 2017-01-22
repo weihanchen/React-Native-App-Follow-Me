@@ -34,32 +34,40 @@ class TravelContainer extends Component {
       const userId = this.props.userId
 
       firebaseService.requestFetchGroup(groupId).then(group => {
-         this.state.leaderId = group.leader
-         this.state.memberIdList = group.members
-         this.state.endPosition = group.endPosition
-         this.state.direction = group.endPosition
-
+         this.setState({
+           leaderId: group.leader,
+           memberIdList: group.members,
+           endPosition: group.endPosition,
+           direction: group.endPosition
+         })
          return firebaseService.requestFetchUser(userId)
       }).then(user => {
-         this.state.currentUser = user
+         this.setState({
+           currentUser: user
+         })
          this.props.requestFetchTravelMarkers(this.state.currentUser, this.state.leaderId, this.state.memberIdList, this.state.endPosition)
          this.props.requestGeolocation()
          firebaseService.onGroupChanged(groupId, () => {
             return this.props.requestFetchTravelMarkers(this.state.currentUser, this.state.leaderId, this.state.memberIdList, this.state.endPosition)
          })
       }).catch(error => console.log(error))
+
       this.watchID = navigator.geolocation.watchPosition((position) => {
          const coordinate = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
          }
-         this.state.currentUser.coordinate = coordinate
+         this.setState({
+           currentUser: {
+             coordinate
+           }
+         })
          firebaseService.updateCoordinate(groupId, userId, coordinate)
       }, (error) => ToastAndroid.show(ERROR_MESSAGE.POSITION_ERROR, ToastAndroid.SHORT), {
          enableHighAccuracy: true,
          distanceFilter: 2,
-         timeout: 100,
-         maximumAge: 0
+         timeout: 1000,
+         maximumAge: 1000
       })
 
    }
@@ -77,11 +85,15 @@ class TravelContainer extends Component {
       navigator.geolocation.clearWatch(this.watchID)
    }
 
+   handleRequestDirection() {
+     this.props.requestTravelDirections(this.state.currentUser.coordinate, this.state.endPosition.coordinate, 'car')
+   }
+
    render() {
       const {travel} = this.props
       return (
          <View style={styles.container}>
-            <TravelMap travel={travel}></TravelMap>
+            <TravelMap travel={travel} currentUser={this.state.currentUser} handleRequestDirection={this.handleRequestDirection.bind(this)}></TravelMap>
          </View>
       )
    }
