@@ -7,36 +7,16 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 //stylesheets
 import styles from './styles'
 import mainStyle from '../../stylesheets'
-const screen = Dimensions.get('window')
-const ASPECT_RATIO = screen.width / screen.height
-const LATITUDE = 23.6010548
-const LONGITUDE = 120.4536408
-const LATITUDE_DELTA = 0.0122
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
 class TravelMap extends Component {
    constructor(props) {
       super(props)
-      this.state = {
-         region: {
-            latitude: LATITUDE,
-            longitude: LONGITUDE,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA
-         }
-      }
-   }
-
-   componentDidMount() {
-     this.onLocated()
    }
 
    componentWillReceiveProps(nextProps) {}
 
    onLocated() {
-      const {currentUser} = this.props
-      const region = Object.assign({}, this.state.region, currentUser.coordinate)
-      this.setState({region})
+      this.props.handleRequestRegion()
    }
 
    onRequestDirection() {
@@ -47,7 +27,7 @@ class TravelMap extends Component {
       const {travel} = this.props
       return (
          <View style={styles.container}>
-            <MapView style={styles.map} region={this.state.region} >
+            <MapView style={styles.map} region={travel.region} >
                <Polyline coordinates={travel.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
                {travel.markers.map(marker => _markerSection(marker))}
             </MapView>
@@ -103,6 +83,7 @@ const _markerSection = (marker) => {
 
 TravelMap.propTypes = {
    handleRequestDirection: PropTypes.func,
+   handleRequestRegion: PropTypes.func,
    travel: PropTypes.object
 }
 

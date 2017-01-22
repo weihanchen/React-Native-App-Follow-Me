@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {View, Text, ToastAndroid, StyleSheet} from 'react-native'
 //actions
-import {requestTravelDirections, requestFetchTravelMarkers, requestGeolocation} from '../actions'
+import {requestTravelDirections, requestTravelRegion, requestFetchTravelMarkers, requestGeolocation} from '../actions'
 //components
 import {TravelMap} from '../components/Travel'
 //config
@@ -57,10 +57,9 @@ class TravelContainer extends Component {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
          }
+         const currentUser = Object.assign({}, this.state.currentUser, {coordinate})
          this.setState({
-           currentUser: {
-             coordinate
-           }
+           currentUser: currentUser
          })
          firebaseService.updateCoordinate(groupId, userId, coordinate)
       }, (error) => ToastAndroid.show(ERROR_MESSAGE.POSITION_ERROR, ToastAndroid.SHORT), {
@@ -74,7 +73,10 @@ class TravelContainer extends Component {
 
    componentWillReceiveProps(nextProps) {
       const locationStatusFun = {
-        success: () => this.props.requestTravelDirections(nextProps.location.coordinate, this.state.endPosition.coordinate, 'car'), //todo: change mode dynamic
+        success: () => {
+          this.props.requestTravelDirections(nextProps.location.coordinate, this.state.endPosition.coordinate, 'car')
+          this.props.requestTravelRegion(nextProps.location.coordinate)
+        }, //todo: change mode dynamic
         error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
       if (locationStatusFun.hasOwnProperty(nextProps.location.status) && nextProps.location.status != this.props.location.status)
@@ -85,17 +87,19 @@ class TravelContainer extends Component {
       navigator.geolocation.clearWatch(this.watchID)
    }
 
-   
-
    handleRequestDirection() {
      this.props.requestTravelDirections(this.state.currentUser.coordinate, this.state.endPosition.coordinate, 'car')
+   }
+
+   handleRequestRegion() {
+     this.props.requestTravelRegion(this.props.location.coordinate)
    }
 
    render() {
       const {travel} = this.props
       return (
          <View style={styles.container}>
-            <TravelMap travel={travel} currentUser={this.state.currentUser} handleRequestDirection={this.handleRequestDirection.bind(this)}></TravelMap>
+            <TravelMap travel={travel} handleRequestDirection={this.handleRequestDirection.bind(this)} handleRequestRegion={this.handleRequestRegion.bind(this)}></TravelMap>
          </View>
       )
    }
@@ -107,9 +111,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
    return bindActionCreators({
-      requestTravelDirections,
       requestFetchTravelMarkers,
-      requestGeolocation
+      requestGeolocation,
+      requestTravelDirections,
+      requestTravelRegion,
    }, dispatch)
 }
 
