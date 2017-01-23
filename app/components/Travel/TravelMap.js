@@ -1,7 +1,7 @@
 'use strict'
 import React, {Component, PropTypes} from 'react'
 //plugins
-import {Dimensions, Text, TouchableOpacity, View} from 'react-native'
+import {Button, Dimensions, Text, TouchableOpacity, View} from 'react-native'
 import MapView, {Marker, Polyline} from 'react-native-maps'
 import Icon from 'react-native-vector-icons/FontAwesome'
 //stylesheets
@@ -16,6 +16,7 @@ class TravelMap extends Component {
    constructor(props) {
       super(props)
       this.state = {
+        mode: 'walk',
         region: {
           latitude: 23.59696570338207,
           longitude: 120.45780305184569,
@@ -30,6 +31,10 @@ class TravelMap extends Component {
         const region = Object.assign({}, this.state.region, nextProps.travel.coordinate)
         this.setState({region})
      }
+   }
+
+   onChangeMode(mode) {
+     this.setState({mode})
    }
 
    onLocated() {
@@ -48,6 +53,14 @@ class TravelMap extends Component {
                <Polyline coordinates={travel.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
                {travel.markers.map(marker => _markerSection(marker))}
             </MapView>
+            <View style={styles.modeContainer}>
+              <TouchableOpacity style={styles.modeButton} activeOpacity={0.6} onPress={this.onChangeMode.bind(this,'walk')}>
+                <Icon name="male" style={styles.modeButtonIcon}></Icon>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modeButton} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'car')}>
+                <Icon name="car" style={styles.modeButtonIcon}></Icon>
+              </TouchableOpacity>
+            </View>
             <View style={styles.toolContainer}>
                <TouchableOpacity style={[styles.toolButton, styles.toolButtonAlert]} activeOpacity={0.6}>
                   <Icon name="bell" style={[styles.toolButtonIcon, styles.toolButtonIconAlert]}></Icon>
@@ -69,7 +82,7 @@ const _markerSection = (marker) => {
    const renderType = {
       self: () => (
          <View style={styles.member}>
-            <Icon name='circle' style={styles.selfText}/>
+            <Icon name='circle' style={styles.memberText}/>
          </View>
       ),
       member: () => (

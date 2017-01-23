@@ -55,7 +55,7 @@ export function* requestTravelMarkersFlow(action) {
       leader.type = MARKER_TYPE.LEADER
       endPosition.type = MARKER_TYPE.END_POSITION
       members = members
-         .filter(member => member.username != currentUser.username)
+         .filter(member => member.username != currentUser.username && member.username != leader.username)
          .map(member => Object.assign({}, member, {
             type: MARKER_TYPE.MEMBER
          }))

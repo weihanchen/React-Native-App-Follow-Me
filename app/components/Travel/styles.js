@@ -33,22 +33,36 @@ export default StyleSheet.create({
       flexDirection: 'row'
    },
    memberText: {
-      color: MainStyle.color.blue,
-      fontSize: MainStyle.font.medium,
-      fontWeight: "bold",
-      margin: 2
-   },
-   selfText: {
       color: MainStyle.color.skyblue,
       fontSize: MainStyle.font.medium,
-      fontWeight: "bold"
+      fontWeight: "bold",
+      marginRight: 2
+   },
+   modeButton: {
+      alignItems: 'center',
+      backgroundColor: MainStyle.color.white,
+      borderColor: MainStyle.color.skyblue,
+      borderWidth: 1,
+      flexDirection: 'column',
+      height: 30,
+      justifyContent: 'center',
+      width: 30
+   },
+   modeButtonIcon: {
+     fontSize: MainStyle.font.big
+   },
+   modeContainer: {
+      flexDirection: 'row',
+      marginTop: 10,
+      marginRight: 10,
+      justifyContent: 'flex-end'
    },
    toolContainer: {
       flexDirection: 'column',
       justifyContent: 'flex-end',
       alignItems: 'flex-end',
       marginRight: 20,
-      marginVertical: 25,
+      marginVertical: 40,
       ...StyleSheet.absoluteFillObject
    },
    toolButton: {
