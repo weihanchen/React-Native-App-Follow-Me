@@ -7,13 +7,30 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 //stylesheets
 import styles from './styles'
 import mainStyle from '../../stylesheets'
+const screen = Dimensions.get('window')
+const ASPECT_RATIO = screen.width / screen.height
+const LATITUDE_DELTA = 0.0122
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
 class TravelMap extends Component {
    constructor(props) {
       super(props)
+      this.state = {
+        region: {
+          latitude: 23.59696570338207,
+          longitude: 120.45780305184569,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA
+        }
+      }
    }
 
-   componentWillReceiveProps(nextProps) {}
+   componentWillReceiveProps(nextProps) {
+     if (nextProps.travel.status != this.props.travel.status && nextProps.travel.status === 'update_region') {
+        const region = Object.assign({}, this.state.region, nextProps.travel.coordinate)
+        this.setState({region})
+     }
+   }
 
    onLocated() {
       this.props.handleRequestRegion()
@@ -27,7 +44,7 @@ class TravelMap extends Component {
       const {travel} = this.props
       return (
          <View style={styles.container}>
-            <MapView style={styles.map} region={travel.region} >
+            <MapView style={styles.map} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
                <Polyline coordinates={travel.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
                {travel.markers.map(marker => _markerSection(marker))}
             </MapView>

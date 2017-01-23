@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {View, Text, ToastAndroid, StyleSheet} from 'react-native'
 //actions
-import {requestTravelDirections, requestTravelRegion, requestFetchTravelMarkers, requestGeolocation} from '../actions'
+import {requestTravelDirections, requestFetchTravelMarkers, requestGeolocation, updateTravelRegion} from '../actions'
 //components
 import {TravelMap} from '../components/Travel'
 //config
@@ -75,7 +75,6 @@ class TravelContainer extends Component {
       const locationStatusFun = {
         success: () => {
           this.props.requestTravelDirections(nextProps.location.coordinate, this.state.endPosition.coordinate, 'car')
-          this.props.requestTravelRegion(nextProps.location.coordinate)
         }, //todo: change mode dynamic
         error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
@@ -92,7 +91,7 @@ class TravelContainer extends Component {
    }
 
    handleRequestRegion() {
-     this.props.requestTravelRegion(this.props.location.coordinate)
+     this.props.updateTravelRegion(this.state.currentUser.coordinate)
    }
 
    render() {
@@ -114,7 +113,7 @@ const mapDispatchToProps = (dispatch) => {
       requestFetchTravelMarkers,
       requestGeolocation,
       requestTravelDirections,
-      requestTravelRegion,
+      updateTravelRegion
    }, dispatch)
 }
 
@@ -131,6 +130,7 @@ TravelContainer.propTypes = {
    requestFetchTravelMarkers: PropTypes.func,
    requestGeolocation: PropTypes.func,
    travel: PropTypes.object,
+   updateTravelRegion: PropTypes.func,
    user: PropTypes.object
 }
 
