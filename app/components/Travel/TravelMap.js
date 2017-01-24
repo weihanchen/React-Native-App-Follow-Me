@@ -1,7 +1,7 @@
 'use strict'
 import React, {Component, PropTypes} from 'react'
 //plugins
-import {Button, Dimensions, Text, TouchableOpacity, View} from 'react-native'
+import {Button, Dimensions, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import MapView, {Marker, Polyline} from 'react-native-maps'
 import Icon from 'react-native-vector-icons/FontAwesome'
 //stylesheets
@@ -16,7 +16,6 @@ class TravelMap extends Component {
    constructor(props) {
       super(props)
       this.state = {
-        mode: 'walk',
         region: {
           latitude: 23.59696570338207,
           longitude: 120.45780305184569,
@@ -34,7 +33,7 @@ class TravelMap extends Component {
    }
 
    onChangeMode(mode) {
-     this.setState({mode})
+     this.props.handleChangeMode(mode)
    }
 
    onLocated() {
@@ -54,11 +53,14 @@ class TravelMap extends Component {
                {travel.markers.map(marker => _markerSection(marker))}
             </MapView>
             <View style={styles.modeContainer}>
-              <TouchableOpacity style={styles.modeButton} activeOpacity={0.6} onPress={this.onChangeMode.bind(this,'walk')}>
-                <Icon name="male" style={styles.modeButtonIcon}></Icon>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.modeButton} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'car')}>
+              <TouchableOpacity style={_getModeStyle(travel.mode, 'driving')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'driving')}>
                 <Icon name="car" style={styles.modeButtonIcon}></Icon>
+              </TouchableOpacity>
+              <TouchableOpacity style={_getModeStyle(travel.mode, 'bicycling')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'bicycling')}>
+                <Icon name="bicycle" style={styles.modeButtonIcon}></Icon>
+              </TouchableOpacity>
+              <TouchableOpacity style={_getModeStyle(travel.mode, 'walking')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this,'walking')}>
+                <Icon name="male" style={styles.modeButtonIcon}></Icon>
               </TouchableOpacity>
             </View>
             <View style={styles.toolContainer}>
@@ -78,6 +80,12 @@ class TravelMap extends Component {
 }
 
 //private methods
+const _getModeStyle = (activeMode, currentMode) => {
+   const results = [styles.modeButton]
+   if (activeMode === currentMode) results.push(styles.modeButtonActive)
+   return results
+}
+
 const _markerSection = (marker) => {
    const renderType = {
       self: () => (
@@ -112,6 +120,7 @@ const _markerSection = (marker) => {
 }
 
 TravelMap.propTypes = {
+   handleChangeMode: PropTypes.func,
    handleRequestDirection: PropTypes.func,
    handleRequestRegion: PropTypes.func,
    travel: PropTypes.object

@@ -101,7 +101,7 @@ class CreateBody extends Component {
 
    onCreateGroup() {
       if (this.state.groupName.length <= 0) {
-         ToastAndroid.show('請輸入您的車隊名稱', ToastAndroid.SHORT)
+         ToastAndroid.show('請輸入您的群組名稱', ToastAndroid.SHORT)
       } else if (this.state.userName.length <= 0) {
          ToastAndroid.show('請輸入您的暱稱', ToastAndroid.SHORT)
       } else if (this.props.location.status != 'success') {
@@ -162,7 +162,7 @@ class CreateBody extends Component {
       return (
          <ScrollView>
             <View style={styles.container}>
-               <Text style={styles.title}>請輸入車隊名稱</Text>
+               <Text style={styles.title}>請輸入群組名稱</Text>
                <TextInput value={this.state.groupName} maxLength={10} onChangeText={(groupName) => this.setState({groupName})}></TextInput>
                <Text style={styles.title}>請輸入您的暱稱</Text>
                <TextInput value={this.state.userName} maxLength={10} onChangeText={(userName) => this.setState({userName})}></TextInput>
@@ -216,7 +216,7 @@ class CreateBody extends Component {
 
 const _createGroupBtnSection = (status) => {
    const defaultTemplate = (
-      <Text style={styles.title}>確定創建車隊</Text>
+      <Text style={styles.title}>確定創建群組</Text>
    )
    const renderStatus = {
       init: () => defaultTemplate,

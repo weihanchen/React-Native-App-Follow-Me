@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {View, Text, ToastAndroid, StyleSheet} from 'react-native'
 //actions
-import {requestTravelDirections, requestFetchTravelMarkers, requestGeolocation, updateTravelRegion} from '../actions'
+import {changeTravelMode, requestTravelDirections, requestFetchTravelMarkers, requestGeolocation, updateTravelRegion} from '../actions'
 //components
 import {TravelMap} from '../components/Travel'
 //config
@@ -74,7 +74,7 @@ class TravelContainer extends Component {
    componentWillReceiveProps(nextProps) {
       const locationStatusFun = {
         success: () => {
-          this.props.requestTravelDirections(nextProps.location.coordinate, this.state.endPosition.coordinate, 'car')
+          this.props.requestTravelDirections(nextProps.location.coordinate, this.state.endPosition.coordinate, this.props.travel.mode)
         }, //todo: change mode dynamic
         error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
@@ -86,8 +86,13 @@ class TravelContainer extends Component {
       navigator.geolocation.clearWatch(this.watchID)
    }
 
+   handleChangeMode(mode) {
+      this.props.changeTravelMode(mode)
+      this.handleRequestDirection()
+   }
+
    handleRequestDirection() {
-     this.props.requestTravelDirections(this.state.currentUser.coordinate, this.state.endPosition.coordinate, 'car')
+     this.props.requestTravelDirections(this.state.currentUser.coordinate, this.state.endPosition.coordinate, this.props.travel.mode)
    }
 
    handleRequestRegion() {
@@ -98,7 +103,11 @@ class TravelContainer extends Component {
       const {travel} = this.props
       return (
          <View style={styles.container}>
-            <TravelMap travel={travel} handleRequestDirection={this.handleRequestDirection.bind(this)} handleRequestRegion={this.handleRequestRegion.bind(this)}></TravelMap>
+            <TravelMap travel={travel}
+                       handleRequestDirection={this.handleRequestDirection.bind(this)}
+                       handleRequestRegion={this.handleRequestRegion.bind(this)}
+                       handleChangeMode={this.handleChangeMode.bind(this)}  >
+            </TravelMap>
          </View>
       )
    }
@@ -110,6 +119,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
    return bindActionCreators({
+      changeTravelMode,
       requestFetchTravelMarkers,
       requestGeolocation,
       requestTravelDirections,
@@ -124,6 +134,7 @@ const styles = StyleSheet.create({
 })
 
 TravelContainer.propTypes = {
+   changeTravelMode: PropTypes.func,
    group: PropTypes.object,
    groupId: PropTypes.string,
    requestDirections: PropTypes.func,

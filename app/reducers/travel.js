@@ -1,4 +1,5 @@
 import {
+   CHANGE_TRAVEL_MODE,
    REQUEST_TRAVEL_DIRECTIONS,
    REQUEST_TRAVEL_DIRECTIONS_SUCCESS,
    REQUEST_TRAVEL_MARKERS,
@@ -16,9 +17,16 @@ const travel = (state = {
    directions: [],
    error: null,
    markers: [],
+   mode: 'driving',
    status: 'init'
 }, action) => {
    switch (action.type) {
+      case CHANGE_TRAVEL_MODE:
+         return Object.assign({}, state, {
+            status: 'change_mode',
+            mode: action.mode
+         })
+         break
       case REQUEST_TRAVEL_DIRECTIONS:
          return Object.assign({}, state, {
             status: 'loading',

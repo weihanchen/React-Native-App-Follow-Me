@@ -38,6 +38,11 @@ export default StyleSheet.create({
       fontWeight: "bold",
       marginRight: 2
    },
+   messageContainer: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      ...StyleSheet.absoluteFillObject
+   },
    modeButton: {
       alignItems: 'center',
       backgroundColor: MainStyle.color.white,
@@ -48,8 +53,14 @@ export default StyleSheet.create({
       justifyContent: 'center',
       width: 30
    },
+   modeButtonActive: {
+      backgroundColor: MainStyle.color.skyblue
+   },
    modeButtonIcon: {
      fontSize: MainStyle.font.big
+   },
+   modeButtonIconActive: {
+     color: MainStyle.color.white
    },
    modeContainer: {
       flexDirection: 'row',
