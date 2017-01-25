@@ -24,12 +24,18 @@ class FirebaseService {
       const groupRef = Firebase.database().ref(`groups/${groupId}`)
       const userRef = Firebase.database().ref(`users/${userId}`)
       const group = Object.assign({}, {
+         endPosition,
+         expiredTime,
          groupname,
          leader: userId,
-         expiredTime,
-         updatedTime: new Date().getTime(),
+         members: {
+           userId: {
+             coordinate: startPosition
+           }
+         },
          startPosition,
-         endPosition
+         updatedTime: new Date().getTime()
+
       })
       const user = Object.assign({}, {
          username,
@@ -53,12 +59,12 @@ class FirebaseService {
       return groupRef.once('value').then(snapshot => {
          const isExist = snapshot.exists()
          const value = snapshot.val()
-         const members = value.hasOwnProperty('members')? Object.keys(value.members): []
+         const members = value.hasOwnProperty('members')
+            ? Object.keys(value.members)
+            : []
          if (!isExist)
             throw ERROR_MESSAGE.GROUP_NOT_EXIST
-         return Object.assign({}, value, {
-            members
-         })
+         return Object.assign({}, value, {members})
       })
    }
 
@@ -73,10 +79,10 @@ class FirebaseService {
    }
 
    updateCoordinate(groupId, userId, coordinate) {
-      const updates= {}
+      const updates = {}
       updates[`groups/${groupId}/updatedTime`] = new Date().getTime()
       updates[`users/${userId}/coordinate`] = Object.assign({}, coordinate)
-     return Firebase.database().ref().update(updates)
+      return Firebase.database().ref().update(updates)
    }
 }
 
