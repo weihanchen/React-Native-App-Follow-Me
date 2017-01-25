@@ -47,29 +47,23 @@ export function* requestTravelDirectionsFlow(action) {
 
 export function* requestTravelMarkersFlow(action) {
    try {
-      let currentUser = action.currentUser
-      let leader = yield call(firebaseService.requestFetchUser, action.leaderId)
-      let members = yield call(firebaseService.requestFetchUsers, action.members)
-      let endPosition = action.endPosition
-      currentUser.type = MARKER_TYPE.SELF
-      leader.type = MARKER_TYPE.LEADER
-      endPosition.type = MARKER_TYPE.END_POSITION
-      members = members
-         .filter(member => member.username != currentUser.username && member.username != leader.username)
-         .map(member => Object.assign({}, member, {
-            type: MARKER_TYPE.MEMBER
-         }))
-      let markers = [currentUser]
-      markers.push(...members)
-      if (leader.username != currentUser.username) markers.push(leader)
+      const group = yield call(firebaseService.requestFetchGroup, action.groupId)
+      const currentUid = action.currentUid
+      const leaderId = group.leader
+      const userIdList = Object.keys(group.members)
+      const users = yield call(firebaseService.requestFetchUsers, userIdList)
+      const endPosition = Object.assign({}, group.endPosition, {type: MARKER_TYPE.END_POSITION, key: 'endPosition'})
+      let markers = users.map(user => {
+        const coordinate = group.members[user.key].coordinate
+        let type = MARKER_TYPE.MEMBER
+        if (user.key === currentUid) type = MARKER_TYPE.SELF
+        else if (user.key === leaderId) type = MARKER_TYPE.LEADER
+        return Object.assign({}, user, {coordinate, type})
+      })
       markers.push(endPosition)
-      markers = markers.map((marker, index) => Object.assign({}, marker, {
-         key: index
-      }))
       yield put({
          type: REQUEST_TRAVEL_MARKERS_SUCCESS,
-         markers,
-         currentUser
+         markers
       })
    } catch (error) {
       yield put({

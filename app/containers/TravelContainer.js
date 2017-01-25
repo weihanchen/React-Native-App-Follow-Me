@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {View, Text, ToastAndroid, StyleSheet} from 'react-native'
 //actions
-import {changeTravelMode, requestTravelDirections, requestFetchTravelMarkers, requestGeolocation, updateTravelRegion} from '../actions'
+import {changeTravelMode, requestTravelDirections, requestFetchTravelMarkers, requestGeolocation, updateTravelMarkers, updateTravelRegion} from '../actions'
 //components
 import {TravelMap} from '../components/Travel'
 //config
@@ -32,25 +32,22 @@ class TravelContainer extends Component {
    componentDidMount() {
       const groupId = this.props.groupId
       const userId = this.props.userId
+      firebaseService.requestFetchUser(userId)
+        .then(user => {
+          this.setState({
+            currentUser: user
+          })
+          this.props.requestFetchTravelMarkers(userId, groupId)
+          this.props.requestGeolocation()
 
-      firebaseService.requestFetchGroup(groupId).then(group => {
-         this.setState({
-           leaderId: group.leader,
-           memberIdList: group.members,
-           endPosition: group.endPosition,
-           direction: group.endPosition
-         })
-         return firebaseService.requestFetchUser(userId)
-      }).then(user => {
-         this.setState({
-           currentUser: user
-         })
-         this.props.requestFetchTravelMarkers(this.state.currentUser, this.state.leaderId, this.state.memberIdList, this.state.endPosition)
-         this.props.requestGeolocation()
-         firebaseService.onGroupChanged(groupId, () => {
-            return this.props.requestFetchTravelMarkers(this.state.currentUser, this.state.leaderId, this.state.memberIdList, this.state.endPosition)
-         })
-      }).catch(error => console.log(error))
+          firebaseService.onGroupMembersChanged(groupId, (childSnapshot) => {
+              const key = childSnapshot.key
+              const value = childSnapshot.val()
+              const coordinate = value.coordinate
+              this.props.updateTravelMarkers(this.props.travel.markers, key, coordinate)
+          })
+        }).catch(error => ToastAndroid.show(error, ToastAndroid.SHORT))
+
 
       this.watchID = navigator.geolocation.watchPosition((position) => {
          const coordinate = {
@@ -80,6 +77,7 @@ class TravelContainer extends Component {
       }
       if (locationStatusFun.hasOwnProperty(nextProps.location.status) && nextProps.location.status != this.props.location.status)
          locationStatusFun[nextProps.location.status](nextProps.location.error)
+      if (nextProps.travel.status != this.props.travel.status && nextProps.travel.status === 'error') ToastAndroid.show(nextProps.travel.error, ToastAndroid.SHORT)
    }
 
    componentWillUnmount() {
@@ -123,6 +121,7 @@ const mapDispatchToProps = (dispatch) => {
       requestFetchTravelMarkers,
       requestGeolocation,
       requestTravelDirections,
+      updateTravelMarkers,
       updateTravelRegion
    }, dispatch)
 }
@@ -141,6 +140,7 @@ TravelContainer.propTypes = {
    requestFetchTravelMarkers: PropTypes.func,
    requestGeolocation: PropTypes.func,
    travel: PropTypes.object,
+   updateTravelMarkers: PropTypes.func,
    updateTravelRegion: PropTypes.func,
    user: PropTypes.object
 }

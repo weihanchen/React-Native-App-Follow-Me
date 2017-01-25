@@ -5,12 +5,13 @@ import {
    REQUEST_TRAVEL_MARKERS,
    REQUEST_TRAVEL_MARKERS_FAILED,
    REQUEST_TRAVEL_MARKERS_SUCCESS,
+   UPDATE_TRAVEL_MARKERS,
    UPDATE_TRAVEL_REGION
 } from '../actions'
 
 
 const travel = (state = {
-   coordinate: {
+   region: {
      latitude: 0,
      longitude: 0
    },
@@ -54,14 +55,19 @@ const travel = (state = {
       case REQUEST_TRAVEL_MARKERS_SUCCESS:
          return Object.assign({}, state, {
             status: 'request_marker_success',
-            markers: action.markers,
-            currentUser: action.currentUser
+            markers: action.markers
+         })
+         break
+     case UPDATE_TRAVEL_MARKERS:
+         return Object.assign({}, state, {
+            status: 'update_travel_markers',
+            markers: action.markers
          })
          break
      case UPDATE_TRAVEL_REGION:
          return Object.assign({}, state, {
             status: 'update_region',
-            coordinate: action.coordinate
+            region: action.coordinate
          })
          break
       default:
