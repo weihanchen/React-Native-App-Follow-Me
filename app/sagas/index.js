@@ -12,8 +12,9 @@ import {
    watchRequestGeolocation
 } from './location'
 import {
-  watchRequestTravelDirections,
-   watchRequestTravelMarkers
+   watchRequestTravelDirections,
+   watchRequestTravelMarkers,
+   watchRequestTravelUpdateCoordinate
 } from './travel'
 import {
    watchRequestFetchUser
@@ -28,6 +29,7 @@ export default function* rootSaga() {
       watchRequestGeolocation(),
       watchRequestGeocoding(),
       watchRequestTravelDirections(),
-      watchRequestTravelMarkers()
+      watchRequestTravelMarkers(),
+      watchRequestTravelUpdateCoordinate()
    ]
 }

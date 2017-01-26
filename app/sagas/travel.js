@@ -9,8 +9,10 @@ import {
    REQUEST_TRAVEL_DIRECTIONS,
    REQUEST_TRAVEL_DIRECTIONS_SUCCESS,
    REQUEST_TRAVEL_FAILED,
-   REQUEST_TRAVEL_MARKERS,
-   REQUEST_TRAVEL_MARKERS_SUCCESS
+   REQUEST_TRAVEL_INIT,
+   REQUEST_TRAVEL_INIT_SUCCESS,
+   REQUEST_TRAVEL_UPDATE_COORDINATE,
+   REQUEST_TRAVEL_UPDATE_COORDINATE_SUCCESS
 } from '../actions'
 import {
    FirebaseService,
@@ -27,15 +29,19 @@ export function* watchRequestTravelDirections() {
 }
 
 export function* watchRequestTravelMarkers() {
-   yield call(takeEvery, REQUEST_TRAVEL_MARKERS, requestTravelMarkersFlow)
+   yield call(takeEvery, REQUEST_TRAVEL_INIT, requestTravelMarkersFlow)
+}
+
+export function* watchRequestTravelUpdateCoordinate() {
+   yield call(takeEvery, REQUEST_TRAVEL_UPDATE_COORDINATE, requestTravelUpdateCoordinateFlow)
 }
 
 export function* requestTravelDirectionsFlow(action) {
    try {
       const directions = yield call(locationService.requestDirections, action.startCoordinate, action.endCoordinate, action.mode)
       yield put({
-        type: REQUEST_TRAVEL_DIRECTIONS_SUCCESS,
-        directions
+         type: REQUEST_TRAVEL_DIRECTIONS_SUCCESS,
+         directions
       })
    } catch (error) {
       yield put({
@@ -52,18 +58,41 @@ export function* requestTravelMarkersFlow(action) {
       const leaderId = group.leader
       const userIdList = Object.keys(group.members)
       const users = yield call(firebaseService.requestFetchUsers, userIdList)
-      const endPosition = Object.assign({}, group.endPosition, {type: MARKER_TYPE.END_POSITION, key: 'endPosition'})
+      const endPosition = Object.assign({}, group.endPosition, {
+         type: MARKER_TYPE.END_POSITION,
+         key: 'endPosition'
+      })
       let markers = users.map(user => {
-        const coordinate = group.members[user.key].coordinate
-        let type = MARKER_TYPE.MEMBER
-        if (user.key === currentUid) type = MARKER_TYPE.SELF
-        else if (user.key === leaderId) type = MARKER_TYPE.LEADER
-        return Object.assign({}, user, {coordinate, type})
+         const coordinate = group.members[user.key].coordinate
+         let type = MARKER_TYPE.MEMBER
+         if (user.key === currentUid) type = MARKER_TYPE.SELF
+         else if (user.key === leaderId) type = MARKER_TYPE.LEADER
+         return Object.assign({}, user, {
+            coordinate,
+            type
+         })
       })
       markers.push(endPosition)
       yield put({
-         type: REQUEST_TRAVEL_MARKERS_SUCCESS,
+         type: REQUEST_TRAVEL_INIT_SUCCESS,
+         endPosition,
          markers
+      })
+   } catch (error) {
+      yield put({
+         type: REQUEST_TRAVEL_FAILED,
+         error
+      })
+   }
+}
+
+export function* requestTravelUpdateCoordinateFlow(action) {
+   try {
+      const coordinate = action.coordinate
+      yield call(firebaseService.updateCoordinate, action.groupId, action.userId, coordinate)
+      yield put({
+         type: REQUEST_TRAVEL_UPDATE_COORDINATE_SUCCESS,
+         coordinate
       })
    } catch (error) {
       yield put({

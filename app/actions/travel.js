@@ -2,8 +2,10 @@ export const CHANGE_TRAVEL_MODE = 'CHANGE_TRAVEL_MODE'
 export const REQUEST_TRAVEL_DIRECTIONS = 'REQUEST_TRAVEL_DIRECTIONS'
 export const REQUEST_TRAVEL_DIRECTIONS_SUCCESS = 'REQUEST_TRAVEL_DIRECTIONS_SUCCESS'
 export const REQUEST_TRAVEL_FAILED = 'REQUEST_TRAVEL_FAILED'
-export const REQUEST_TRAVEL_MARKERS = 'REQUEST_TRAVEL_MARKERS'
-export const REQUEST_TRAVEL_MARKERS_SUCCESS = 'REQUEST_TRAVEL_MARKERS_SUCCESS'
+export const REQUEST_TRAVEL_INIT = 'REQUEST_TRAVEL_INIT'
+export const REQUEST_TRAVEL_INIT_SUCCESS = 'REQUEST_TRAVEL_INIT_SUCCESS'
+export const REQUEST_TRAVEL_UPDATE_COORDINATE = 'REQUEST_TRAVEL_UPDATE_COORDINATE'
+export const REQUEST_TRAVEL_UPDATE_COORDINATE_SUCCESS = 'REQUEST_TRAVEL_UPDATE_COORDINATE_SUCCESS'
 export const UPDATE_TRAVEL_MARKERS = 'UPDATE_TRAVEL_MARKERS'
 export const UPDATE_TRAVEL_REGION = 'UPDATE_TRAVEL_REGION'
 
@@ -12,8 +14,8 @@ const changeTravelMode = (mode) => ({
    mode
 })
 
-const requestFetchTravelMarkers = (currentUid, groupId) => ({
-   type: REQUEST_TRAVEL_MARKERS,
+const requestFetchTravelInit = (currentUid, groupId) => ({
+   type: REQUEST_TRAVEL_INIT,
    currentUid,
    groupId
 })
@@ -36,6 +38,13 @@ const updateTravelMarkers = (markers, key, coordinate) => {
     }
 }
 
+const requestTravelUpdateCoordinate = (groupId, userId, coordinate) => ({
+     type: REQUEST_TRAVEL_UPDATE_COORDINATE,
+     groupId,
+     userId,
+     coordinate
+})
+
 const updateTravelRegion = (coordinate) => ({
    type: UPDATE_TRAVEL_REGION,
    coordinate
@@ -43,8 +52,9 @@ const updateTravelRegion = (coordinate) => ({
 
 export {
    changeTravelMode,
-   requestFetchTravelMarkers,
+   requestFetchTravelInit,
    requestTravelDirections,
+   requestTravelUpdateCoordinate,
    updateTravelMarkers,
    updateTravelRegion
 }

@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {View, Text, ToastAndroid, StyleSheet} from 'react-native'
 //actions
-import {changeTravelMode, requestTravelDirections, requestFetchTravelMarkers, requestGeolocation, updateTravelMarkers, updateTravelRegion} from '../actions'
+import {changeTravelMode, requestFetchTravelInit, requestGeolocation, requestTravelDirections, requestTravelUpdateCoordinate,updateTravelMarkers, updateTravelRegion} from '../actions'
 //components
 import {TravelMap} from '../components/Travel'
 //config
@@ -17,13 +17,6 @@ const firebaseService = new FirebaseService()
 class TravelContainer extends Component {
    constructor(props) {
       super(props)
-      this.state = {
-         currentUser: {},
-         direction: {},
-         endPosition: {},
-         leaderId: '',
-         memberIdList: []
-      }
    }
 
    watchID :
@@ -32,21 +25,16 @@ class TravelContainer extends Component {
    componentDidMount() {
       const groupId = this.props.groupId
       const userId = this.props.userId
-      firebaseService.requestFetchUser(userId)
-        .then(user => {
-          this.setState({
-            currentUser: user
-          })
-          this.props.requestFetchTravelMarkers(userId, groupId)
-          this.props.requestGeolocation()
 
-          firebaseService.onGroupMembersChanged(groupId, (childSnapshot) => {
-              const key = childSnapshot.key
-              const value = childSnapshot.val()
-              const coordinate = value.coordinate
-              this.props.updateTravelMarkers(this.props.travel.markers, key, coordinate)
-          })
-        }).catch(error => ToastAndroid.show(error, ToastAndroid.SHORT))
+
+      this.props.requestGeolocation()
+
+      firebaseService.onGroupMembersChanged(groupId, (childSnapshot) => {
+          const key = childSnapshot.key
+          const value = childSnapshot.val()
+          const coordinate = value.coordinate
+          this.props.updateTravelMarkers(this.props.travel.markers, key, coordinate)
+      })
 
 
       this.watchID = navigator.geolocation.watchPosition((position) => {
@@ -54,11 +42,7 @@ class TravelContainer extends Component {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
          }
-         const currentUser = Object.assign({}, this.state.currentUser, {coordinate})
-         this.setState({
-           currentUser: currentUser
-         })
-         firebaseService.updateCoordinate(groupId, userId, coordinate)
+         this.props.requestTravelUpdateCoordinate(groupId, userId, coordinate)
       }, (error) => ToastAndroid.show(ERROR_MESSAGE.POSITION_ERROR, ToastAndroid.SHORT), {
          enableHighAccuracy: true,
          distanceFilter: 2,
@@ -69,15 +53,16 @@ class TravelContainer extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
-      const locationStatusFun = {
-        success: () => {
-          this.props.requestTravelDirections(nextProps.location.coordinate, this.state.endPosition.coordinate, this.props.travel.mode)
-        }, //todo: change mode dynamic
-        error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
+     const groupId = this.props.groupId
+     const userId = this.props.userId
+      const travelStatusFunc = {
+         update_coordinate_success: () => this.props.requestFetchTravelInit(userId, groupId),
+         request_init_success: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.endPosition.coordinate, nextProps.travel.mode),
+         error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
-      if (locationStatusFun.hasOwnProperty(nextProps.location.status) && nextProps.location.status != this.props.location.status)
-         locationStatusFun[nextProps.location.status](nextProps.location.error)
-      if (nextProps.travel.status != this.props.travel.status && nextProps.travel.status === 'error') ToastAndroid.show(nextProps.travel.error, ToastAndroid.SHORT)
+
+      if (travelStatusFunc.hasOwnProperty(nextProps.travel.status) && nextProps.travel.status != this.props.travel.status)
+         travelStatusFunc[nextProps.travel.status](nextProps.travel.error)
    }
 
    componentWillUnmount() {
@@ -90,11 +75,11 @@ class TravelContainer extends Component {
    }
 
    handleRequestDirection() {
-     this.props.requestTravelDirections(this.state.currentUser.coordinate, this.state.endPosition.coordinate, this.props.travel.mode)
+     this.props.requestTravelDirections(this.props.travel.coordinate, this.props.travel.endPosition.coordinate, this.props.travel.mode)
    }
 
    handleRequestRegion() {
-     this.props.updateTravelRegion(this.state.currentUser.coordinate)
+     this.props.updateTravelRegion(this.props.travel.coordinate)
    }
 
    render() {
@@ -118,9 +103,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
    return bindActionCreators({
       changeTravelMode,
-      requestFetchTravelMarkers,
+      requestFetchTravelInit,
       requestGeolocation,
       requestTravelDirections,
+      requestTravelUpdateCoordinate,
       updateTravelMarkers,
       updateTravelRegion
    }, dispatch)
@@ -139,6 +125,7 @@ TravelContainer.propTypes = {
    requestDirections: PropTypes.func,
    requestFetchTravelMarkers: PropTypes.func,
    requestGeolocation: PropTypes.func,
+   requestTravelUpdateCoordinate: PropTypes.func,
    travel: PropTypes.object,
    updateTravelMarkers: PropTypes.func,
    updateTravelRegion: PropTypes.func,
