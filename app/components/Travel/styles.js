@@ -17,7 +17,7 @@ export default StyleSheet.create({
       flexDirection: 'row'
    },
    endText: {
-      color: MainStyle.color.danger,
+      color: MainStyle.color.blue,
       fontSize: MainStyle.font.medium,
       fontWeight: "bold",
       margin: 2

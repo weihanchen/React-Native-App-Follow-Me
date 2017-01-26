@@ -3,7 +3,8 @@ import React, {Component, PropTypes} from 'react'
 //plugins
 import {Button, Dimensions, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import MapView, {Marker, Polyline} from 'react-native-maps'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import FoundationIcon from 'react-native-vector-icons/Foundation'
 //stylesheets
 import styles from './styles'
 import mainStyle from '../../stylesheets'
@@ -54,24 +55,24 @@ class TravelMap extends Component {
             </MapView>
             <View style={styles.modeContainer}>
               <TouchableOpacity style={_getModeStyle(travel.mode, 'driving')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'driving')}>
-                <Icon name="car" style={styles.modeButtonIcon}></Icon>
+                <FontAwesomeIcon name="car" style={styles.modeButtonIcon}></FontAwesomeIcon>
               </TouchableOpacity>
               <TouchableOpacity style={_getModeStyle(travel.mode, 'bicycling')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'bicycling')}>
-                <Icon name="bicycle" style={styles.modeButtonIcon}></Icon>
+                <FontAwesomeIcon name="bicycle" style={styles.modeButtonIcon}></FontAwesomeIcon>
               </TouchableOpacity>
               <TouchableOpacity style={_getModeStyle(travel.mode, 'walking')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this,'walking')}>
-                <Icon name="male" style={styles.modeButtonIcon}></Icon>
+                <FontAwesomeIcon name="male" style={styles.modeButtonIcon}></FontAwesomeIcon>
               </TouchableOpacity>
             </View>
             <View style={styles.toolContainer}>
                <TouchableOpacity style={[styles.toolButton, styles.toolButtonAlert]} activeOpacity={0.6}>
-                  <Icon name="bell" style={[styles.toolButtonIcon, styles.toolButtonIconAlert]}></Icon>
+                  <FontAwesomeIcon name="bell" style={[styles.toolButtonIcon, styles.toolButtonIconAlert]}></FontAwesomeIcon>
                </TouchableOpacity>
                <TouchableOpacity style={styles.toolButton} activeOpacity={0.6} onPress={this.onRequestDirection.bind(this)}>
-                  <Icon name="location-arrow" style={styles.toolButtonIcon}></Icon>
+                  <FontAwesomeIcon name="location-arrow" style={styles.toolButtonIcon}></FontAwesomeIcon>
                </TouchableOpacity>
                <TouchableOpacity style={styles.toolButton} activeOpacity={0.6} onPress={this.onLocated.bind(this)}>
-                  <Icon name="arrows" style={styles.toolButtonIcon}></Icon>
+                  <FontAwesomeIcon name="arrows" style={styles.toolButtonIcon}></FontAwesomeIcon>
                </TouchableOpacity>
             </View>
          </View>
@@ -90,24 +91,24 @@ const _markerSection = (marker) => {
    const renderType = {
       self: () => (
          <View style={styles.member}>
-            <Icon name='circle' style={styles.memberText}/>
+            <FontAwesomeIcon name='circle' style={styles.memberText}/>
          </View>
       ),
       member: () => (
          <View style={styles.member}>
-            <Icon name='user' style={styles.memberText}/>
+            <FontAwesomeIcon name='user' style={styles.memberText}/>
             <Text style={styles.memberText}>{marker.username}</Text>
          </View>
       ),
       leader: () => (
          <View style={styles.member}>
-            <Icon name='user' style={styles.leaderText}/>
+            <FoundationIcon name="crown" style={styles.leaderText}></FoundationIcon>
             <Text style={styles.leaderText}>{marker.username}</Text>
          </View>
       ),
       endPosition: () => (
          <View style={styles.member}>
-            <Icon name='flag' style={styles.endText}/>
+            <FontAwesomeIcon name='flag' style={styles.endText}/>
             <Text style={styles.endText}>終點</Text>
          </View>
       )

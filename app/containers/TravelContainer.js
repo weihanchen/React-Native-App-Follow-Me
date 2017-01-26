@@ -53,13 +53,19 @@ class TravelContainer extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
-     const groupId = this.props.groupId
-     const userId = this.props.userId
+      const groupId = this.props.groupId
+      const userId = this.props.userId
+      const locationStatusFunc = {
+         success: () => this.props.requestFetchTravelInit(userId, groupId),
+         error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
+      }
       const travelStatusFunc = {
-         update_coordinate_success: () => this.props.requestFetchTravelInit(userId, groupId),
          request_init_success: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.endPosition.coordinate, nextProps.travel.mode),
          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
+
+      if (locationStatusFunc.hasOwnProperty(nextProps.location.status) && nextProps.location.status != this.props.location.status)
+         locationStatusFunc[nextProps.location.status](nextProps.location.error)
 
       if (travelStatusFunc.hasOwnProperty(nextProps.travel.status) && nextProps.travel.status != this.props.travel.status)
          travelStatusFunc[nextProps.travel.status](nextProps.travel.error)
