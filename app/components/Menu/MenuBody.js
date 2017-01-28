@@ -29,8 +29,8 @@ class MenuBody extends Component {
                      <Icon name="users" style={styles.icon}/>
                   </View>
                   <View>
-                     <Text style={styles.itemTitle}>創建車隊</Text>
-                     <Text style={styles.itemSubTitle}>車隊名稱、用戶ID、結束時間、終點</Text>
+                     <Text style={styles.itemTitle}>創建群組</Text>
+                     <Text style={styles.itemSubTitle}>群組名稱、用戶ID、結束時間、終點</Text>
                   </View>
                </View>
             </TouchableOpacity>
@@ -40,19 +40,18 @@ class MenuBody extends Component {
                      <Icon name="plus" style={styles.icon}/>
                   </View>
                   <View>
-                     <Text style={styles.itemTitle}>加入車隊</Text>
-                     <Text style={styles.itemSubTitle}>根據ID加入、搜尋車隊名稱</Text>
+                     <Text style={styles.itemTitle}>加入群組</Text>
+                     <Text style={styles.itemSubTitle}>根據ID加入、搜尋群組名稱</Text>
                   </View>
                </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.onSetting.bind(this)} style={styles.item} activeOpacity={0.8}>
                <View style={styles.itemContainer}>
                   <View style={styles.itemIcon}>
-                     <Icon name="cog" style={styles.icon}/>
+                     <Icon name="question" style={styles.icon}/>
                   </View>
                   <View>
-                     <Text style={styles.itemTitle}>設定</Text>
-                     <Text style={styles.itemSubTitle}>Pending...</Text>
+                     <Text style={styles.itemTitle}>說明</Text>
                   </View>
                </View>
             </TouchableOpacity>
