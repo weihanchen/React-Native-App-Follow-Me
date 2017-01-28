@@ -12,7 +12,9 @@ class MenuBody extends Component {
    componentDidMount() {}
    componentWillUnmount() {}
 
-   onAddGroup() {}
+   onAddGroup() {
+      this.props.navigateToAddToGroup();
+   }
 
    onCreateGroup() {
       this.props.navigateToCreateGroup();
@@ -61,6 +63,7 @@ class MenuBody extends Component {
 }
 
 MenuBody.propTypes = {
+   navigateToAddToGroup: PropTypes.func,
    navigateToCreateGroup: PropTypes.func
 }
 

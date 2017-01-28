@@ -7,6 +7,7 @@ import {InteractionManager, Text, View, StyleSheet} from 'react-native'
 //actions
 import {requestCheckIdentify} from '../actions'
 //components
+import AddContainer from './AddContainer'
 import {MenuBody} from '../components/Menu'
 import Splash from '../components/Splash';
 import CreateContainer from './CreateContainer'
@@ -34,6 +35,13 @@ class MenuContainer extends Component {
       }
    }
 
+   navigateToAddToGroup() {
+      const {navigator} = this.props
+      InteractionManager.runAfterInteractions(() => {
+         navigator.push({component: AddContainer})
+      }, 1000)
+   }
+
    navigateToCreateGroup() {
       const {navigator} = this.props
       InteractionManager.runAfterInteractions(() => {
@@ -44,7 +52,7 @@ class MenuContainer extends Component {
    render() {
       return (
          <View style={styles.container}>
-            <MenuBody navigateToCreateGroup={this.navigateToCreateGroup.bind(this)}></MenuBody>
+            <MenuBody navigateToAddToGroup={this.navigateToAddToGroup.bind(this)} navigateToCreateGroup={this.navigateToCreateGroup.bind(this)}></MenuBody>
          </View>
       );
    }
