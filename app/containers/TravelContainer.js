@@ -25,8 +25,6 @@ class TravelContainer extends Component {
    componentDidMount() {
       const groupId = this.props.groupId
       const userId = this.props.userId
-
-
       this.props.requestGeolocation()
 
       firebaseService.onGroupMembersChanged(groupId, (childSnapshot) => {

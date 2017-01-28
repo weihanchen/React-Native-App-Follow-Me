@@ -1,6 +1,7 @@
 export const ERROR_MESSAGE = {
     GROUP_EXIST: '群組已存在',
     GROUP_NOT_EXIST: '該群組不存在',
+    USER_EXIST: '該用戶已存在',
     USER_NOT_EXIST: '該用戶不存在',
     POSITION_ERROR: '請開啟定位服務'
 }

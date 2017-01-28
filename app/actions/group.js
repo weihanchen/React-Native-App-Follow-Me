@@ -1,25 +1,33 @@
+export const REQUEST_ADD_TO_GROUP = 'REQUEST_ADD_TO_GROUP'
+export const REQUEST_ADD_TO_GROUP_SUCCESS = 'REQUEST_ADD_TO_GROUP_SUCCESS'
 export const REQUEST_CREATEGROUP = 'REQUEST_CREATEGROUP'
-export const REQUEST_CREATEGROUP_FAILED = 'REQUEST_CREATEGROUP_FAILED'
 export const REQUEST_CREATEGROUP_SUCCESS = 'REQUEST_CREATEGROUP_SUCCESS'
 export const REQUEST_FETCH_GROUP = 'REQUEST_FETCH_GROUP'
-export const REQUEST_FETCH_GROUP_FAILED = 'REQUEST_FETCH_GROUP_FAILED'
 export const REQUEST_FETCH_GROUP_SUCCESS = 'REQUEST_FETCH_GROUP_SUCCESS'
+export const REQUEST_GROUP_FAILED = 'REQUEST_GROUP_FAILED'
 
-const requestCreateGroup = (groupName, username, expiredTime, startPosition, endPosition) => ({
-  type: REQUEST_CREATEGROUP,
-  groupName,
-  username,
-  expiredTime,
-  startPosition,
-  endPosition
+const requestAddToGroup = (groupName, userName) => ({
+   type: REQUEST_ADD_TO_GROUP,
+   groupName,
+   userName
+})
+
+const requestCreateGroup = (groupName, userName, expiredTime, startPosition, endPosition) => ({
+   type: REQUEST_CREATEGROUP,
+   groupName,
+   userName,
+   expiredTime,
+   startPosition,
+   endPosition
 })
 
 const requestFetchGroup = (groupId) => ({
-  type: REQUEST_FETCH_GROUP,
-  groupId
+   type: REQUEST_FETCH_GROUP,
+   groupId
 })
 
 export {
-  requestCreateGroup,
-  requestFetchGroup
+   requestAddToGroup,
+   requestCreateGroup,
+   requestFetchGroup
 }

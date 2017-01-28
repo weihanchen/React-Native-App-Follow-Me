@@ -1,6 +1,6 @@
 'use strict'
 import React, {Component, PropTypes} from 'react'
-import {View, Text, TextInput, ToastAndroid, TouchableOpacity, StyleSheet} from 'react-native'
+import {ActivityIndicator, View, Text, TextInput, ToastAndroid, TouchableOpacity, StyleSheet} from 'react-native'
 //stylesheets
 import mainStyle from '../../stylesheets'
 import styles from './styles'
@@ -20,7 +20,6 @@ class AddBody extends Component {
       } else if (this.state.userName.length <= 0) {
          ToastAndroid.show('請輸入您的暱稱', ToastAndroid.SHORT)
       } else {
-
          const groupName = this.state.groupName,
             userName = this.state.userName
          this.props.handleAddToGroup(groupName, userName)
