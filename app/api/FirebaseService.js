@@ -97,9 +97,11 @@ class FirebaseService {
    }
 
    updateCoordinate(groupId, userId, coordinate) {
-      const updates = {}
-      updates[`groups/${groupId}/members/${userId}/coordinate`] = Object.assign({}, coordinate)
-      return Firebase.database().ref().update(updates)
+      return _fetchUser(userId).then(user => {
+        const updates = {}
+        updates[`groups/${groupId}/members/${userId}/coordinate`] = Object.assign({}, coordinate)
+        return Firebase.database().ref().update(updates)
+      })
    }
 }
 

@@ -5,7 +5,7 @@ const checkStatus = (response) => {
       return response.json().then(json => {
          const errorMsg = json.hasOwnProperty('error_message') ? json.error_message : response.statusText
          const error = new Error(errorMsg)
-         throw error
+         throw errorMsg
       })
    }
 }

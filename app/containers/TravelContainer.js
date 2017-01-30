@@ -23,6 +23,7 @@ class TravelContainer extends Component {
       ? number = null
 
    componentDidMount() {
+     console.log('unmounted')
       const groupId = this.props.groupId
       const userId = this.props.userId
       this.props.requestGeolocation()

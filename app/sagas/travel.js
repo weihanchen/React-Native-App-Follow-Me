@@ -47,7 +47,7 @@ export function* requestTravelDirectionsFlow(action) {
    } catch (error) {
       yield put({
          type: REQUEST_TRAVEL_FAILED,
-         error
+         error: typeof error === 'string' ? error : error.toString()
       })
    }
 }

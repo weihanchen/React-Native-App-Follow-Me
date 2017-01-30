@@ -4,7 +4,7 @@ This application will help keep the car team traveling
 ## Requirements
 * [Nodejs 7.1.0+](https://nodejs.org/en/)
 * [NPM 3.10.9+](https://www.npmjs.com/)
-* [React Native 0.39+](https://facebook.github.io/react-native/docs/getting-started.html)
+* [React Native 0.39](https://facebook.github.io/react-native/docs/getting-started.html)
 * SDK Platforms `Androis 6.0(Marshmallow)`
 * SDK Tools `Google Play services`、`Android SDK Build-Tools 23.0.3+`
 
