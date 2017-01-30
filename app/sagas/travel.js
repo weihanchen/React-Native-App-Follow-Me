@@ -12,7 +12,8 @@ import {
    REQUEST_TRAVEL_INIT,
    REQUEST_TRAVEL_INIT_SUCCESS,
    REQUEST_TRAVEL_UPDATE_COORDINATE,
-   REQUEST_TRAVEL_UPDATE_COORDINATE_SUCCESS
+   REQUEST_TRAVEL_UPDATE_COORDINATE_SUCCESS,
+   UPDATE_TRAVEL_REGION
 } from '../actions'
 import {
    FirebaseService,
@@ -28,8 +29,8 @@ export function* watchRequestTravelDirections() {
    yield call(takeEvery, REQUEST_TRAVEL_DIRECTIONS, requestTravelDirectionsFlow)
 }
 
-export function* watchRequestTravelMarkers() {
-   yield call(takeEvery, REQUEST_TRAVEL_INIT, requestTravelMarkersFlow)
+export function* watchRequestTravelInit() {
+   yield call(takeEvery, REQUEST_TRAVEL_INIT, requestTravelInitFlow)
 }
 
 export function* watchRequestTravelUpdateCoordinate() {
@@ -51,9 +52,10 @@ export function* requestTravelDirectionsFlow(action) {
    }
 }
 
-export function* requestTravelMarkersFlow(action) {
+export function* requestTravelInitFlow(action) {
    try {
       const group = yield call(firebaseService.requestFetchGroup, action.groupId)
+      const coordinate = action.coordinate
       const currentUid = action.currentUid
       const leaderId = group.leader
       const userIdList = Object.keys(group.members)
@@ -77,6 +79,10 @@ export function* requestTravelMarkersFlow(action) {
          type: REQUEST_TRAVEL_INIT_SUCCESS,
          endPosition,
          markers
+      })
+      yield put({
+         type: UPDATE_TRAVEL_REGION,
+         coordinate
       })
    } catch (error) {
       yield put({

@@ -14,8 +14,9 @@ const changeTravelMode = (mode) => ({
    mode
 })
 
-const requestFetchTravelInit = (currentUid, groupId) => ({
+const requestFetchTravelInit = (coordinate, currentUid, groupId) => ({
    type: REQUEST_TRAVEL_INIT,
+   coordinate,
    currentUid,
    groupId
 })

@@ -5,13 +5,17 @@ import {bindActionCreators} from 'redux'
 import {InteractionManager, StyleSheet, Text, ToastAndroid, View} from 'react-native'
 //components
 import {AddBody} from '../components/Add'
-import MenuContainer from './MenuContainer'
+import TravelContainer from './TravelContainer'
 //actions
 import {requestAddToGroup} from '../actions'
 
 class AddContainer extends Component {
    constructor(props) {
       super(props)
+      this.state = {
+        groupName: '',
+        userName: ''
+      }
    }
 
    componentWillReceiveProps(nextProps) {
@@ -19,7 +23,7 @@ class AddContainer extends Component {
          add_success: () => {
             const {navigator} = this.props
             InteractionManager.runAfterInteractions(() => {
-               navigator.push({component: MenuContainer})
+               navigator.replace({component: TravelContainer})
             }, 1000)
          },
          error: (group) => ToastAndroid.show(group.error, ToastAndroid.SHORT)
@@ -29,6 +33,7 @@ class AddContainer extends Component {
    }
 
    handleAddToGroup(groupName, userName) {
+      this.setState({groupName, userName})
       this.props.requestAddToGroup(groupName, userName)
    }
 

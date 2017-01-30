@@ -54,7 +54,7 @@ class TravelContainer extends Component {
       const groupId = this.props.groupId
       const userId = this.props.userId
       const locationStatusFunc = {
-         success: () => this.props.requestFetchTravelInit(userId, groupId),
+         success: () => this.props.requestFetchTravelInit(nextProps.location.coordinate, userId, groupId),
          error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
       }
       const travelStatusFunc = {

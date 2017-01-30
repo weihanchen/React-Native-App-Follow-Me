@@ -8,8 +8,8 @@ Firebase.initializeApp(firebaseConfig)
 class FirebaseService {
    constructor() {}
 
-   onGroupMembersChanged(groupname, callback) {
-      const groupRef = Firebase.database().ref(`groups/${groupname}/members`)
+   onGroupMembersChanged(groupName, callback) {
+      const groupRef = Firebase.database().ref(`groups/${groupName}/members`)
       groupRef.on('child_changed', callback)
    }
 
@@ -18,13 +18,13 @@ class FirebaseService {
       usersRef.on('child_added', callback)
    }
 
-   requestAddToGroup(groupname, username) {
-      const groupId = groupname
-      const userId = `${groupname}-${username}`
+   requestAddToGroup(groupName, userName) {
+      const groupId = groupName
+      const userId = `${groupName}-${userName}`
       const groupRef = Firebase.database().ref(`groups/${groupId}`)
       const groupMemberRef = Firebase.database().ref(`groups/${groupId}/members/${userId}`)
       const userRef = Firebase.database().ref(`users/${userId}`)
-      const user = Object.assign({}, {username})
+      const user = Object.assign({}, {userName})
       return groupRef.once('value').then(snapshot => {
          return new Promise((resolve, reject) => {
             const canAdd = snapshot.val() !== null
@@ -47,15 +47,15 @@ class FirebaseService {
       })).then(() => userRef.set(user)).then(() => AsyncStorage.setItem('groupId', groupId)).then(() => AsyncStorage.setItem('userId', userId))
    }
 
-   requestCreateGroup(groupname, username, expiredTime, startPosition, endPosition) {
-      const groupId = `${groupname}`
-      const userId = `${groupname}-${username}`
+   requestCreateGroup(groupName, userName, expiredTime, startPosition, endPosition) {
+      const groupId = `${groupName}`
+      const userId = `${groupName}-${userName}`
       const groupRef = Firebase.database().ref(`groups/${groupId}`)
       const userRef = Firebase.database().ref(`users/${userId}`)
       const group = Object.assign({}, {
          endPosition,
          expiredTime,
-         groupname,
+         groupName,
          leader: userId,
          members: {},
          startPosition,
@@ -64,7 +64,7 @@ class FirebaseService {
       group.members[userId] = {
          coordinate: startPosition
       }
-      const user = Object.assign({}, {username})
+      const user = Object.assign({}, {userName})
       return groupRef.once('value').then(snapshot => {
          return new Promise((resolve, reject) => {
             const canCreate = snapshot.val() === null

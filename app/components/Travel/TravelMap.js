@@ -18,8 +18,8 @@ class TravelMap extends Component {
       super(props)
       this.state = {
         region: {
-          latitude: 23.59696570338207,
-          longitude: 120.45780305184569,
+          latitude: 0,
+          longitude: 0,
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA
         }

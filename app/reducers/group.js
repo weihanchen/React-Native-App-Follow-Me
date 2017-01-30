@@ -9,10 +9,16 @@ import {
 } from '../actions';
 
 export default function group(state = {
+   endPosition: {},
    error: null,
-   status: 'init'
+   expiredTime: 0,
+   groupName: '',
+   leader: '',
+   members: {},
+   startPosition: {},
+   status: 'init',
+   updatedTime: 0
 }, action) {
-   console.log(action.type)
    switch (action.type) {
       case REQUEST_ADD_TO_GROUP:
          return Object.assign({}, state, {
