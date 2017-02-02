@@ -66,6 +66,7 @@ const travel = (state = {
       case REQUEST_TRAVEL_INIT_SUCCESS:
          return Object.assign({}, state, {
             status: 'request_init_success',
+            coordinate: action.coordinate,
             endPosition: action.endPosition,
             markers: action.markers,
          })

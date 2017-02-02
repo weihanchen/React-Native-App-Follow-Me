@@ -77,6 +77,7 @@ export function* requestTravelInitFlow(action) {
       markers.push(endPosition)
       yield put({
          type: REQUEST_TRAVEL_INIT_SUCCESS,
+         coordinate,
          endPosition,
          markers
       })

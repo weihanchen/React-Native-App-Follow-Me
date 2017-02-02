@@ -37,6 +37,10 @@ class TravelMap extends Component {
      this.props.handleChangeMode(mode)
    }
 
+   onLeaveGroup() {
+     this.props.handleLeaveGroup()
+   }
+
    onLocated() {
       this.props.handleRequestRegion()
    }
@@ -55,7 +59,7 @@ class TravelMap extends Component {
             </MapView>
             <View style={styles.topContainer}>
               <View style={styles.leaveContainer}>
-                <TouchableOpacity style={styles.leaveButton} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'driving')}>
+                <TouchableOpacity style={styles.leaveButton} activeOpacity={0.6} onPress={this.onLeaveGroup.bind(this)}>
                   <FontAwesomeIcon name="sign-out" style={styles.leaveButtonText}></FontAwesomeIcon>
                   <Text style={styles.leaveButtonText}>離開隊伍</Text>
                 </TouchableOpacity>
@@ -131,6 +135,7 @@ const _markerSection = (marker) => {
 
 TravelMap.propTypes = {
    handleChangeMode: PropTypes.func,
+   handleLeaveGroup: PropTypes.func,
    handleRequestDirection: PropTypes.func,
    handleRequestRegion: PropTypes.func,
    travel: PropTypes.object

@@ -2,7 +2,7 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {View, Text, ToastAndroid, StyleSheet} from 'react-native'
+import {Alert, View, Text, ToastAndroid, StyleSheet} from 'react-native'
 //actions
 import {changeTravelMode, requestFetchTravelInit, requestGeolocation, requestTravelDirections, requestTravelUpdateCoordinate,updateTravelMarkers, updateTravelRegion} from '../actions'
 //components
@@ -23,7 +23,6 @@ class TravelContainer extends Component {
       ? number = null
 
    componentDidMount() {
-     console.log('unmounted')
       const groupId = this.props.groupId
       const userId = this.props.userId
       this.props.requestGeolocation()
@@ -79,6 +78,12 @@ class TravelContainer extends Component {
       this.handleRequestDirection()
    }
 
+   handleLeaveGroup() {
+     const groupId = this.props.groupId
+     const userId = this.props.userId
+
+   }
+
    handleRequestDirection() {
      this.props.requestTravelDirections(this.props.travel.coordinate, this.props.travel.endPosition.coordinate, this.props.travel.mode)
    }
@@ -91,10 +96,11 @@ class TravelContainer extends Component {
       const {travel} = this.props
       return (
          <View style={styles.container}>
-            <TravelMap travel={travel}
+            <TravelMap handleLeaveGroup={this.handleLeaveGroup.bind(this)}
+                       handleChangeMode={this.handleChangeMode.bind(this)}
                        handleRequestDirection={this.handleRequestDirection.bind(this)}
                        handleRequestRegion={this.handleRequestRegion.bind(this)}
-                       handleChangeMode={this.handleChangeMode.bind(this)}  >
+                       travel={travel} >
             </TravelMap>
          </View>
       )
