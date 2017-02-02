@@ -53,17 +53,26 @@ class TravelMap extends Component {
                <Polyline coordinates={travel.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
                {travel.markers.map(marker => _markerSection(marker))}
             </MapView>
-            <View style={styles.modeContainer}>
-              <TouchableOpacity style={_getModeStyle(travel.mode, 'driving')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'driving')}>
-                <FontAwesomeIcon name="car" style={styles.modeButtonIcon}></FontAwesomeIcon>
-              </TouchableOpacity>
-              <TouchableOpacity style={_getModeStyle(travel.mode, 'bicycling')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'bicycling')}>
-                <FontAwesomeIcon name="bicycle" style={styles.modeButtonIcon}></FontAwesomeIcon>
-              </TouchableOpacity>
-              <TouchableOpacity style={_getModeStyle(travel.mode, 'walking')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this,'walking')}>
-                <FontAwesomeIcon name="male" style={styles.modeButtonIcon}></FontAwesomeIcon>
-              </TouchableOpacity>
+            <View style={styles.topContainer}>
+              <View style={styles.leaveContainer}>
+                <TouchableOpacity style={styles.leaveButton} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'driving')}>
+                  <FontAwesomeIcon name="sign-out" style={styles.leaveButtonText}></FontAwesomeIcon>
+                  <Text style={styles.leaveButtonText}>離開隊伍</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.modeContainer}>
+                <TouchableOpacity style={_getModeStyle(travel.mode, 'driving')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'driving')}>
+                  <FontAwesomeIcon name="car" style={styles.modeButtonIcon}></FontAwesomeIcon>
+                </TouchableOpacity>
+                <TouchableOpacity style={_getModeStyle(travel.mode, 'bicycling')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'bicycling')}>
+                  <FontAwesomeIcon name="bicycle" style={styles.modeButtonIcon}></FontAwesomeIcon>
+                </TouchableOpacity>
+                <TouchableOpacity style={_getModeStyle(travel.mode, 'walking')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this,'walking')}>
+                  <FontAwesomeIcon name="male" style={styles.modeButtonIcon}></FontAwesomeIcon>
+                </TouchableOpacity>
+              </View>
             </View>
+
             <View style={styles.toolContainer}>
                <TouchableOpacity style={[styles.toolButton, styles.toolButtonAlert]} activeOpacity={0.6}>
                   <FontAwesomeIcon name="bell" style={[styles.toolButtonIcon, styles.toolButtonIconAlert]}></FontAwesomeIcon>

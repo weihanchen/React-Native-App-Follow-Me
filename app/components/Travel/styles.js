@@ -28,6 +28,25 @@ export default StyleSheet.create({
       fontWeight: "bold",
       margin: 2
    },
+   leaveButton: {
+     alignItems: 'center',
+     backgroundColor: MainStyle.color.danger,
+     borderColor: MainStyle.color.skyblue,
+     borderWidth: 1,
+     flexDirection: 'row',
+     height: 30,
+     justifyContent: 'center',
+     width: 120
+   },
+   leaveButtonText: {
+     color: MainStyle.color.white,
+     fontSize: MainStyle.font.big,
+     marginLeft: 10
+   },
+   leaveContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start'
+   },
    member: {
       flexDirection: 'row'
    },
@@ -56,15 +75,14 @@ export default StyleSheet.create({
       backgroundColor: MainStyle.color.skyblue
    },
    modeButtonIcon: {
-     fontSize: MainStyle.font.big
+      fontSize: MainStyle.font.big
    },
    modeButtonIconActive: {
-     color: MainStyle.color.white
+      color: MainStyle.color.white
    },
+
    modeContainer: {
       flexDirection: 'row',
-      marginTop: 10,
-      marginRight: 10,
       justifyContent: 'flex-end'
    },
    toolContainer: {
@@ -96,6 +114,12 @@ export default StyleSheet.create({
    },
    toolButtonIconAlert: {
       color: MainStyle.color.warning
+   },
+   topContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 10,
+      marginRight: 10,
+      marginLeft: 10
    }
-
 })
