@@ -219,13 +219,10 @@ const _createGroupBtnSection = (status) => {
       <Text style={styles.title}>確定創建群組</Text>
    )
    const renderStatus = {
-      init: () => defaultTemplate,
-      loading: () => (<ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>),
-      create_success: () => defaultTemplate,
-      request_success: () => defaultTemplate,
-      error: () => defaultTemplate
+      loading: () => (<ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>)
    }
-   return renderStatus[status]()
+   if (renderStatus.hasOwnProperty(status))  return renderStatus[status]()
+   return defaultTemplate
 }
 
 const _searchAddressButton = (status, errorMessage) => {

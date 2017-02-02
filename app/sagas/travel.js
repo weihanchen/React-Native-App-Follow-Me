@@ -58,6 +58,7 @@ export function* requestTravelInitFlow(action) {
       const coordinate = action.coordinate
       const currentUid = action.currentUid
       const leaderId = group.leader
+      const isLeader = currentUid === leaderId
       const userIdList = Object.keys(group.members)
       const users = yield call(firebaseService.requestFetchUsers, userIdList)
       const endPosition = Object.assign({}, group.endPosition, {
@@ -79,6 +80,7 @@ export function* requestTravelInitFlow(action) {
          type: REQUEST_TRAVEL_INIT_SUCCESS,
          coordinate,
          endPosition,
+         isLeader,
          markers
       })
       yield put({

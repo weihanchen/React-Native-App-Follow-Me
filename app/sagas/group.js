@@ -13,6 +13,8 @@ import {
    REQUEST_CREATEGROUP_SUCCESS,
    REQUEST_FETCH_GROUP,
    REQUEST_FETCH_GROUP_SUCCESS,
+   REQUEST_LEAVE_GROUP,
+   REQUEST_LEAVE_GROUP_SUCCESS,
    REQUEST_GROUP_FAILED
 } from '../actions'
 import {
@@ -30,6 +32,10 @@ export function* watchRequestCreateGroup() {
 
 export function* watchRequestFetchGroup() {
    yield call(takeEvery, REQUEST_FETCH_GROUP, requestFetchGroupFlow)
+}
+
+export function* watchRequestLeaveGroup() {
+   yield call(takeEvery, REQUEST_LEAVE_GROUP, requestLeaveGroupFlow)
 }
 
 export function* requestAddToGroupFlow(action) {
@@ -67,6 +73,20 @@ export function* requestFetchGroupFlow(action) {
       yield put({
          type: REQUEST_FETCH_GROUP_SUCCESS,
          group
+      })
+   } catch (error) {
+      yield put({
+         type: REQUEST_GROUP_FAILED,
+         error
+      })
+   }
+}
+
+export function* requestLeaveGroupFlow(action) {
+   try {
+      yield call(firebaseService.requestLeaveGroup, action.groupId, action.userId, action.isLeader)
+      yield put({
+         type: REQUEST_LEAVE_GROUP_SUCCESS
       })
    } catch (error) {
       yield put({

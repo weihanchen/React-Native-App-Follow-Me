@@ -5,6 +5,8 @@ import {
    REQUEST_CREATEGROUP_SUCCESS,
    REQUEST_FETCH_GROUP,
    REQUEST_FETCH_GROUP_SUCCESS,
+   REQUEST_LEAVE_GROUP,
+   REQUEST_LEAVE_GROUP_SUCCESS,
    REQUEST_GROUP_FAILED
 } from '../actions';
 
@@ -54,6 +56,16 @@ export default function group(state = {
          return Object.assign({}, state, {
             status: 'error',
             error: action.error
+         })
+         break
+      case REQUEST_LEAVE_GROUP:
+         return Object.assign({}, state, {
+            status: 'loading'
+         })
+         break
+      case REQUEST_LEAVE_GROUP_SUCCESS:
+         return Object.assign({}, state, {
+            status: 'leave_success'
          })
          break
       default:

@@ -4,7 +4,8 @@ import {
 import {
    watchRequestAddToGroup,
    watchRequestCreateGroup,
-   watchRequestFetchGroup
+   watchRequestFetchGroup,
+   watchRequestLeaveGroup
 } from './group'
 import {
    watchRequestGeocoding
@@ -30,6 +31,7 @@ export default function* rootSaga() {
       watchRequestFetchUser(),
       watchRequestGeolocation(),
       watchRequestGeocoding(),
+      watchRequestLeaveGroup(),
       watchRequestTravelDirections(),
       watchRequestTravelInit(),
       watchRequestTravelUpdateCoordinate()

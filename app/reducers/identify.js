@@ -26,6 +26,7 @@ export default function identify(state = {
             groupId: action.identify.groupId,
             userId: action.identify.userId
          })
+         break
       default:
          return state
    }

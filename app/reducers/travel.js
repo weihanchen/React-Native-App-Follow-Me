@@ -22,6 +22,7 @@ const travel = (state = {
 
       }
    },
+   isLeader: false,
    region: {
       latitude: 0,
       longitude: 0
@@ -68,6 +69,7 @@ const travel = (state = {
             status: 'request_init_success',
             coordinate: action.coordinate,
             endPosition: action.endPosition,
+            isLeader: action.isLeader,
             markers: action.markers,
          })
          break

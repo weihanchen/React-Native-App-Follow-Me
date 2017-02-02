@@ -2,11 +2,28 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {Alert, View, Text, ToastAndroid, StyleSheet} from 'react-native'
+import {
+   Alert,
+   InteractionManager,
+   View,
+   Text,
+   ToastAndroid,
+   StyleSheet
+} from 'react-native'
 //actions
-import {changeTravelMode, requestFetchTravelInit, requestGeolocation, requestTravelDirections, requestTravelUpdateCoordinate,updateTravelMarkers, updateTravelRegion} from '../actions'
+import {
+   changeTravelMode,
+   requestFetchTravelInit,
+   requestGeolocation,
+   requestLeaveGroup,
+   requestTravelDirections,
+   requestTravelUpdateCoordinate,
+   updateTravelMarkers,
+   updateTravelRegion
+} from '../actions'
 //components
 import {TravelMap} from '../components/Travel'
+import MenuContainer from './MenuContainer'
 //config
 import {ERROR_MESSAGE} from '../config'
 //service
@@ -28,12 +45,11 @@ class TravelContainer extends Component {
       this.props.requestGeolocation()
 
       firebaseService.onGroupMembersChanged(groupId, (childSnapshot) => {
-          const key = childSnapshot.key
-          const value = childSnapshot.val()
-          const coordinate = value.coordinate
-          this.props.updateTravelMarkers(this.props.travel.markers, key, coordinate)
+         const key = childSnapshot.key
+         const value = childSnapshot.val()
+         const coordinate = value.coordinate
+         this.props.updateTravelMarkers(this.props.travel.markers, key, coordinate)
       })
-
 
       this.watchID = navigator.geolocation.watchPosition((position) => {
          const coordinate = {
@@ -53,14 +69,26 @@ class TravelContainer extends Component {
    componentWillReceiveProps(nextProps) {
       const groupId = this.props.groupId
       const userId = this.props.userId
+      const {navigator} = nextProps
+      const groupStatusFunc = {
+         leave_success: () => {
+            InteractionManager.runAfterInteractions(() => {
+               navigator.pop()
+            })
+         },
+         error: (error) => this.errorHandler(error)
+      }
       const locationStatusFunc = {
          success: () => this.props.requestFetchTravelInit(nextProps.location.coordinate, userId, groupId),
-         error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
+         error: (error) => this.errorHandler(error)
       }
       const travelStatusFunc = {
          request_init_success: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.endPosition.coordinate, nextProps.travel.mode),
-         error: (error) => ToastAndroid.show(error, ToastAndroid.SHORT)
+         error: (error) => this.errorHandler(error)
       }
+
+      if (groupStatusFunc.hasOwnProperty(nextProps.group.status) && nextProps.group.status != this.props.group.status)
+         groupStatusFunc[nextProps.group.status](nextProps.group.error)
 
       if (locationStatusFunc.hasOwnProperty(nextProps.location.status) && nextProps.location.status != this.props.location.status)
          locationStatusFunc[nextProps.location.status](nextProps.location.error)
@@ -73,35 +101,54 @@ class TravelContainer extends Component {
       navigator.geolocation.clearWatch(this.watchID)
    }
 
+   confirmLeaveGroup() {
+      const groupId = this.props.groupId
+      const userId = this.props.userId
+      const isLeader = this.props.travel.isLeader
+      this.props.requestLeaveGroup(groupId, userId, isLeader)
+   }
+
+   errorHandler(message) {
+      ToastAndroid.show(message, ToastAndroid.SHORT)
+   }
+
    handleChangeMode(mode) {
       this.props.changeTravelMode(mode)
       this.handleRequestDirection()
    }
 
    handleLeaveGroup() {
-     const groupId = this.props.groupId
-     const userId = this.props.userId
-
+      const groupId = this.props.groupId
+      const userId = this.props.userId
+      const isLeader = this.props.travel.isLeader
+      const alertTitle = '離開隊伍'
+      let alertBody = '請確認是否離開隊伍?'
+      const alertFooter = [
+         {
+            text: '取消'
+         }, {
+            text: '確定離開',
+            onPress: this.confirmLeaveGroup.bind(this)
+         }
+      ]
+      if (isLeader)
+         alertBody = `您是隊長，離開隊伍後將解散群組，${alertBody}`
+      Alert.alert(alertTitle, alertBody, alertFooter)
    }
 
    handleRequestDirection() {
-     this.props.requestTravelDirections(this.props.travel.coordinate, this.props.travel.endPosition.coordinate, this.props.travel.mode)
+      this.props.requestTravelDirections(this.props.travel.coordinate, this.props.travel.endPosition.coordinate, this.props.travel.mode)
    }
 
    handleRequestRegion() {
-     this.props.updateTravelRegion(this.props.travel.coordinate)
+      this.props.updateTravelRegion(this.props.travel.coordinate)
    }
 
    render() {
       const {travel} = this.props
       return (
          <View style={styles.container}>
-            <TravelMap handleLeaveGroup={this.handleLeaveGroup.bind(this)}
-                       handleChangeMode={this.handleChangeMode.bind(this)}
-                       handleRequestDirection={this.handleRequestDirection.bind(this)}
-                       handleRequestRegion={this.handleRequestRegion.bind(this)}
-                       travel={travel} >
-            </TravelMap>
+            <TravelMap handleLeaveGroup={this.handleLeaveGroup.bind(this)} handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)} handleRequestRegion={this.handleRequestRegion.bind(this)} travel={travel}></TravelMap>
          </View>
       )
    }
@@ -116,6 +163,7 @@ const mapDispatchToProps = (dispatch) => {
       changeTravelMode,
       requestFetchTravelInit,
       requestGeolocation,
+      requestLeaveGroup,
       requestTravelDirections,
       requestTravelUpdateCoordinate,
       updateTravelMarkers,
@@ -135,6 +183,7 @@ TravelContainer.propTypes = {
    groupId: PropTypes.string,
    requestDirections: PropTypes.func,
    requestFetchTravelMarkers: PropTypes.func,
+   requestLeaveGroup: PropTypes.func,
    requestGeolocation: PropTypes.func,
    requestTravelUpdateCoordinate: PropTypes.func,
    travel: PropTypes.object,

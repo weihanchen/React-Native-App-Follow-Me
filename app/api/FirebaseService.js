@@ -96,6 +96,15 @@ class FirebaseService {
       return Promise.all(promiseArr)
    }
 
+   requestLeaveGroup(groupId, userId, isLeader) {
+      const groupRef = Firebase.database().ref(`groups/${groupId}`)
+      const userRef = Firebase.database().ref(`users/${userId}`)
+      const groupMemberRef = Firebase.database().ref(`groups/${groupId}/members/${userId}`)
+      const leaveSuccess = () => AsyncStorage.removeItem('groupId').then(() => AsyncStorage.removeItem('userId'))
+      if (isLeader) return groupRef.remove().then(() => userRef.remove()).then(() => leaveSuccess())
+      else return groupMemberRef.remove().then(() => userRef.remove()).then(() => leaveSuccess())
+   }
+
    updateCoordinate(groupId, userId, coordinate) {
       return _fetchUser(userId).then(user => {
         const updates = {}

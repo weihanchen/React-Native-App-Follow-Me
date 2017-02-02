@@ -4,6 +4,8 @@ export const REQUEST_CREATEGROUP = 'REQUEST_CREATEGROUP'
 export const REQUEST_CREATEGROUP_SUCCESS = 'REQUEST_CREATEGROUP_SUCCESS'
 export const REQUEST_FETCH_GROUP = 'REQUEST_FETCH_GROUP'
 export const REQUEST_FETCH_GROUP_SUCCESS = 'REQUEST_FETCH_GROUP_SUCCESS'
+export const REQUEST_LEAVE_GROUP = 'REQUEST_LEAVE_GROUP'
+export const REQUEST_LEAVE_GROUP_SUCCESS = 'REQUEST_LEAVE_GROUP_SUCCESS'
 export const REQUEST_GROUP_FAILED = 'REQUEST_GROUP_FAILED'
 
 const requestAddToGroup = (groupName, userName) => ({
@@ -26,8 +28,16 @@ const requestFetchGroup = (groupId) => ({
    groupId
 })
 
+const requestLeaveGroup = (groupId, userId, isLeader) => ({
+   type: REQUEST_LEAVE_GROUP,
+   groupId,
+   userId,
+   isLeader
+})
+
 export {
    requestAddToGroup,
    requestCreateGroup,
-   requestFetchGroup
+   requestFetchGroup,
+   requestLeaveGroup
 }
