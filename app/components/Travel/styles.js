@@ -28,22 +28,6 @@ export default StyleSheet.create({
       fontWeight: "bold",
       margin: 2
    },
-   leaveButton: {
-     alignItems: 'center',
-     backgroundColor: MainStyle.color.danger,
-     borderColor: MainStyle.color.skyblue,
-     borderRadius: 5,
-     borderWidth: 1,
-     flexDirection: 'row',
-     height: 30,
-     justifyContent: 'center',
-     width: 120
-   },
-   leaveButtonText: {
-     color: MainStyle.color.white,
-     fontSize: MainStyle.font.big,
-     marginLeft: 10
-   },
    leaveContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-start'
@@ -87,39 +71,23 @@ export default StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'flex-end'
    },
+   bottomContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-end',
+      marginLeft: 10,
+      marginRight: 10,
+      marginVertical: 40,
+      ...StyleSheet.absoluteFillObject
+   },
    toolContainer: {
       flexDirection: 'column',
       justifyContent: 'flex-end',
       alignItems: 'flex-end',
-      marginRight: 20,
-      marginVertical: 40,
-      ...StyleSheet.absoluteFillObject
-   },
-   toolButton: {
-      backgroundColor: MainStyle.color.white,
-      borderColor: MainStyle.color.navy,
-      borderRadius: MainStyle.radius.huge,
-      borderWidth: 1,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: 8,
-      width: 40,
-      height: 40
-   },
-   toolButtonAlert: {
-      borderColor: MainStyle.color.warning
-   },
-   toolButtonIcon: {
-      fontSize: MainStyle.font.large,
-      color: MainStyle.color.navy
-   },
-   toolButtonIconAlert: {
-      color: MainStyle.color.warning
    },
    topContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-end',
       marginTop: 10,
       marginRight: 10,
       marginLeft: 10

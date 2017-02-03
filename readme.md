@@ -64,3 +64,8 @@ dependencies {
     classpath 'com.android.tools.build:gradle:1.3.1'//change this version like 1.2.0
 }
 ```
+
+### Could not find tools.jar
+
+>1. Environment variables
+>2. Setting JAVA_HOME=(Your java path)

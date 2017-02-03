@@ -1,7 +1,8 @@
 'use strict'
 import React, {Component, PropTypes} from 'react'
 //plugins
-import {Button, Dimensions, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {Dimensions, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {Button, Icon} from 'react-native-elements'
 import MapView, {Marker, Polyline} from 'react-native-maps'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import FoundationIcon from 'react-native-vector-icons/Foundation'
@@ -17,28 +18,28 @@ class TravelMap extends Component {
    constructor(props) {
       super(props)
       this.state = {
-        region: {
-          latitude: 0,
-          longitude: 0,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA
-        }
+         region: {
+            latitude: 0,
+            longitude: 0,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
+         }
       }
    }
 
    componentWillReceiveProps(nextProps) {
-     if (nextProps.travel.status === 'update_region') {
-        const region = Object.assign({}, this.state.region, nextProps.travel.region)
-        this.setState({region})
-     }
+      if (nextProps.travel.status === 'update_region') {
+         const region = Object.assign({}, this.state.region, nextProps.travel.region)
+         this.setState({region})
+      }
    }
 
    onChangeMode(mode) {
-     this.props.handleChangeMode(mode)
+      this.props.handleChangeMode(mode)
    }
 
    onLeaveGroup() {
-     this.props.handleLeaveGroup()
+      this.props.handleLeaveGroup()
    }
 
    onLocated() {
@@ -51,6 +52,7 @@ class TravelMap extends Component {
 
    render() {
       const {travel} = this.props
+      console.log(travel)
       return (
          <View style={styles.container}>
             <MapView style={styles.map} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
@@ -58,35 +60,37 @@ class TravelMap extends Component {
                {travel.markers.map(marker => _markerSection(marker))}
             </MapView>
             <View style={styles.topContainer}>
-              <View style={styles.leaveContainer}>
-                <TouchableOpacity style={styles.leaveButton} activeOpacity={0.6} onPress={this.onLeaveGroup.bind(this)}>
-                  <FontAwesomeIcon name="sign-out" style={styles.leaveButtonText}></FontAwesomeIcon>
-                  <Text style={styles.leaveButtonText}>離開隊伍</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.modeContainer}>
-                <TouchableOpacity style={_getModeStyle(travel.mode, 'driving')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'driving')}>
-                  <FontAwesomeIcon name="car" style={styles.modeButtonIcon}></FontAwesomeIcon>
-                </TouchableOpacity>
-                <TouchableOpacity style={_getModeStyle(travel.mode, 'bicycling')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'bicycling')}>
-                  <FontAwesomeIcon name="bicycle" style={styles.modeButtonIcon}></FontAwesomeIcon>
-                </TouchableOpacity>
-                <TouchableOpacity style={_getModeStyle(travel.mode, 'walking')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this,'walking')}>
-                  <FontAwesomeIcon name="male" style={styles.modeButtonIcon}></FontAwesomeIcon>
-                </TouchableOpacity>
-              </View>
+               <View style={styles.modeContainer}>
+                  <TouchableOpacity style={_getModeStyle(travel.mode, 'driving')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'driving')}>
+                     <FontAwesomeIcon name="car" style={styles.modeButtonIcon}></FontAwesomeIcon>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={_getModeStyle(travel.mode, 'bicycling')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'bicycling')}>
+                     <FontAwesomeIcon name="bicycle" style={styles.modeButtonIcon}></FontAwesomeIcon>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={_getModeStyle(travel.mode, 'walking')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'walking')}>
+                     <FontAwesomeIcon name="male" style={styles.modeButtonIcon}></FontAwesomeIcon>
+                  </TouchableOpacity>
+               </View>
             </View>
+            <View style={styles.bottomContainer}>
+               <View style={styles.leaveContainer}>
+                  <Button raised title="離開隊伍"
+                          backgroundColor={mainStyle.color.danger}
+                          borderRadius={mainStyle.radius.medium}
+                          icon={{name: 'sign-out', type: 'font-awesome'}} onPress={this.onLeaveGroup.bind(this)}></Button>
 
-            <View style={styles.toolContainer}>
-               <TouchableOpacity style={[styles.toolButton, styles.toolButtonAlert]} activeOpacity={0.6}>
-                  <FontAwesomeIcon name="bell" style={[styles.toolButtonIcon, styles.toolButtonIconAlert]}></FontAwesomeIcon>
-               </TouchableOpacity>
-               <TouchableOpacity style={styles.toolButton} activeOpacity={0.6} onPress={this.onRequestDirection.bind(this)}>
-                  <FontAwesomeIcon name="location-arrow" style={styles.toolButtonIcon}></FontAwesomeIcon>
-               </TouchableOpacity>
-               <TouchableOpacity style={styles.toolButton} activeOpacity={0.6} onPress={this.onLocated.bind(this)}>
-                  <FontAwesomeIcon name="arrows" style={styles.toolButtonIcon}></FontAwesomeIcon>
-               </TouchableOpacity>
+               </View>
+               <View style={styles.toolContainer}>
+                  <TouchableOpacity activeOpacity={0.6}>
+                     <Icon raised name="bell" color={mainStyle.color.warning} type="font-awesome"></Icon>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={0.6} onPress={this.onRequestDirection.bind(this)}>
+                     <Icon raised name="location-arrow" color={mainStyle.color.navy} type="font-awesome"></Icon>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={0.6} onPress={this.onLocated.bind(this)}>
+                     <Icon raised name="arrows" color={mainStyle.color.navy} type="font-awesome"></Icon>
+                  </TouchableOpacity>
+               </View>
             </View>
          </View>
       )
@@ -96,7 +100,8 @@ class TravelMap extends Component {
 //private methods
 const _getModeStyle = (activeMode, currentMode) => {
    const results = [styles.modeButton]
-   if (activeMode === currentMode) results.push(styles.modeButtonActive)
+   if (activeMode === currentMode)
+      results.push(styles.modeButtonActive)
    return results
 }
 
