@@ -27,7 +27,7 @@ class TravelMap extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
-     if (nextProps.travel.status != this.props.travel.status && nextProps.travel.status === 'update_region') {
+     if (nextProps.travel.status === 'update_region') {
         const region = Object.assign({}, this.state.region, nextProps.travel.region)
         this.setState({region})
      }
