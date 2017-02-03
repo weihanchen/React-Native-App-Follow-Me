@@ -1,5 +1,6 @@
 import {
-   watchRequestCheckIdentity
+   watchRequestCheckIdentity,
+   watchRequestIdentify
 } from './identify'
 import {
    watchRequestAddToGroup,
@@ -31,6 +32,7 @@ export default function* rootSaga() {
       watchRequestFetchUser(),
       watchRequestGeolocation(),
       watchRequestGeocoding(),
+      watchRequestIdentify(),
       watchRequestLeaveGroup(),
       watchRequestTravelDirections(),
       watchRequestTravelInit(),

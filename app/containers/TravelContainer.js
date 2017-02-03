@@ -141,7 +141,6 @@ class TravelContainer extends Component {
    }
 
    handleRequestRegion() {
-      console.log(this.props.travel.coordinate)
       this.props.updateTravelRegion(this.props.travel.coordinate)
    }
 

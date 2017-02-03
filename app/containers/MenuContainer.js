@@ -27,7 +27,7 @@ class MenuContainer extends Component {
 
    componentWillReceiveProps(nextProps) {
      const {navigator} = this.props
-      if (this.props.identify.status !== nextProps.identify.status && nextProps.identify.status === 'success') {
+      if (this.props.identify.status !== nextProps.identify.status && nextProps.identify.status === 'check_success') {
         InteractionManager.runAfterInteractions(() => {
            navigator.push({component: TravelContainer, passProps: {
               groupId: nextProps.identify.groupId,
