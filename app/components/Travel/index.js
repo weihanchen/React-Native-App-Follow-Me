@@ -1,9 +1,12 @@
 import TravelMap from './TravelMap'
+import TravelMenu from './TravelMenu'
 
 export default {
-   TravelMap
+   TravelMap,
+   TravelMenu
 }
 
 export {
-   TravelMap
+   TravelMap,
+   TravelMenu
 }

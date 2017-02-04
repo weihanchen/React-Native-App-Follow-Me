@@ -50,6 +50,10 @@ class TravelMap extends Component {
       this.props.handleRequestDirection()
    }
 
+   onToggleSideMenu() {
+      this.props.handleToggleSideMenu()
+   }
+
    render() {
       const {travel} = this.props
       return (
@@ -59,6 +63,9 @@ class TravelMap extends Component {
                {travel.markers.map(marker => _markerSection(marker))}
             </MapView>
             <View style={styles.topContainer}>
+               <TouchableOpacity activeOpacity={0.6} onPress={this.onToggleSideMenu.bind(this)}>
+                 <Icon name="bars" reverse color={mainStyle.color.skyblue} type="font-awesome"></Icon>
+               </TouchableOpacity>
                <View style={styles.modeContainer}>
                   <TouchableOpacity style={_getModeStyle(travel.mode, 'driving')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'driving')}>
                      <FontAwesomeIcon name="car" style={styles.modeButtonIcon}></FontAwesomeIcon>
@@ -142,6 +149,7 @@ TravelMap.propTypes = {
    handleLeaveGroup: PropTypes.func,
    handleRequestDirection: PropTypes.func,
    handleRequestRegion: PropTypes.func,
+   handleToggleSideMenu: PropTypes.func,
    travel: PropTypes.object
 }
 

@@ -2,14 +2,6 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {
-   Alert,
-   InteractionManager,
-   View,
-   Text,
-   ToastAndroid,
-   StyleSheet
-} from 'react-native'
 //actions
 import {
    changeTravelMode,
@@ -22,7 +14,16 @@ import {
    updateTravelRegion
 } from '../actions'
 //components
-import {TravelMap} from '../components/Travel'
+import {
+   Alert,
+   InteractionManager,
+   View,
+   Text,
+   ToastAndroid,
+   StyleSheet
+} from 'react-native'
+import {SideMenu} from 'react-native-elements'
+import {TravelMap, TravelMenu} from '../components/Travel'
 import MenuContainer from './MenuContainer'
 //config
 import {ERROR_MESSAGE} from '../config'
@@ -34,6 +35,9 @@ const firebaseService = new FirebaseService()
 class TravelContainer extends Component {
    constructor(props) {
       super(props)
+      this.state = {
+         isMenuOpen: false
+      }
    }
 
    watchID :
@@ -144,12 +148,20 @@ class TravelContainer extends Component {
       this.props.updateTravelRegion(this.props.travel.coordinate)
    }
 
+   handleToggleSideMenu() {
+     console.log(this.state)
+      this.setState({
+         isMenuOpen: !this.state.isMenuOpen
+      })
+
+   }
+
    render() {
       const {travel} = this.props
       return (
-         <View style={styles.container}>
-            <TravelMap handleLeaveGroup={this.handleLeaveGroup.bind(this)} handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)} handleRequestRegion={this.handleRequestRegion.bind(this)} travel={travel}></TravelMap>
-         </View>
+         <SideMenu isOpen={this.state.isMenuOpen} menu={TravelMenu}>
+            <TravelMap handleLeaveGroup={this.handleLeaveGroup.bind(this)} handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)} handleRequestRegion={this.handleRequestRegion.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} travel={travel}></TravelMap>
+         </SideMenu>
       )
    }
 }

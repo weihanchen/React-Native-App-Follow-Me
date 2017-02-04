@@ -53,9 +53,9 @@ export default StyleSheet.create({
       borderRadius: 5,
       borderWidth: 1,
       flexDirection: 'column',
-      height: 30,
+      height: 35,
       justifyContent: 'center',
-      width: 30
+      width: 35
    },
    modeButtonActive: {
       backgroundColor: MainStyle.color.skyblue
@@ -66,10 +66,10 @@ export default StyleSheet.create({
    modeButtonIconActive: {
       color: MainStyle.color.white
    },
-
    modeContainer: {
       flexDirection: 'row',
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
+      marginTop: 15
    },
    bottomContainer: {
       flexDirection: 'row',
@@ -87,8 +87,7 @@ export default StyleSheet.create({
    },
    topContainer: {
       flexDirection: 'row',
-      justifyContent: 'flex-end',
-      marginTop: 10,
+      justifyContent: 'space-between',
       marginRight: 10,
       marginLeft: 10
    }
