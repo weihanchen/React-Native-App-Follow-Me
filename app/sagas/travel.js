@@ -66,12 +66,15 @@ export function* requestTravelInitFlow(action) {
          key: 'endPosition'
       })
       let markers = users.map(user => {
-         const coordinate = group.members[user.key].coordinate
+         let memberCoordinate = group.members[user.key].coordinate
          let type = MARKER_TYPE.MEMBER
-         if (user.key === currentUid) type = MARKER_TYPE.SELF
+         if (user.key === currentUid) {
+           type = MARKER_TYPE.SELF
+           memberCoordinate = Object.assign({}, coordinate)
+         }
          else if (user.key === leaderId) type = MARKER_TYPE.LEADER
          return Object.assign({}, user, {
-            coordinate,
+            coordinate: memberCoordinate,
             type
          })
       })

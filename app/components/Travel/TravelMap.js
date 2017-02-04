@@ -52,7 +52,6 @@ class TravelMap extends Component {
 
    render() {
       const {travel} = this.props
-      console.log(travel)
       return (
          <View style={styles.container}>
             <MapView style={styles.map} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
