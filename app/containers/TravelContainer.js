@@ -42,7 +42,7 @@ class TravelContainer extends Component {
 
    watchID :
       ? number = null
-
+   //Component life circle
    componentDidMount() {
       const groupId = this.props.groupId
       const userId = this.props.userId
@@ -105,6 +105,7 @@ class TravelContainer extends Component {
       navigator.geolocation.clearWatch(this.watchID)
    }
 
+   //Event handler
    confirmLeaveGroup() {
       const groupId = this.props.groupId
       const userId = this.props.userId
@@ -157,8 +158,11 @@ class TravelContainer extends Component {
 
    render() {
       const {travel} = this.props
+      const menu = (
+        <TravelMenu></TravelMenu>
+      )
       return (
-         <SideMenu isOpen={this.state.isMenuOpen} menu={TravelMenu} onChange={(isMenuOpen) => this.setState({isMenuOpen})}>
+         <SideMenu isOpen={this.state.isMenuOpen} menu={menu} onChange={(isMenuOpen) => this.setState({isMenuOpen})}>
             <TravelMap handleLeaveGroup={this.handleLeaveGroup.bind(this)} handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)} handleRequestRegion={this.handleRequestRegion.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} travel={travel}></TravelMap>
          </SideMenu>
       )

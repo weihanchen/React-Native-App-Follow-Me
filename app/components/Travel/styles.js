@@ -3,7 +3,6 @@ import MainStyle from '../../stylesheets'
 
 export default StyleSheet.create({
    container: {
-      ...StyleSheet.absoluteFillObject,
       flex: 1
    },
    map: {
@@ -73,7 +72,7 @@ export default StyleSheet.create({
    },
    bottomContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-end',
       alignItems: 'flex-end',
       marginLeft: 10,
       marginRight: 10,
