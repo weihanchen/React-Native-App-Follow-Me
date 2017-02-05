@@ -149,7 +149,6 @@ class TravelContainer extends Component {
    }
 
    handleToggleSideMenu() {
-     console.log(this.state)
       this.setState({
          isMenuOpen: !this.state.isMenuOpen
       })
@@ -159,7 +158,7 @@ class TravelContainer extends Component {
    render() {
       const {travel} = this.props
       return (
-         <SideMenu isOpen={this.state.isMenuOpen} menu={TravelMenu}>
+         <SideMenu isOpen={this.state.isMenuOpen} menu={TravelMenu} onChange={(isMenuOpen) => this.setState({isMenuOpen})}>
             <TravelMap handleLeaveGroup={this.handleLeaveGroup.bind(this)} handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)} handleRequestRegion={this.handleRequestRegion.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} travel={travel}></TravelMap>
          </SideMenu>
       )
