@@ -159,11 +159,11 @@ class TravelContainer extends Component {
    render() {
       const {travel} = this.props
       const menu = (
-        <TravelMenu></TravelMenu>
+        <TravelMenu handleLeaveGroup={this.handleLeaveGroup.bind(this)}></TravelMenu>
       )
       return (
-         <SideMenu isOpen={this.state.isMenuOpen} menu={menu} onChange={(isMenuOpen) => this.setState({isMenuOpen})}>
-            <TravelMap handleLeaveGroup={this.handleLeaveGroup.bind(this)} handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)} handleRequestRegion={this.handleRequestRegion.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} travel={travel}></TravelMap>
+         <SideMenu isOpen={this.state.isMenuOpen} menu={menu} onChange={(isMenuOpen) => {if(this.state.isMenuOpen != isMenuOpen) this.setState({isMenuOpen})}}>
+            <TravelMap handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)} handleRequestRegion={this.handleRequestRegion.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} travel={travel}></TravelMap>
          </SideMenu>
       )
    }

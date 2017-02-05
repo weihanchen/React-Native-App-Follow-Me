@@ -2,11 +2,17 @@ import {StyleSheet} from 'react-native'
 import MainStyle from '../../stylesheets'
 
 export default StyleSheet.create({
+   bottomContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      alignItems: 'flex-end',
+      marginLeft: 10,
+      marginRight: 10,
+      marginVertical: 40,
+      ...StyleSheet.absoluteFillObject
+   },
    container: {
       flex: 1
-   },
-   map: {
-      ...StyleSheet.absoluteFillObject
    },
    end: {
       borderColor: MainStyle.color.danger,
@@ -31,6 +37,9 @@ export default StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'flex-start'
    },
+   map: {
+      ...StyleSheet.absoluteFillObject
+   },
    member: {
       flexDirection: 'row'
    },
@@ -39,6 +48,17 @@ export default StyleSheet.create({
       fontSize: MainStyle.font.medium,
       fontWeight: "bold",
       marginRight: 2
+   },
+   menuBottom: {
+      marginBottom: 10
+   },
+   menuContainer: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-between'
+   },
+   menuTop: {
+      marginTop: 10
    },
    messageContainer: {
       flexDirection: 'row',
@@ -70,19 +90,10 @@ export default StyleSheet.create({
       justifyContent: 'flex-end',
       marginTop: 15
    },
-   bottomContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'flex-end',
-      marginLeft: 10,
-      marginRight: 10,
-      marginVertical: 40,
-      ...StyleSheet.absoluteFillObject
-   },
    toolContainer: {
       flexDirection: 'column',
       justifyContent: 'flex-end',
-      alignItems: 'flex-end',
+      alignItems: 'flex-end'
    },
    topContainer: {
       flexDirection: 'row',
