@@ -20,6 +20,7 @@ import {
    LocationService
 } from '../api'
 import {
+   LANGUAGE_KEY,
    MARKER_TYPE
 } from '../config'
 const firebaseService = new FirebaseService()
@@ -61,9 +62,12 @@ export function* requestTravelInitFlow(action) {
       const isLeader = currentUid === leaderId
       const userIdList = Object.keys(group.members)
       const users = yield call(firebaseService.requestFetchUsers, userIdList)
-      const endPosition = Object.assign({}, group.endPosition, {
+      const endPosition = Object.assign({}, {
+         coordinate: group.endPosition.coordinate,
+         isActive: true,
+         key: 'endPosition',
          type: MARKER_TYPE.END_POSITION,
-         key: 'endPosition'
+         name: LANGUAGE_KEY.END_POSITION
       })
       let markers = users.map(user => {
          let memberCoordinate = group.members[user.key].coordinate
@@ -73,8 +77,11 @@ export function* requestTravelInitFlow(action) {
            memberCoordinate = Object.assign({}, coordinate)
          }
          else if (user.key === leaderId) type = MARKER_TYPE.LEADER
-         return Object.assign({}, user, {
+         return Object.assign({}, {
             coordinate: memberCoordinate,
+            isActive: false,
+            key: user.key,
+            name: user.username,
             type
          })
       })

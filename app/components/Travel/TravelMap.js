@@ -110,19 +110,19 @@ const _markerSection = (marker) => {
       member: () => (
          <View style={styles.member}>
             <FontAwesomeIcon name='user' style={styles.memberText}/>
-            <Text style={styles.memberText}>{marker.username}</Text>
+            <Text style={styles.memberText}>{marker.name}</Text>
          </View>
       ),
       leader: () => (
          <View style={styles.member}>
             <FoundationIcon name="crown" style={styles.leaderText}></FoundationIcon>
-            <Text style={styles.leaderText}>{marker.username}</Text>
+            <Text style={styles.leaderText}>{marker.name}</Text>
          </View>
       ),
       endPosition: () => (
          <View style={styles.member}>
             <FontAwesomeIcon name='flag' style={styles.endText}/>
-            <Text style={styles.endText}>終點</Text>
+            <Text style={styles.endText}>{marker.name}</Text>
          </View>
       )
    }

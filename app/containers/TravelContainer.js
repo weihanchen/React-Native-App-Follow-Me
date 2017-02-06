@@ -63,7 +63,7 @@ class TravelContainer extends Component {
          this.props.requestTravelUpdateCoordinate(groupId, userId, coordinate)
       }, (error) => ToastAndroid.show(ERROR_MESSAGE.POSITION_ERROR, ToastAndroid.SHORT), {
          enableHighAccuracy: true,
-         distanceFilter: 2,
+         distanceFilter: 5,
          timeout: 1000,
          maximumAge: 1000
       })
@@ -159,7 +159,7 @@ class TravelContainer extends Component {
    render() {
       const {travel} = this.props
       const menu = (
-        <TravelMenu handleLeaveGroup={this.handleLeaveGroup.bind(this)}></TravelMenu>
+        <TravelMenu handleLeaveGroup={this.handleLeaveGroup.bind(this)} isMenuOpen={this.state.isMenuOpen} travel={travel}></TravelMenu>
       )
       return (
          <SideMenu isOpen={this.state.isMenuOpen} menu={menu} onChange={(isMenuOpen) => {if(this.state.isMenuOpen != isMenuOpen) this.setState({isMenuOpen})}}>
@@ -170,7 +170,7 @@ class TravelContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-   return {group: state.group, travel: state.travel, user: state.user, location: state.location}
+   return {group: state.group, travel: state.travel,  location: state.location}
 }
 
 const mapDispatchToProps = (dispatch) => {
