@@ -10,6 +10,7 @@ import {
    requestLeaveGroup,
    requestTravelDirections,
    requestTravelUpdateCoordinate,
+   updateMarkerActiveDirection,
    updateTravelMarkers,
    updateTravelRegion
 } from '../actions'
@@ -87,7 +88,7 @@ class TravelContainer extends Component {
          error: (error) => this.errorHandler(error)
       }
       const travelStatusFunc = {
-         request_init_success: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.endPosition.coordinate, nextProps.travel.mode),
+         request_init_success: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.activePosition.coordinate, nextProps.travel.mode),
          error: (error) => this.errorHandler(error)
       }
 
@@ -141,8 +142,12 @@ class TravelContainer extends Component {
       Alert.alert(alertTitle, alertBody, alertFooter)
    }
 
+   handleNavigateToMarker(marker) {
+      this.props.updateMarkerActiveDirection(this.props.travel.coordinate, this.props.travel.markers, marker, this.props.travel.mode)
+   }
+
    handleRequestDirection() {
-      this.props.requestTravelDirections(this.props.travel.coordinate, this.props.travel.endPosition.coordinate, this.props.travel.mode)
+      this.props.requestTravelDirections(this.props.travel.coordinate, this.props.travel.activePosition.coordinate, this.props.travel.mode)
    }
 
    handleRequestRegion() {
@@ -153,13 +158,12 @@ class TravelContainer extends Component {
       this.setState({
          isMenuOpen: !this.state.isMenuOpen
       })
-
    }
 
    render() {
       const {travel} = this.props
       const menu = (
-        <TravelMenu handleLeaveGroup={this.handleLeaveGroup.bind(this)} isMenuOpen={this.state.isMenuOpen} travel={travel}></TravelMenu>
+        <TravelMenu handleLeaveGroup={this.handleLeaveGroup.bind(this)} handleNavigateToMarker={this.handleNavigateToMarker.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} isMenuOpen={this.state.isMenuOpen} travel={travel}></TravelMenu>
       )
       return (
          <SideMenu isOpen={this.state.isMenuOpen} menu={menu} onChange={(isMenuOpen) => {if(this.state.isMenuOpen != isMenuOpen) this.setState({isMenuOpen})}}>
@@ -181,6 +185,7 @@ const mapDispatchToProps = (dispatch) => {
       requestLeaveGroup,
       requestTravelDirections,
       requestTravelUpdateCoordinate,
+      updateMarkerActiveDirection,
       updateTravelMarkers,
       updateTravelRegion
    }, dispatch)
@@ -202,6 +207,7 @@ TravelContainer.propTypes = {
    requestGeolocation: PropTypes.func,
    requestTravelUpdateCoordinate: PropTypes.func,
    travel: PropTypes.object,
+   updateMarkerActiveDirection: PropTypes.func,
    updateTravelMarkers: PropTypes.func,
    updateTravelRegion: PropTypes.func,
    user: PropTypes.object

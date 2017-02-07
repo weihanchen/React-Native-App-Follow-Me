@@ -1,4 +1,6 @@
 export const CHANGE_TRAVEL_MODE = 'CHANGE_TRAVEL_MODE'
+export const REQUEST_MARKER_ACTIVE_DIRECTION = 'REQUEST_MARKER_ACTIVE_DIRECTION'
+export const REQUEST_MARKER_ACTIVE_DIRECTION_SUCCESS = 'REQUEST_MARKER_ACTIVE_DIRECTION_SUCCESS'
 export const REQUEST_TRAVEL_DIRECTIONS = 'REQUEST_TRAVEL_DIRECTIONS'
 export const REQUEST_TRAVEL_DIRECTIONS_SUCCESS = 'REQUEST_TRAVEL_DIRECTIONS_SUCCESS'
 export const REQUEST_TRAVEL_FAILED = 'REQUEST_TRAVEL_FAILED'
@@ -28,6 +30,16 @@ const requestTravelDirections = (startCoordinate, endCoordinate, mode) => ({
    mode
 })
 
+const updateMarkerActiveDirection = (startCoordinate, markers, marker, mode) => {
+   return {
+      type: REQUEST_MARKER_ACTIVE_DIRECTION,
+      startCoordinate,
+      markers,
+      marker,
+      mode
+   }
+}
+
 const updateTravelMarkers = (markers, key, coordinate) => {
     const updatedMarkers = markers.map(marker => {
        if (marker.key === key) marker = Object.assign({}, marker, {coordinate})
@@ -56,6 +68,7 @@ export {
    requestFetchTravelInit,
    requestTravelDirections,
    requestTravelUpdateCoordinate,
+   updateMarkerActiveDirection,
    updateTravelMarkers,
    updateTravelRegion
 }

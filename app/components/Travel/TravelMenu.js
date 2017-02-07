@@ -7,10 +7,7 @@ import {Button, List, ListItem} from 'react-native-elements'
 import styles from './styles'
 import mainStyle from '../../stylesheets'
 //config
-import {
-   LANGUAGE_KEY,
-   MARKER_TYPE
-} from '../../config'
+import {LANGUAGE_KEY, MARKER_TYPE} from '../../config'
 
 class TravelMenu extends Component {
    constructor(props) {
@@ -18,11 +15,16 @@ class TravelMenu extends Component {
    }
 
    shouldComponentUpdate(nextProps, nextState) {
-      return nextProps.isMenuOpen !== this.props.isMenuOpen;
+      return nextProps.isMenuOpen !== this.props.isMenuOpen
    }
 
    onLeaveGroup() {
       this.props.handleLeaveGroup()
+   }
+
+   onNavigateToMarker(marker) {
+      this.props.handleNavigateToMarker(marker)
+      this.props.handleToggleSideMenu()
    }
 
    render() {
@@ -37,8 +39,11 @@ class TravelMenu extends Component {
             <ScrollView>
                <List>
                   {
-                    travel.markers.filter(marker => marker.type !== MARKER_TYPE.SELF)
-                                  .map((marker, index) => _markerSection(marker, index))
+                    travel.markers.filter(marker => marker.type !== MARKER_TYPE.SELF).map((marker, index) =>  (
+                    <TouchableOpacity key={index} activeOpacity={0.6} onPress={this.onNavigateToMarker.bind(this, marker)}>
+                      {_markerSection(marker, index)}
+                    </TouchableOpacity>)
+                   )
                   }
                </List>
             </ScrollView>
@@ -55,12 +60,16 @@ class TravelMenu extends Component {
 
 const _markerSection = (marker, index) => {
    const isActive = marker.isActive
-   if (!isActive) return (<ListItem key={index} roundAvatar={true}  title={marker.name}/>)
-   else return (<ListItem key={index} roundAvatar={true}  title={marker.name} containerStyle={styles.modeButtonActive}/>)
+   if (!isActive)
+      return <ListItem key={index} roundAvatar={true} title={marker.name}/>
+   else
+      return <ListItem key={index} roundAvatar={true} title={marker.name} containerStyle={styles.modeButtonActive}/>
 }
 
 TravelMenu.propTypes = {
    handleLeaveGroup: PropTypes.func,
+   handleNavigateToMarker: PropTypes.func,
+   handleToggleSideMenu: PropTypes.func,
    isMenuOpen: PropTypes.bool,
    travel: PropTypes.object
 }

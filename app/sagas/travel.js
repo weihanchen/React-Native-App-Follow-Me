@@ -6,6 +6,8 @@ import {
    call
 } from 'redux-saga/effects'
 import {
+   REQUEST_MARKER_ACTIVE_DIRECTION,
+   REQUEST_MARKER_ACTIVE_DIRECTION_SUCCESS,
    REQUEST_TRAVEL_DIRECTIONS,
    REQUEST_TRAVEL_DIRECTIONS_SUCCESS,
    REQUEST_TRAVEL_FAILED,
@@ -26,6 +28,10 @@ import {
 const firebaseService = new FirebaseService()
 const locationService = new LocationService()
 
+export function* watchRequestMarkerActiveDirection() {
+   yield call(takeEvery, REQUEST_MARKER_ACTIVE_DIRECTION, requestMarkerActiveDirectionFlow)
+}
+
 export function* watchRequestTravelDirections() {
    yield call(takeEvery, REQUEST_TRAVEL_DIRECTIONS, requestTravelDirectionsFlow)
 }
@@ -36,6 +42,33 @@ export function* watchRequestTravelInit() {
 
 export function* watchRequestTravelUpdateCoordinate() {
    yield call(takeEvery, REQUEST_TRAVEL_UPDATE_COORDINATE, requestTravelUpdateCoordinateFlow)
+}
+
+export function* requestMarkerActiveDirectionFlow(action) {
+   try {
+      const {startCoordinate, markers, mode} = action
+      const activeMarker = action.marker
+      const activePosition = {
+        coordinate: activeMarker.coordinate
+      }
+      const updatedMarkers = markers.map(marker => {
+        if (marker.key === activeMarker.key) marker = Object.assign({}, marker, {isActive: true})
+        else marker = Object.assign({}, marker, {isActive: false})
+        return marker
+      })
+      const directions = yield call(locationService.requestDirections, startCoordinate, activePosition.coordinate, mode)
+      yield put({
+         type: REQUEST_MARKER_ACTIVE_DIRECTION_SUCCESS,
+         activePosition,
+         directions,
+         markers: updatedMarkers
+      })
+   } catch (error) {
+     yield put({
+        type: REQUEST_TRAVEL_FAILED,
+        error: typeof error === 'string' ? error : error.toString()
+     })
+   }
 }
 
 export function* requestTravelDirectionsFlow(action) {
