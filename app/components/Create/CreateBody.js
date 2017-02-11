@@ -24,7 +24,7 @@ import MapView, {Marker} from 'react-native-maps'
 //stylesheets
 import mainStyle from '../../stylesheets'
 import styles from './styles'
-import {ERROR_MESSAGE} from '../../config'
+import {ERROR_MESSAGE, LANGUAGE_KEY} from '../../config'
 //utils
 import {timeUtils} from '../../utils'
 
@@ -65,7 +65,7 @@ class CreateBody extends Component {
    }
 
    componentDidMount() {
-      ToastAndroid.show('正在取得您目前的位置...', ToastAndroid.SHORT)
+      ToastAndroid.show(`${LANGUAGE_KEY.GETTING_POSITION}...`, ToastAndroid.SHORT)
    }
 
    componentWillReceiveProps(nextProps) {
@@ -101,11 +101,11 @@ class CreateBody extends Component {
 
    onCreateGroup() {
       if (this.state.groupName.length <= 0) {
-         ToastAndroid.show('請輸入您的群組名稱', ToastAndroid.SHORT)
+         ToastAndroid.show(LANGUAGE_KEY.PLEASE_INPUT_YOUR_GROUP_NAME, ToastAndroid.SHORT)
       } else if (this.state.userName.length <= 0) {
-         ToastAndroid.show('請輸入您的暱稱', ToastAndroid.SHORT)
+         ToastAndroid.show(LANGUAGE_KEY.PLEASE_INPUT_YOUR_USER_NAME, ToastAndroid.SHORT)
       } else if (this.props.location.status != 'success') {
-         ToastAndroid.show('請開啟定位服務', ToastAndroid.SHORT)
+         ToastAndroid.show(LANGUAGE_KEY.PLEASE_TURN_ON_POSITION, ToastAndroid.SHORT)
       } else {
 
          const endTimeDate = moment(this.state.endTimeDate),
@@ -121,7 +121,7 @@ class CreateBody extends Component {
    onSearchAdress() {
       let endAddress = this.state.endAddress
       if (endAddress.length <= 0) {
-         ToastAndroid.show('請輸入地址', ToastAndroid.SHORT)
+         ToastAndroid.show(LANGUAGE_KEY.PLEASE_INPUT_ADDRESS, ToastAndroid.SHORT)
          return
       }
       this.props.handleSearchAddress(endAddress)
@@ -162,11 +162,11 @@ class CreateBody extends Component {
       return (
          <ScrollView>
             <View style={styles.container}>
-               <Text style={styles.title}>請輸入群組名稱</Text>
+               <Text style={styles.title}>{LANGUAGE_KEY.PLEASE_INPUT_YOUR_GROUP_NAME}</Text>
                <TextInput value={this.state.groupName} maxLength={10} onChangeText={(groupName) => this.setState({groupName})}></TextInput>
-               <Text style={styles.title}>請輸入您的暱稱</Text>
+               <Text style={styles.title}>{LANGUAGE_KEY.PLEASE_INPUT_YOUR_USER_NAME}</Text>
                <TextInput value={this.state.userName} maxLength={10} onChangeText={(userName) => this.setState({userName})}></TextInput>
-               <Text style={styles.title}>車隊結束時間</Text>
+               <Text style={styles.title}>{LANGUAGE_KEY.GROUP_ENDTIME}</Text>
                <View style={styles.endTime}>
                   <TouchableOpacity onPress={this.showDatePicker.bind(this, 'endTime', {date: this.state.endTimeDate})}>
                      <View style={styles.endTimeItem}>
@@ -193,7 +193,7 @@ class CreateBody extends Component {
                   </TouchableOpacity>
                </View>
                {_startPositionSection(location.status, location.error)}
-               <Text style={styles.title}>請輸入您的終點</Text>
+               <Text style={styles.title}>{LANGUAGE_KEY.PLEASE_INPUT_YOUR_ENDPOSITION}</Text>
                <View style={styles.endAddressSearch}>
                   <TextInput value={this.state.endAddress} style={styles.endAddressSearchText} onChangeText={(endAddress) => this.setState({endAddress})}></TextInput>
                   <TouchableOpacity activeOpacity={0.8} onPress={this.onSearchAdress.bind(this)}>
@@ -201,7 +201,7 @@ class CreateBody extends Component {
                   </TouchableOpacity>
                </View>
                <MapView region={this.state.region} onRegionChange={(region) => this.setState({region})} style={styles.map}>
-                  <Marker draggable title="請長按並拖拉" coordinate={this.state.endPosition.coordinate} onDragEnd={(e) => this.setState({endPosition: {coordinate: e.nativeEvent.coordinate}})}/>
+                  <Marker draggable title={LANGUAGE_KEY.PLEASE_PRESS_DRAG} coordinate={this.state.endPosition.coordinate} onDragEnd={(e) => this.setState({endPosition: {coordinate: e.nativeEvent.coordinate}})}/>
                </MapView>
                <TouchableOpacity style={styles.btnSubmit} activeOpacity={0.8} onPress={this.onCreateGroup.bind(this)}>
                   {_createGroupBtnSection(group.status)}
@@ -216,7 +216,7 @@ class CreateBody extends Component {
 
 const _createGroupBtnSection = (status) => {
    const defaultTemplate = (
-      <Text style={styles.title}>確定創建群組</Text>
+      <Text style={styles.title}>{LANGUAGE_KEY.CONFIRM_CREATE_GROUP}</Text>
    )
    const renderStatus = {
       loading: () => (<ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>)
@@ -229,7 +229,7 @@ const _searchAddressButton = (status, errorMessage) => {
    const defaultTemplate = (
       <View style={styles.btnSubmit}>
          <Icon name='search' size={mainStyle.font.medium} style={styles.smallGap}></Icon>
-         <Text >搜尋</Text>
+         <Text >{LANGUAGE_KEY.SEARCH}</Text>
       </View>
    )
    const renderStatus = {
@@ -250,22 +250,22 @@ const _startPositionSection = (status, errorMessage) => {
       ),
       loading: () => (
          <View style={styles.startPosition}>
-            <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
+            <Text style={[styles.title, styles.startPositionItem]}>{LANGUAGE_KEY.START_POSITION}</Text>
             <ActivityIndicator color={mainStyle.color.skyblue} style={styles.startPositionItem}/>
-            <Text style={styles.tipText}>正在取得您目前的位置...</Text>
+            <Text style={styles.tipText}>{LANGUAGE_KEY.GETTING_POSITION}...</Text>
          </View>
       ),
       success: () => (
          <View style={styles.startPosition}>
-            <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
+            <Text style={[styles.title, styles.startPositionItem]}>{LANGUAGE_KEY.START_POSITION}</Text>
             <Icon name='map-marker' style={[styles.startPositionItem, styles.itemText]}/>
-            <Text style={styles.title}>已使用您目前的位置</Text>
+            <Text style={styles.title}>{LANGUAGE_KEY.ALREADY_USE_YOUR_POSITION}</Text>
          </View>
       ),
       error: () => {
          return (
             <View style={styles.startPosition}>
-               <Text style={[styles.title, styles.startPositionItem]}>起點</Text>
+               <Text style={[styles.title, styles.startPositionItem]}>{LANGUAGE_KEY.START_POSITION}</Text>
                <Icon name='times' style={[styles.startPositionItem, styles.errorText]}/>
                <Text style={styles.errorText}>{errorMessage}</Text>
             </View>

@@ -27,7 +27,7 @@ import {SideMenu} from 'react-native-elements'
 import {TravelMap, TravelMenu} from '../components/Travel'
 import MenuContainer from './MenuContainer'
 //config
-import {ERROR_MESSAGE} from '../config'
+import {ERROR_MESSAGE, LANGUAGE_KEY} from '../config'
 //service
 import {FirebaseService} from '../api'
 
@@ -127,18 +127,18 @@ class TravelContainer extends Component {
       const groupId = this.props.groupId
       const userId = this.props.userId
       const isLeader = this.props.travel.isLeader
-      const alertTitle = '離開隊伍'
-      let alertBody = '請確認是否離開隊伍?'
+      const alertTitle = LANGUAGE_KEY.LEAVE_GROUP
+      let alertBody = `${LANGUAGE_KEY.LEAVE_GROUP_CONFIRM_TIP}?`
       const alertFooter = [
          {
-            text: '取消'
+            text: LANGUAGE_KEY.CANCEL
          }, {
-            text: '確定離開',
+            text: LANGUAGE_KEY.CONFIRM_LEAVE,
             onPress: this.confirmLeaveGroup.bind(this)
          }
       ]
       if (isLeader)
-         alertBody = `您是隊長，離開隊伍後將解散群組，${alertBody}`
+         alertBody = `${LANGUAGE_KEY.LEAVE_GROUP_WHEN_LEADER_TIP}，${alertBody}`
       Alert.alert(alertTitle, alertBody, alertFooter)
    }
 
