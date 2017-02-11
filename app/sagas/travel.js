@@ -114,7 +114,7 @@ export function* requestTravelInitFlow(action) {
             coordinate: memberCoordinate,
             isActive: false,
             key: user.key,
-            name: user.username,
+            name: user.userName,
             type
          })
       })

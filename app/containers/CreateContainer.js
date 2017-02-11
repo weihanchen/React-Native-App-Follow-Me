@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {InteractionManager, View, Text, StyleSheet} from 'react-native'
 //actions
-import {requestCheckIdentify, requestCreateGroup, requestGeolocation, requestGeocoding} from '../actions'
+import {requestCheckIdentify, requestCreateGroup, requestGeolocation, requestGeocoding, requestIdentify} from '../actions'
 //components
 import {CreateBody} from '../components/Create/index.js'
 import MenuContainer from './MenuContainer'
@@ -19,17 +19,32 @@ class CreateContainer extends Component {
       this.props.requestGeolocation()
    }
 
+   componentWillReceiveProps(nextProps) {
+      const identifyStatusFunc = {
+         request_success: (identify) => {
+            const {navigator} = nextProps
+            InteractionManager.runAfterInteractions(() => {
+               navigator.replace({
+                  component: TravelContainer,
+                  passProps: {
+                     groupId: identify.groupId,
+                     userId: identify.userId
+                  }
+               })
+            }, 1000)
+         },
+         error: (identify) => ToastAndroid.show(identify.error, ToastAndroid.SHORT)
+      }
+      if (identifyStatusFunc.hasOwnProperty(nextProps.identify.status) && nextProps.identify.status != this.props.identify.status)
+         identifyStatusFunc[nextProps.identify.status](nextProps.identify)
+   }
+
    handleCreateGroup(groupName, username, expiredTime, startPosition, endPosition) {
       this.props.requestCreateGroup(groupName, username, expiredTime, startPosition, endPosition)
    }
 
    handleCreateSuccess() {
-     const {navigator} = this.props
-     InteractionManager.runAfterInteractions(() => {
-        navigator.push({
-           component: MenuContainer,
-        })
-     }, 1000)
+     this.props.requestIdentify()
    }
 
    handleSearchAddress(address) {
@@ -55,7 +70,8 @@ const mapDispatchToProps = (dispatch) => {
       requestCheckIdentify,
       requestCreateGroup,
       requestGeocoding,
-      requestGeolocation
+      requestGeolocation,
+      requestIdentify
    }, dispatch)
 }
 
