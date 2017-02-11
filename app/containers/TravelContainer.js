@@ -88,6 +88,7 @@ class TravelContainer extends Component {
          error: (error) => this.errorHandler(error)
       }
       const travelStatusFunc = {
+         change_mode: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.activePosition.coordinate, nextProps.travel.mode),
          request_init_success: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.activePosition.coordinate, nextProps.travel.mode),
          error: (error) => this.errorHandler(error)
       }
@@ -120,7 +121,6 @@ class TravelContainer extends Component {
 
    handleChangeMode(mode) {
       this.props.changeTravelMode(mode)
-      this.handleRequestDirection()
    }
 
    handleLeaveGroup() {

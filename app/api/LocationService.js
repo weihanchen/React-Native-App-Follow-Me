@@ -11,7 +11,7 @@ export default class LocationService {
    requestDirections(startCoordinate, endCoordinate, mode) {
       const origin = `${startCoordinate.latitude},${startCoordinate.longitude}`
       const destination = `${endCoordinate.latitude},${endCoordinate.longitude}`
-      const requestUrl = `${GOOGLE_DIRECTIONS_URL}?origin=${origin}&destination=${destination}&key=${GOOGLE_API_KEY}`
+      const requestUrl = `${GOOGLE_DIRECTIONS_URL}?origin=${origin}&destination=${destination}&key=${GOOGLE_API_KEY}&mode=${mode}`
       return fetch(requestUrl, {
             method: 'GET'
          })
