@@ -274,7 +274,6 @@ CreateBody.propTypes = {
    group: PropTypes.object,
    location: PropTypes.object,
    handleCreateGroup: PropTypes.func,
-   handleCreateSuccess: PropTypes.func,
    handleSearchAddress: PropTypes.func
 }
 

@@ -21,9 +21,7 @@ class CreateContainer extends Component {
 
    componentWillReceiveProps(nextProps) {
       const groupStatusFun = {
-         create_success: (group) => {
-            this.props.handleCreateSuccess()
-         },
+         create_success: (group) => this.props.requestIdentify(),
          error: (group) => ToastAndroid.show(group.error, ToastAndroid.SHORT)
       }
       const identifyStatusFunc = {
@@ -52,10 +50,6 @@ class CreateContainer extends Component {
       this.props.requestCreateGroup(groupName, username, expiredTime, startPosition, endPosition)
    }
 
-   handleCreateSuccess() {
-      this.props.requestIdentify()
-   }
-
    handleSearchAddress(address) {
       this.props.requestGeocoding(address)
    }
@@ -64,7 +58,7 @@ class CreateContainer extends Component {
       const {location, geocoding, group} = this.props
       return (
          <View style={styles.container}>
-            <CreateBody location={location} geocoding={geocoding} group={group} handleCreateSuccess={this.handleCreateSuccess.bind(this)} handleSearchAddress={this.handleSearchAddress.bind(this)} handleCreateGroup={this.handleCreateGroup.bind(this)}></CreateBody>
+            <CreateBody location={location} geocoding={geocoding} group={group} handleSearchAddress={this.handleSearchAddress.bind(this)} handleCreateGroup={this.handleCreateGroup.bind(this)}></CreateBody>
          </View>
       )
    }
