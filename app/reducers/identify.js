@@ -8,6 +8,8 @@ import {
 
 export default function identify(state = {
    error: null,
+   groupId: '',
+   userId: '',
    status: 'init'
 }, action) {
    switch (action.type) {

@@ -30,8 +30,8 @@ import {timeUtils} from '../../utils'
 
 const screen = Dimensions.get('window')
 const ASPECT_RATIO = screen.width / screen.height
-const LATITUDE = 23.6010548
-const LONGITUDE = 120.4536408
+const LATITUDE = 0
+const LONGITUDE = 0
 const LATITUDE_DELTA = 0.0122
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
@@ -47,7 +47,7 @@ class CreateBody extends Component {
               longitude: LONGITUDE
             }
          },
-         endTimeDate: endDate,
+         endTimeDate: endDate.valueOf(),
          endTimeDateText: endDate.format('YYYY/MM/DD'),
          endTimeHour: endDate.hours(),
          endTimeMinute: endDate.minute(),
@@ -77,12 +77,7 @@ class CreateBody extends Component {
          },
          error: (geocoding) => ToastAndroid.show(geocoding.error, ToastAndroid.SHORT)
       }
-      const groupStatusFun = {
-         create_success: (group) => {
-            this.props.handleCreateSuccess()
-         },
-         error: (group) => ToastAndroid.show(group.error, ToastAndroid.SHORT)
-      }
+
       const locationStatusFun = {
          success: () => {
             const coordinate = nextProps.location.coordinate
@@ -93,8 +88,7 @@ class CreateBody extends Component {
       }
       if (geocodingStatusFun.hasOwnProperty(nextProps.geocoding.status) && nextProps.geocoding.status != this.props.geocoding.status)
          geocodingStatusFun[nextProps.geocoding.status](nextProps.geocoding)
-      if (groupStatusFun.hasOwnProperty(nextProps.group.status) && nextProps.group.status != this.props.group.status)
-         groupStatusFun[nextProps.group.status](nextProps.group)
+
       if (locationStatusFun.hasOwnProperty(nextProps.location.status) && nextProps.location.status != this.props.location.status)
          locationStatusFun[nextProps.location.status]()
    }

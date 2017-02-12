@@ -1,8 +1,8 @@
 import * as Firebase from 'firebase'
 import {AsyncStorage} from 'react-native'
-import {ERROR_MESSAGE} from '../config'
+import {ERROR_MESSAGE, FIREBASE_ROOT} from '../config'
 const firebaseConfig = {
-   databaseURL: 'https://followmeapp-50e32.firebaseio.com'
+   databaseURL: FIREBASE_ROOT
 }
 Firebase.initializeApp(firebaseConfig)
 class FirebaseService {

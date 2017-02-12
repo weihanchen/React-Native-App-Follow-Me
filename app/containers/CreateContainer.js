@@ -20,6 +20,12 @@ class CreateContainer extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
+      const groupStatusFun = {
+         create_success: (group) => {
+            this.props.handleCreateSuccess()
+         },
+         error: (group) => ToastAndroid.show(group.error, ToastAndroid.SHORT)
+      }
       const identifyStatusFunc = {
          request_success: (identify) => {
             const {navigator} = nextProps
@@ -35,6 +41,9 @@ class CreateContainer extends Component {
          },
          error: (identify) => ToastAndroid.show(identify.error, ToastAndroid.SHORT)
       }
+      if (groupStatusFun.hasOwnProperty(nextProps.group.status) && nextProps.group.status != this.props.group.status)
+         groupStatusFun[nextProps.group.status](nextProps.group)
+
       if (identifyStatusFunc.hasOwnProperty(nextProps.identify.status) && nextProps.identify.status != this.props.identify.status)
          identifyStatusFunc[nextProps.identify.status](nextProps.identify)
    }
@@ -44,7 +53,7 @@ class CreateContainer extends Component {
    }
 
    handleCreateSuccess() {
-     this.props.requestIdentify()
+      this.props.requestIdentify()
    }
 
    handleSearchAddress(address) {
