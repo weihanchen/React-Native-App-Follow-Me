@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {InteractionManager, Text, View, StyleSheet} from 'react-native'
 //actions
-import {requestCheckIdentify} from '../actions'
+import {requestIdentify} from '../actions'
 //components
 import AddContainer from './AddContainer'
 import {MenuBody} from '../components/Menu'
@@ -16,24 +16,30 @@ import TravelContainer from './TravelContainer'
 class MenuContainer extends Component {
    constructor(props) {
       super(props);
+      this.state = {
+         isFirstVisit: true
+      }
    }
 
    componentDidMount() {
-     this.props.requestCheckIdentify()
+      this.props.requestIdentify()
    }
 
-   componentWillUnmount() {
-   }
+   componentWillUnmount() {}
 
    componentWillReceiveProps(nextProps) {
-     const {navigator} = this.props
-      if (this.props.identify.status !== nextProps.identify.status && nextProps.identify.status === 'check_success') {
-        InteractionManager.runAfterInteractions(() => {
-           navigator.push({component: TravelContainer, passProps: {
-              groupId: nextProps.identify.groupId,
-              userId: nextProps.identify.userId
-           }})
-        }, 1000)
+      const {navigator} = this.props
+      if (this.state.isFirstVisit && nextProps.identify.status === 'request_success' && nextProps.identify.isIdentify) {
+         this.setState({isFirstVisit: false})
+         InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+               component: TravelContainer,
+               passProps: {
+                  groupId: nextProps.identify.groupId,
+                  userId: nextProps.identify.userId
+               }
+            })
+         }, 1000)
       }
    }
 
@@ -52,9 +58,10 @@ class MenuContainer extends Component {
    }
 
    render() {
+      const {identify} = this.props
       return (
          <View style={styles.container}>
-            <MenuBody navigateToAddToGroup={this.navigateToAddToGroup.bind(this)} navigateToCreateGroup={this.navigateToCreateGroup.bind(this)}></MenuBody>
+            <MenuBody isIdentify={identify.isIdentify} navigateToAddToGroup={this.navigateToAddToGroup.bind(this)} navigateToCreateGroup={this.navigateToCreateGroup.bind(this)}></MenuBody>
          </View>
       );
    }
@@ -67,18 +74,18 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-    return {identify: state.identify}
+   return {identify: state.identify}
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        requestCheckIdentify
-    }, dispatch)
+   return bindActionCreators({
+      requestIdentify
+   }, dispatch)
 }
 
 MenuContainer.propTypes = {
    navigator: PropTypes.object,
-   requestCheckIdentify: PropTypes.func
+   requestIdentify: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuContainer)

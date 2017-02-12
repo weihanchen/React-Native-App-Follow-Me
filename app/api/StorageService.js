@@ -13,6 +13,6 @@ export default class StorageService {
 
    getId() {
       return AsyncStorage.getItem('groupId')
-               .then(groupId => AsyncStorage.getItem('userId').then(userId => ({groupId, userId})))
+               .then(groupId => AsyncStorage.getItem('userId').then(userId => ({groupId, userId,isIdentify: groupId != undefined && userId != undefined})))
    }
 }

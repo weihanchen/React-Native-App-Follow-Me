@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {InteractionManager, View, Text, StyleSheet} from 'react-native'
 //actions
-import {requestCheckIdentify, requestCreateGroup, requestGeolocation, requestGeocoding, requestIdentify} from '../actions'
+import {requestCreateGroup, requestGeolocation, requestGeocoding, requestIdentify} from '../actions'
 //components
 import {CreateBody} from '../components/Create/index.js'
 import MenuContainer from './MenuContainer'
@@ -70,7 +70,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
    return bindActionCreators({
-      requestCheckIdentify,
       requestCreateGroup,
       requestGeocoding,
       requestGeolocation,
@@ -89,7 +88,6 @@ CreateContainer.propTypes = {
    group: PropTypes.object,
    identify: PropTypes.object,
    location: PropTypes.object,
-   requestCheckIdentify: PropTypes.func,
    requestCreateGroup: PropTypes.func,
    requestGeocoding: PropTypes.func,
    requestGeolocation: PropTypes.func

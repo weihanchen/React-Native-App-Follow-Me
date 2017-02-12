@@ -1,5 +1,4 @@
 import {
-   watchRequestCheckIdentity,
    watchRequestIdentify
 } from './identify'
 import {
@@ -27,7 +26,6 @@ import {
 export default function* rootSaga() {
    yield [
       watchRequestAddToGroup(),
-      watchRequestCheckIdentity(),
       watchRequestCreateGroup(),
       watchRequestFetchGroup(),
       watchRequestFetchUser(),
