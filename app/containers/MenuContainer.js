@@ -29,17 +29,19 @@ class MenuContainer extends Component {
 
    componentWillReceiveProps(nextProps) {
       const {navigator} = this.props
-      if (this.state.isFirstVisit && nextProps.identify.status === 'request_success' && nextProps.identify.isIdentify) {
-         this.setState({isFirstVisit: false})
-         InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-               component: TravelContainer,
-               passProps: {
-                  groupId: nextProps.identify.groupId,
-                  userId: nextProps.identify.userId
-               }
-            })
-         }, 1000)
+      if (this.props.identify.status != nextProps.identify.status && nextProps.identify.status === 'request_success') {
+        if (nextProps.identify.isIdentify && this.state.isFirstVisit) {
+          InteractionManager.runAfterInteractions(() => {
+             navigator.push({
+                component: TravelContainer,
+                passProps: {
+                   groupId: nextProps.identify.groupId,
+                   userId: nextProps.identify.userId
+                }
+             })
+          }, 1000)
+        }
+        this.setState({isFirstVisit: false})
       }
    }
 

@@ -7,6 +7,7 @@ import {
    changeTravelMode,
    requestFetchTravelInit,
    requestGeolocation,
+   requestIdentify,
    requestLeaveGroup,
    requestTravelDirections,
    requestTravelUpdateCoordinate,
@@ -79,7 +80,9 @@ class TravelContainer extends Component {
          leave_success: () => {
             InteractionManager.runAfterInteractions(() => {
                navigator.pop()
+               this.props.requestIdentify()
             })
+
          },
          error: (error) => this.errorHandler(error)
       }
@@ -182,6 +185,7 @@ const mapDispatchToProps = (dispatch) => {
       changeTravelMode,
       requestFetchTravelInit,
       requestGeolocation,
+      requestIdentify,
       requestLeaveGroup,
       requestTravelDirections,
       requestTravelUpdateCoordinate,
@@ -204,6 +208,7 @@ TravelContainer.propTypes = {
    requestDirections: PropTypes.func,
    requestFetchTravelMarkers: PropTypes.func,
    requestLeaveGroup: PropTypes.func,
+   requestIdentify: PropTypes.func,
    requestGeolocation: PropTypes.func,
    requestTravelUpdateCoordinate: PropTypes.func,
    travel: PropTypes.object,
