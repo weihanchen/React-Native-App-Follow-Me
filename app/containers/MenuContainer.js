@@ -57,11 +57,25 @@ class MenuContainer extends Component {
       }, 1000)
    }
 
+   navigateToTravelMap() {
+      const {navigator, identify} = this.props
+      InteractionManager.runAfterInteractions(() => {
+         navigator.push({
+            component: TravelContainer,
+            passProps: {
+               groupId: identify.groupId,
+               userId: identify.userId
+            }
+         })
+      }, 1000)
+   }
+
    render() {
       const {identify} = this.props
       return (
          <View style={styles.container}>
-            <MenuBody isIdentify={identify.isIdentify} navigateToAddToGroup={this.navigateToAddToGroup.bind(this)} navigateToCreateGroup={this.navigateToCreateGroup.bind(this)}></MenuBody>
+            <MenuBody isIdentify={identify.isIdentify} navigateToAddToGroup={this.navigateToAddToGroup.bind(this)} navigateToCreateGroup={this.navigateToCreateGroup.bind(this)}
+                      navigateToTravelMap={this.navigateToTravelMap.bind(this)} />
          </View>
       );
    }

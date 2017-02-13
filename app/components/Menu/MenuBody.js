@@ -21,7 +21,9 @@ class MenuBody extends Component {
       this.props.navigateToCreateGroup();
    }
 
-   onEnterMap() {}
+   onEnterMap() {
+      this.props.navigateToTravelMap();
+   }
 
    render() {
       const {isIdentify} = this.props
@@ -80,7 +82,8 @@ class MenuBody extends Component {
 MenuBody.propTypes = {
    isIdentify: PropTypes.bool,
    navigateToAddToGroup: PropTypes.func,
-   navigateToCreateGroup: PropTypes.func
+   navigateToCreateGroup: PropTypes.func,
+   navigateToTravelMap: PropTypes.func
 }
 
 export default MenuBody
