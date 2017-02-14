@@ -53,6 +53,10 @@ class FirebaseService {
       const groupRef = Firebase.database().ref(`groups/${groupId}`)
       const userRef = Firebase.database().ref(`users/${userId}`)
       const group = Object.assign({}, {
+         alert: {
+           member: userId,
+           timespan: new Date().getTime()
+         },
          endPosition,
          expiredTime,
          groupName,
