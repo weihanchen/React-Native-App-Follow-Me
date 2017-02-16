@@ -102,6 +102,7 @@ export function* requestTravelInitFlow(action) {
          type: MARKER_TYPE.END_POSITION,
          name: LANGUAGE_KEY.END_POSITION
       })
+      let memberMap = {}
       let markers = users.map(user => {
          let memberCoordinate = group.members[user.key].coordinate
          let type = MARKER_TYPE.MEMBER
@@ -110,6 +111,7 @@ export function* requestTravelInitFlow(action) {
            memberCoordinate = Object.assign({}, coordinate)
          }
          else if (user.key === leaderId) type = MARKER_TYPE.LEADER
+         memberMap[user.key] = user
          return Object.assign({}, {
             coordinate: memberCoordinate,
             isActive: false,
@@ -124,7 +126,8 @@ export function* requestTravelInitFlow(action) {
          coordinate,
          endPosition,
          isLeader,
-         markers
+         markers,
+         memberMap
       })
       yield put({
          type: UPDATE_TRAVEL_REGION,
@@ -133,7 +136,7 @@ export function* requestTravelInitFlow(action) {
    } catch (error) {
       yield put({
          type: REQUEST_TRAVEL_FAILED,
-         error
+         error: error.toString()
       })
    }
 }
@@ -149,7 +152,7 @@ export function* requestTravelUpdateCoordinateFlow(action) {
    } catch (error) {
       yield put({
          type: REQUEST_TRAVEL_FAILED,
-         error
+         error: error.toString()
       })
    }
 }

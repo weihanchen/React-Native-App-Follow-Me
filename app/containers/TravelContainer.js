@@ -50,6 +50,15 @@ class TravelContainer extends Component {
       const userId = this.props.userId
       this.props.requestGeolocation()
 
+      firebaseService.onGroupAlertChanged(groupId, (childSnapshot) => {
+         const key = childSnapshot.key
+         const value = childSnapshot.val()
+         const {travel} = this.props
+         if (key !== userId) {
+           const member = travel.memberMap[key]//判斷isAlerting跟時間
+         }
+      })
+
       firebaseService.onGroupMembersChanged(groupId, (childSnapshot) => {
          const key = childSnapshot.key
          const value = childSnapshot.val()

@@ -32,6 +32,7 @@ const travel = (state = {
    directions: [],
    error: null,
    markers: [],
+   memberMap: {},
    mode: 'driving',
    status: 'init'
 }, action) => {
@@ -87,6 +88,7 @@ const travel = (state = {
             activePosition: action.endPosition,
             isLeader: action.isLeader,
             markers: action.markers,
+            memberMap: action.memberMap
          })
          break
       case UPDATE_TRAVEL_MARKERS:
