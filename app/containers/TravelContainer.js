@@ -32,6 +32,7 @@ import MenuContainer from './MenuContainer'
 import {ERROR_MESSAGE, LANGUAGE_KEY} from '../config'
 //service
 import {FirebaseService} from '../api'
+import moment from 'moment'
 
 const firebaseService = new FirebaseService()
 
@@ -57,7 +58,13 @@ class TravelContainer extends Component {
          const {travel} = this.props
          if (key !== userId) {
            const member = travel.memberMap[key]//判斷isAlerting跟時間發送震動跟通知
-           Vibration.vibrate([0, 200, 100, 200])
+           const isAlerting = value.isAlerting
+           const timespan = value.timespan
+           const now = moment()
+           const alertTime = moment(new Date(timespan))
+           if (now.diff(alertTime, 'seconds') <= 10) {
+             Vibration.vibrate([0, 200, 100, 200])
+           }
          }
       })
 
