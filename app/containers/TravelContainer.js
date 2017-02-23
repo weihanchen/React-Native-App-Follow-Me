@@ -22,7 +22,8 @@ import {
    View,
    Text,
    ToastAndroid,
-   StyleSheet
+   StyleSheet,
+   Vibration
 } from 'react-native'
 import {SideMenu} from 'react-native-elements'
 import {TravelMap, TravelMenu} from '../components/Travel'
@@ -55,7 +56,8 @@ class TravelContainer extends Component {
          const value = childSnapshot.val()
          const {travel} = this.props
          if (key !== userId) {
-           const member = travel.memberMap[key]//判斷isAlerting跟時間
+           const member = travel.memberMap[key]//判斷isAlerting跟時間發送震動跟通知
+           Vibration.vibrate([0, 200, 100, 200])
          }
       })
 
