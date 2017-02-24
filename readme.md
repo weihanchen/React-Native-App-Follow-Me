@@ -7,6 +7,8 @@ This application will help keep the car team traveling
 * [React Native 0.39](https://facebook.github.io/react-native/docs/getting-started.html)
 * SDK Platforms `Androis 6.0(Marshmallow)`
 * SDK Tools `Google Play services`、`Android SDK Build-Tools 23.0.3+`
+  * [Google Play services](https://developers.google.com/android/guides/setup)
+  * `Android SDK Build-Tools 23.0.3+`
 
 ## Dependencies
 * [react-native-maps](https://github.com/airbnb/react-native-maps)
