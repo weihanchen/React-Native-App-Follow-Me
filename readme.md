@@ -14,6 +14,7 @@ This application will help keep the car team traveling
 * [react-native-maps](https://github.com/airbnb/react-native-maps)
 * [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)
 * [react-native-elements](https://github.com/react-native-community/react-native-elements)
+* [react-native-push-notification](https://github.com/zo0r/react-native-push-notification)
 
 ## Development
 ### General requirements before running project

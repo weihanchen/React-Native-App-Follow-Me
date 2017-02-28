@@ -26,6 +26,7 @@ import {
    Vibration
 } from 'react-native'
 import {SideMenu} from 'react-native-elements'
+const PushNotification = require('react-native-push-notification');
 import {TravelMap, TravelMenu} from '../components/Travel'
 import MenuContainer from './MenuContainer'
 //config
@@ -52,19 +53,27 @@ class TravelContainer extends Component {
       const userId = this.props.userId
       this.props.requestGeolocation()
 
+      PushNotification.configure({
+         popInitialNotification: true,
+         requestPermissions: true
+      })
+
       firebaseService.onGroupAlertChanged(groupId, (childSnapshot) => {
          const key = childSnapshot.key
          const value = childSnapshot.val()
          const {travel} = this.props
          if (key !== userId) {
-           const member = travel.memberMap[key]//判斷isAlerting跟時間發送震動跟通知
-           const isAlerting = value.isAlerting
-           const timespan = value.timespan
-           const now = moment()
-           const alertTime = moment(new Date(timespan))
-           if (now.diff(alertTime, 'seconds') <= 10) {
-             Vibration.vibrate([0, 200, 100, 200])
-           }
+            const member = travel.memberMap[key] //判斷isAlerting跟時間發送震動跟通知
+            const isAlerting = value.isAlerting
+            const timespan = value.timespan
+            const now = moment()
+            const alertTime = moment(new Date(timespan))
+            if (now.diff(alertTime, 'seconds') <= 15) {
+               PushNotification.localNotification({
+                  bigText: 'Followme',
+                  message: `${member.userName}${LANGUAGE_KEY.SENDALERT}`,
+               })
+            }
          }
       })
 
@@ -184,10 +193,13 @@ class TravelContainer extends Component {
    render() {
       const {travel} = this.props
       const menu = (
-        <TravelMenu handleLeaveGroup={this.handleLeaveGroup.bind(this)} handleNavigateToMarker={this.handleNavigateToMarker.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} isMenuOpen={this.state.isMenuOpen} travel={travel}></TravelMenu>
+         <TravelMenu handleLeaveGroup={this.handleLeaveGroup.bind(this)} handleNavigateToMarker={this.handleNavigateToMarker.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} isMenuOpen={this.state.isMenuOpen} travel={travel}></TravelMenu>
       )
       return (
-         <SideMenu isOpen={this.state.isMenuOpen} menu={menu} onChange={(isMenuOpen) => {if(this.state.isMenuOpen != isMenuOpen) this.setState({isMenuOpen})}}>
+         <SideMenu isOpen={this.state.isMenuOpen} menu={menu} onChange={(isMenuOpen) => {
+            if (this.state.isMenuOpen != isMenuOpen)
+               this.setState({isMenuOpen})
+         }}>
             <TravelMap handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)} handleRequestRegion={this.handleRequestRegion.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} travel={travel}></TravelMap>
          </SideMenu>
       )
@@ -195,7 +207,7 @@ class TravelContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-   return {group: state.group, travel: state.travel,  location: state.location}
+   return {group: state.group, travel: state.travel, location: state.location}
 }
 
 const mapDispatchToProps = (dispatch) => {
