@@ -1,6 +1,8 @@
 export const CHANGE_TRAVEL_MODE = 'CHANGE_TRAVEL_MODE'
 export const REQUEST_MARKER_ACTIVE_DIRECTION = 'REQUEST_MARKER_ACTIVE_DIRECTION'
 export const REQUEST_MARKER_ACTIVE_DIRECTION_SUCCESS = 'REQUEST_MARKER_ACTIVE_DIRECTION_SUCCESS'
+export const REQUEST_ADD_TRAVEL_MEMBER = 'REQUEST_ADD_TRAVEL_MEMBER'
+export const REQUEST_ADD_TRAVEL_MEMBER_SUCCESS = 'REQUEST_ADD_TRAVEL_MEMBER_SUCCESS'
 export const REQUEST_TRAVEL_DIRECTIONS = 'REQUEST_TRAVEL_DIRECTIONS'
 export const REQUEST_TRAVEL_DIRECTIONS_SUCCESS = 'REQUEST_TRAVEL_DIRECTIONS_SUCCESS'
 export const REQUEST_TRAVEL_FAILED = 'REQUEST_TRAVEL_FAILED'
@@ -14,6 +16,11 @@ export const UPDATE_TRAVEL_REGION = 'UPDATE_TRAVEL_REGION'
 const changeTravelMode = (mode) => ({
    type: CHANGE_TRAVEL_MODE,
    mode
+})
+
+const requestAddTravelMember = (member) => ({
+   type: REQUEST_ADD_TRAVEL_MEMBER,
+   member
 })
 
 const requestFetchTravelInit = (coordinate, currentUid, groupId) => ({
@@ -65,6 +72,7 @@ const updateTravelRegion = (coordinate) => ({
 
 export {
    changeTravelMode,
+   requestAddTravelMember,
    requestFetchTravelInit,
    requestTravelDirections,
    requestTravelUpdateCoordinate,

@@ -1,5 +1,7 @@
 import {
    CHANGE_TRAVEL_MODE,
+   REQUEST_ADD_TRAVEL_MEMBER,
+   REQUEST_ADD_TRAVEL_MEMBER_SUCCESS,
    REQUEST_MARKER_ACTIVE_DIRECTION,
    REQUEST_MARKER_ACTIVE_DIRECTION_SUCCESS,
    REQUEST_TRAVEL_DIRECTIONS,
@@ -25,6 +27,7 @@ const travel = (state = {
       }
    },
    isLeader: false,
+   hasInitialized: false,
    region: {
       latitude: 0,
       longitude: 0
@@ -41,6 +44,22 @@ const travel = (state = {
          return Object.assign({}, state, {
             status: 'change_mode',
             mode: action.mode
+         })
+         break
+      case REQUEST_ADD_TRAVEL_MEMBER:
+         return Object.assign({}, state, {
+            status: 'loading',
+            error: null
+         })
+         break
+      case REQUEST_ADD_TRAVEL_MEMBER_SUCCESS:
+         const markers = state.markers.slice()
+         markers.push(action.marker)
+         const memberMap = Object.assign({}, state.memberMap, action.memberMap)
+         return Object.assign({}, state, {
+            status: 'request_add_member_success',
+            markers,
+            memberMap
          })
          break
       case REQUEST_MARKER_ACTIVE_DIRECTION:
@@ -86,6 +105,7 @@ const travel = (state = {
             status: 'request_init_success',
             coordinate: action.coordinate,
             activePosition: action.endPosition,
+            hasInitialized: true,
             isLeader: action.isLeader,
             markers: action.markers,
             memberMap: action.memberMap

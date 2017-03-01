@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux'
 //actions
 import {
    changeTravelMode,
+   requestAddTravelMember,
    requestFetchTravelInit,
    requestGeolocation,
    requestIdentify,
@@ -62,8 +63,8 @@ class TravelContainer extends Component {
          const key = childSnapshot.key
          const value = childSnapshot.val()
          const {travel} = this.props
-         if (key !== userId) {
-            const member = travel.memberMap[key] //判斷isAlerting跟時間發送震動跟通知
+         const member = travel.memberMap[key]
+         if (key !== userId && member) {
             const isAlerting = value.isAlerting
             const timespan = value.timespan
             const now = moment()
@@ -77,6 +78,16 @@ class TravelContainer extends Component {
          }
       })
 
+      firebaseService.onGroupMembersAdded(groupId, (childSnapshot) => {
+         const {hasInitialized} = this.props.travel
+         if (hasInitialized) {
+           const key = childSnapshot.key
+           const value = childSnapshot.val()
+           const member = Object.assign({}, value, {key})
+           this.props.requestAddTravelMember(member)
+         }
+      })
+
       firebaseService.onGroupMembersChanged(groupId, (childSnapshot) => {
          const key = childSnapshot.key
          const value = childSnapshot.val()
@@ -85,11 +96,14 @@ class TravelContainer extends Component {
       })
 
       this.watchID = navigator.geolocation.watchPosition((position) => {
-         const coordinate = {
+         const currentCoordinate = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
          }
-         this.props.requestTravelUpdateCoordinate(groupId, userId, coordinate)
+         const {hasInitialized} = this.props.travel
+
+         if (!hasInitialized) this.props.requestGeolocation();
+         else this.props.requestTravelUpdateCoordinate(groupId, userId, currentCoordinate)
       }, (error) => ToastAndroid.show(ERROR_MESSAGE.POSITION_ERROR, ToastAndroid.SHORT), {
          enableHighAccuracy: true,
          distanceFilter: 5,
@@ -213,6 +227,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
    return bindActionCreators({
       changeTravelMode,
+      requestAddTravelMember,
       requestFetchTravelInit,
       requestGeolocation,
       requestIdentify,
@@ -235,6 +250,7 @@ TravelContainer.propTypes = {
    changeTravelMode: PropTypes.func,
    group: PropTypes.object,
    groupId: PropTypes.string,
+   requestAddTravelMember: PropTypes.func,
    requestDirections: PropTypes.func,
    requestFetchTravelMarkers: PropTypes.func,
    requestLeaveGroup: PropTypes.func,

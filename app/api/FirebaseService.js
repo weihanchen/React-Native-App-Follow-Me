@@ -15,6 +15,11 @@ class FirebaseService {
       groupRef.on('child_changed', callback)
    }
 
+   onGroupMembersAdded(groupName, callback) {
+     const groupRef = Firebase.database().ref(`groups/${groupName}/members`)
+     groupRef.on('child_added', callback)
+   }
+
    onGroupMembersChanged(groupName, callback) {
       const groupRef = Firebase.database().ref(`groups/${groupName}/members`)
       groupRef.on('child_changed', callback)

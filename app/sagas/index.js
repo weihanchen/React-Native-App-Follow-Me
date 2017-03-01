@@ -14,7 +14,8 @@ import {
    watchRequestGeolocation
 } from './location'
 import {
-  watchRequestMarkerActiveDirection,
+   watchRequestAddTravelMember,
+   watchRequestMarkerActiveDirection,
    watchRequestTravelDirections,
    watchRequestTravelInit,
    watchRequestTravelUpdateCoordinate
@@ -26,6 +27,7 @@ import {
 export default function* rootSaga() {
    yield [
       watchRequestAddToGroup(),
+      watchRequestAddTravelMember(),
       watchRequestCreateGroup(),
       watchRequestFetchGroup(),
       watchRequestFetchUser(),

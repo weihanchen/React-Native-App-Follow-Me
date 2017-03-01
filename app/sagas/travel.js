@@ -6,6 +6,8 @@ import {
    call
 } from 'redux-saga/effects'
 import {
+   REQUEST_ADD_TRAVEL_MEMBER,
+   REQUEST_ADD_TRAVEL_MEMBER_SUCCESS,
    REQUEST_MARKER_ACTIVE_DIRECTION,
    REQUEST_MARKER_ACTIVE_DIRECTION_SUCCESS,
    REQUEST_TRAVEL_DIRECTIONS,
@@ -28,6 +30,10 @@ import {
 const firebaseService = new FirebaseService()
 const locationService = new LocationService()
 
+export function* watchRequestAddTravelMember() {
+   yield call(takeEvery, REQUEST_ADD_TRAVEL_MEMBER, requestAddTravelMemberFlow)
+}
+
 export function* watchRequestMarkerActiveDirection() {
    yield call(takeEvery, REQUEST_MARKER_ACTIVE_DIRECTION, requestMarkerActiveDirectionFlow)
 }
@@ -44,17 +50,53 @@ export function* watchRequestTravelUpdateCoordinate() {
    yield call(takeEvery, REQUEST_TRAVEL_UPDATE_COORDINATE, requestTravelUpdateCoordinateFlow)
 }
 
+export function* requestAddTravelMemberFlow(action) {
+   try {
+      const {
+         member
+      } = action
+      const user = yield call(firebaseService.requestFetchUser, member.key)
+      const marker = {
+         coordinate: member.coordinate,
+         isActive: false,
+         key: user.key,
+         name: user.userName,
+         type: MARKER_TYPE.MEMBER
+      }
+      const memberMap = {}
+      memberMap[user.key] = user
+      yield put({
+         type: REQUEST_ADD_TRAVEL_MEMBER_SUCCESS,
+         marker,
+         memberMap
+      })
+   } catch (error) {
+      yield put({
+         type: REQUEST_TRAVEL_FAILED,
+         error: error.toString()
+      })
+   }
+}
+
 export function* requestMarkerActiveDirectionFlow(action) {
    try {
-      const {startCoordinate, markers, mode} = action
+      const {
+         startCoordinate,
+         markers,
+         mode
+      } = action
       const activeMarker = action.marker
       const activePosition = {
-        coordinate: activeMarker.coordinate
+         coordinate: activeMarker.coordinate
       }
       const updatedMarkers = markers.map(marker => {
-        if (marker.key === activeMarker.key) marker = Object.assign({}, marker, {isActive: true})
-        else marker = Object.assign({}, marker, {isActive: false})
-        return marker
+         if (marker.key === activeMarker.key) marker = Object.assign({}, marker, {
+            isActive: true
+         })
+         else marker = Object.assign({}, marker, {
+            isActive: false
+         })
+         return marker
       })
       const directions = yield call(locationService.requestDirections, startCoordinate, activePosition.coordinate, mode)
       yield put({
@@ -64,10 +106,10 @@ export function* requestMarkerActiveDirectionFlow(action) {
          markers: updatedMarkers
       })
    } catch (error) {
-     yield put({
-        type: REQUEST_TRAVEL_FAILED,
-        error: typeof error === 'string' ? error : error.toString()
-     })
+      yield put({
+         type: REQUEST_TRAVEL_FAILED,
+         error: typeof error === 'string' ? error : error.toString()
+      })
    }
 }
 
@@ -107,10 +149,9 @@ export function* requestTravelInitFlow(action) {
          let memberCoordinate = group.members[user.key].coordinate
          let type = MARKER_TYPE.MEMBER
          if (user.key === currentUid) {
-           type = MARKER_TYPE.SELF
-           memberCoordinate = Object.assign({}, coordinate)
-         }
-         else if (user.key === leaderId) type = MARKER_TYPE.LEADER
+            type = MARKER_TYPE.SELF
+            memberCoordinate = Object.assign({}, coordinate)
+         } else if (user.key === leaderId) type = MARKER_TYPE.LEADER
          memberMap[user.key] = user
          return Object.assign({}, {
             coordinate: memberCoordinate,
