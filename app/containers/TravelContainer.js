@@ -94,7 +94,11 @@ class TravelContainer extends Component {
          const {hasInitialized, markers, memberMap} = this.props.travel
          if (hasInitialized) {
             const key = childSnapshot.key
-            this.props.removeMember(markers, memberMap, key)
+            const member = memberMap[key]
+            if (member) {
+              PushNotification.localNotification({bigText: 'Followme', message: `${member.userName}${LANGUAGE_KEY.LEAVED_GROUP}`})
+              this.props.removeMember(markers, memberMap, key)
+            }
          }
       })
 
@@ -138,6 +142,7 @@ class TravelContainer extends Component {
       }
       const travelStatusFunc = {
          change_mode: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.activePosition.coordinate, nextProps.travel.mode),
+         request_add_member_success: () => PushNotification.localNotification({bigText: 'Followme', message: `${nextProps.travel.newMember.userName}${LANGUAGE_KEY.ADDTOGROUP}`}),
          request_init_success: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.activePosition.coordinate, nextProps.travel.mode),
          error: (error) => this.errorHandler(error)
       }

@@ -68,7 +68,8 @@ export function* requestAddTravelMemberFlow(action) {
       yield put({
          type: REQUEST_ADD_TRAVEL_MEMBER_SUCCESS,
          marker,
-         memberMap
+         memberMap,
+         newMember: user
       })
    } catch (error) {
       yield put({

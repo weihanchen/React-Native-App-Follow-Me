@@ -11,6 +11,7 @@ export const GOOGLE_GEOCODING_URL = 'https://maps.google.com/maps/api/geocode/js
 export const GOOGLE_DIRECTIONS_URL = 'https://maps.googleapis.com/maps/api/directions/json'
 export const LANGUAGE = 'zh-TW'
 export const LANGUAGE_KEY = {
+   ADDTOGROUP: '加入了隊伍',
    ALREADY_USE_YOUR_POSITION: '已使用您目前的位置',
    CANCEL: '取消',
    CONFIRM_CREATE_GROUP: '確定創建群組',
@@ -25,6 +26,7 @@ export const LANGUAGE_KEY = {
    JOIN_GROUP: '加入群組',
    JOIN_GROUP_SUBTITLE: '根據ID加入、搜尋群組名稱',
    LEAVE_GROUP: '離開群組',
+   LEAVED_GROUP: '離開了群組',
    LEAVE_GROUP_CONFIRM_TIP: '請確認是否離開隊伍',
    LEAVE_GROUP_WHEN_LEADER_TIP: '您是隊長，離開隊伍後將解散群組',
    PLEASE_INPUT_ADDRESS: '請輸入地址',
@@ -34,6 +36,7 @@ export const LANGUAGE_KEY = {
    PLEASE_PRESS_DRAG: '請長按並拖拉',
    PLEASE_TURN_ON_POSITION: '請開啟定位服務',
    SEARCH: '搜尋',
+   SENDALERT: '發送了緊急通知',
    START_POSITION: '起點'
 }
 export const MARKER_TYPE = {

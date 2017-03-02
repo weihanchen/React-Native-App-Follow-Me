@@ -38,6 +38,7 @@ const travel = (state = {
    markers: [],
    memberMap: {},
    mode: 'driving',
+   newMember: {},
    status: 'init'
 }, action) => {
    switch (action.type) {
@@ -67,7 +68,8 @@ const travel = (state = {
          return Object.assign({}, state, {
             status: 'request_add_member_success',
             markers,
-            memberMap
+            memberMap,
+            newMember: action.newMember
          })
          break
       case REQUEST_MARKER_ACTIVE_DIRECTION:
