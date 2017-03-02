@@ -1,4 +1,5 @@
 export const CHANGE_TRAVEL_MODE = 'CHANGE_TRAVEL_MODE'
+export const REMOVE_MEMBER = 'REMOVE_MEMBER'
 export const REQUEST_MARKER_ACTIVE_DIRECTION = 'REQUEST_MARKER_ACTIVE_DIRECTION'
 export const REQUEST_MARKER_ACTIVE_DIRECTION_SUCCESS = 'REQUEST_MARKER_ACTIVE_DIRECTION_SUCCESS'
 export const REQUEST_ADD_TRAVEL_MEMBER = 'REQUEST_ADD_TRAVEL_MEMBER'
@@ -17,6 +18,19 @@ const changeTravelMode = (mode) => ({
    type: CHANGE_TRAVEL_MODE,
    mode
 })
+
+const removeMember = (markers, memberMap, key) => {
+   markers = markers.slice()
+   memberMap = Object.assign({}, memberMap)
+   const markerIdx = markers.findIndex(marker => marker.key === key)
+   markers.splice(markerIdx, 1)
+   delete memberMap[key]
+   return {
+      type: REMOVE_MEMBER,
+      markers,
+      memberMap
+   }
+}
 
 const requestAddTravelMember = (member) => ({
    type: REQUEST_ADD_TRAVEL_MEMBER,
@@ -37,6 +51,13 @@ const requestTravelDirections = (startCoordinate, endCoordinate, mode) => ({
    mode
 })
 
+const requestTravelUpdateCoordinate = (groupId, userId, coordinate) => ({
+   type: REQUEST_TRAVEL_UPDATE_COORDINATE,
+   groupId,
+   userId,
+   coordinate
+})
+
 const updateMarkerActiveDirection = (startCoordinate, markers, marker, mode) => {
    return {
       type: REQUEST_MARKER_ACTIVE_DIRECTION,
@@ -48,22 +69,17 @@ const updateMarkerActiveDirection = (startCoordinate, markers, marker, mode) => 
 }
 
 const updateTravelMarkers = (markers, key, coordinate) => {
-    const updatedMarkers = markers.map(marker => {
-       if (marker.key === key) marker = Object.assign({}, marker, {coordinate})
-       return marker
-    })
-    return {
+   const updatedMarkers = markers.map(marker => {
+      if (marker.key === key) marker = Object.assign({}, marker, {
+         coordinate
+      })
+      return marker
+   })
+   return {
       type: UPDATE_TRAVEL_MARKERS,
       markers: updatedMarkers
-    }
+   }
 }
-
-const requestTravelUpdateCoordinate = (groupId, userId, coordinate) => ({
-     type: REQUEST_TRAVEL_UPDATE_COORDINATE,
-     groupId,
-     userId,
-     coordinate
-})
 
 const updateTravelRegion = (coordinate) => ({
    type: UPDATE_TRAVEL_REGION,
@@ -72,6 +88,7 @@ const updateTravelRegion = (coordinate) => ({
 
 export {
    changeTravelMode,
+   removeMember,
    requestAddTravelMember,
    requestFetchTravelInit,
    requestTravelDirections,

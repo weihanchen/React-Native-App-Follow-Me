@@ -1,5 +1,6 @@
 import {
    CHANGE_TRAVEL_MODE,
+   REMOVE_MEMBER,
    REQUEST_ADD_TRAVEL_MEMBER,
    REQUEST_ADD_TRAVEL_MEMBER_SUCCESS,
    REQUEST_MARKER_ACTIVE_DIRECTION,
@@ -44,6 +45,13 @@ const travel = (state = {
          return Object.assign({}, state, {
             status: 'change_mode',
             mode: action.mode
+         })
+         break
+      case REMOVE_MEMBER:
+         return Object.assign({}, state, {
+            status: 'remove_member_success',
+            markers: action.markers,
+            memberMap: action.memberMap
          })
          break
       case REQUEST_ADD_TRAVEL_MEMBER:

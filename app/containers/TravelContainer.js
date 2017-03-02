@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux'
 //actions
 import {
    changeTravelMode,
+   removeMember,
    requestAddTravelMember,
    requestFetchTravelInit,
    requestGeolocation,
@@ -54,10 +55,7 @@ class TravelContainer extends Component {
       const userId = this.props.userId
       this.props.requestGeolocation()
 
-      PushNotification.configure({
-         popInitialNotification: true,
-         requestPermissions: true
-      })
+      PushNotification.configure({popInitialNotification: true, requestPermissions: true})
 
       firebaseService.onGroupAlertChanged(groupId, (childSnapshot) => {
          const key = childSnapshot.key
@@ -70,10 +68,7 @@ class TravelContainer extends Component {
             const now = moment()
             const alertTime = moment(new Date(timespan))
             if (now.diff(alertTime, 'seconds') <= 15) {
-               PushNotification.localNotification({
-                  bigText: 'Followme',
-                  message: `${member.userName}${LANGUAGE_KEY.SENDALERT}`,
-               })
+               PushNotification.localNotification({bigText: 'Followme', message: `${member.userName}${LANGUAGE_KEY.SENDALERT}`})
             }
          }
       })
@@ -81,10 +76,10 @@ class TravelContainer extends Component {
       firebaseService.onGroupMembersAdded(groupId, (childSnapshot) => {
          const {hasInitialized} = this.props.travel
          if (hasInitialized) {
-           const key = childSnapshot.key
-           const value = childSnapshot.val()
-           const member = Object.assign({}, value, {key})
-           this.props.requestAddTravelMember(member)
+            const key = childSnapshot.key
+            const value = childSnapshot.val()
+            const member = Object.assign({}, value, {key})
+            this.props.requestAddTravelMember(member)
          }
       })
 
@@ -95,6 +90,14 @@ class TravelContainer extends Component {
          this.props.updateTravelMarkers(this.props.travel.markers, key, coordinate)
       })
 
+      firebaseService.onGroupMembersRemoved(groupId, (childSnapshot) => {
+         const {hasInitialized, markers, memberMap} = this.props.travel
+         if (hasInitialized) {
+            const key = childSnapshot.key
+            this.props.removeMember(markers, memberMap, key)
+         }
+      })
+
       this.watchID = navigator.geolocation.watchPosition((position) => {
          const currentCoordinate = {
             latitude: position.coords.latitude,
@@ -102,8 +105,10 @@ class TravelContainer extends Component {
          }
          const {hasInitialized} = this.props.travel
 
-         if (!hasInitialized) this.props.requestGeolocation();
-         else this.props.requestTravelUpdateCoordinate(groupId, userId, currentCoordinate)
+         if (!hasInitialized)
+            this.props.requestGeolocation();
+         else
+            this.props.requestTravelUpdateCoordinate(groupId, userId, currentCoordinate)
       }, (error) => ToastAndroid.show(ERROR_MESSAGE.POSITION_ERROR, ToastAndroid.SHORT), {
          enableHighAccuracy: true,
          distanceFilter: 5,
@@ -227,6 +232,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
    return bindActionCreators({
       changeTravelMode,
+      removeMember,
       requestAddTravelMember,
       requestFetchTravelInit,
       requestGeolocation,
@@ -250,6 +256,7 @@ TravelContainer.propTypes = {
    changeTravelMode: PropTypes.func,
    group: PropTypes.object,
    groupId: PropTypes.string,
+   removeMember: PropTypes.func,
    requestAddTravelMember: PropTypes.func,
    requestDirections: PropTypes.func,
    requestFetchTravelMarkers: PropTypes.func,
