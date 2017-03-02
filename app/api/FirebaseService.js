@@ -16,18 +16,15 @@ class FirebaseService {
    }
 
    onGroupMembersAdded(groupName, callback) {
-     const groupRef = Firebase.database().ref(`groups/${groupName}/members`)
-     groupRef.on('child_added', callback)
+      return _onGroupMembersEvent('child_added', groupName, callback)
    }
 
    onGroupMembersChanged(groupName, callback) {
-      const groupRef = Firebase.database().ref(`groups/${groupName}/members`)
-      groupRef.on('child_changed', callback)
+      return _onGroupMembersEvent('child_changed', groupName, callback)
    }
 
    onGroupMembersRemoved(groupName, callback) {
-      const groupRef = Firebase.database().ref(`groups/${groupName}/members`)
-      groupRef.on('child_removed', callback)
+      return _onGroupMembersEvent('child_removed', groupName, callback)
    }
 
    onUserAdded(callback) {
@@ -148,6 +145,11 @@ const _fetchUser = (userId) => {
          throw ERROR_MESSAGE.USER_NOT_EXIST
       return Object.assign({}, snapshot.val(), {key: snapshot.key})
    })
+}
+
+const _onGroupMembersEvent = (eventName, groupName, callback) => {
+  const groupMembersRef = Firebase.database().ref(`groups/${groupName}/members`)
+  groupMembersRef.on(eventName, callback)
 }
 
 export default FirebaseService
