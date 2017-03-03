@@ -110,7 +110,7 @@ class TravelContainer extends Component {
          const {hasInitialized} = this.state
 
          if (!hasInitialized)
-            this.props.requestGeolocation();
+            this.props.requestGeolocation()
          else
             this.props.requestTravelUpdateCoordinate(groupId, userId, currentCoordinate)
       }, (error) => ToastAndroid.show(ERROR_MESSAGE.POSITION_ERROR, ToastAndroid.SHORT), {

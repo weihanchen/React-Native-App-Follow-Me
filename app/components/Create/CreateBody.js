@@ -83,6 +83,7 @@ class CreateBody extends Component {
             const coordinate = nextProps.location.coordinate
             const region = Object.assign({}, this.state.region, coordinate)
             this.setState({startPosition: coordinate, endPosition: {coordinate}, region})
+            this.props.handleMarkLocated()
          },
          error: () => ToastAndroid.show(ERROR_MESSAGE.POSITION_ERROR, ToastAndroid.SHORT)
       }
@@ -274,6 +275,7 @@ CreateBody.propTypes = {
    group: PropTypes.object,
    location: PropTypes.object,
    handleCreateGroup: PropTypes.func,
+   handleMarkLocated: PropTypes.func,
    handleSearchAddress: PropTypes.func
 }
 
