@@ -43,7 +43,8 @@ class TravelContainer extends Component {
    constructor(props) {
       super(props)
       this.state = {
-         isMenuOpen: false
+         isMenuOpen: false,
+         hasInitialized: false
       }
    }
 
@@ -74,7 +75,7 @@ class TravelContainer extends Component {
       })
 
       firebaseService.onGroupMembersAdded(groupId, (childSnapshot) => {
-         const {hasInitialized} = this.props.travel
+         const {hasInitialized} = this.state
          if (hasInitialized) {
             const key = childSnapshot.key
             const value = childSnapshot.val()
@@ -91,7 +92,8 @@ class TravelContainer extends Component {
       })
 
       firebaseService.onGroupMembersRemoved(groupId, (childSnapshot) => {
-         const {hasInitialized, markers, memberMap} = this.props.travel
+         const {markers, memberMap} = this.props.travel
+         const {hasInitialized} = this.state
          if (hasInitialized) {
             const key = childSnapshot.key
             const member = memberMap[key]
@@ -107,7 +109,7 @@ class TravelContainer extends Component {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
          }
-         const {hasInitialized} = this.props.travel
+         const {hasInitialized} = this.state
 
          if (!hasInitialized)
             this.props.requestGeolocation();
@@ -143,7 +145,10 @@ class TravelContainer extends Component {
       const travelStatusFunc = {
          change_mode: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.activePosition.coordinate, nextProps.travel.mode),
          request_add_member_success: () => PushNotification.localNotification({bigText: 'Followme', message: `${nextProps.travel.newMember.userName}${LANGUAGE_KEY.ADDTOGROUP}`}),
-         request_init_success: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.activePosition.coordinate, nextProps.travel.mode),
+         request_init_success: () => {
+            this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.activePosition.coordinate, nextProps.travel.mode)
+            this.setState({hasInitialized: true})
+         },
          error: (error) => this.errorHandler(error)
       }
 
@@ -152,7 +157,6 @@ class TravelContainer extends Component {
 
       if (locationStatusFunc.hasOwnProperty(nextProps.location.status) && nextProps.location.status != this.props.location.status)
          locationStatusFunc[nextProps.location.status](nextProps.location.error)
-
       if (travelStatusFunc.hasOwnProperty(nextProps.travel.status) && nextProps.travel.status != this.props.travel.status)
          travelStatusFunc[nextProps.travel.status](nextProps.travel.error)
    }

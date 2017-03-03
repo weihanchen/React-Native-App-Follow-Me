@@ -28,7 +28,6 @@ const travel = (state = {
       }
    },
    isLeader: false,
-   hasInitialized: false,
    region: {
       latitude: 0,
       longitude: 0
@@ -62,8 +61,8 @@ const travel = (state = {
          })
          break
       case REQUEST_ADD_TRAVEL_MEMBER_SUCCESS:
-         const markers = state.markers.slice()
-         markers.push(action.marker)
+         const markers = [...state.markers]
+         if (markers.findIndex(marker => marker.key === action.marker.key) == -1) markers.push(action.marker)
          const memberMap = Object.assign({}, state.memberMap, action.memberMap)
          return Object.assign({}, state, {
             status: 'request_add_member_success',
@@ -115,7 +114,6 @@ const travel = (state = {
             status: 'request_init_success',
             coordinate: action.coordinate,
             activePosition: action.endPosition,
-            hasInitialized: true,
             isLeader: action.isLeader,
             markers: action.markers,
             memberMap: action.memberMap
