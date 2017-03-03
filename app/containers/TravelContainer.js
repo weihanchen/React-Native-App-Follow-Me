@@ -94,13 +94,11 @@ class TravelContainer extends Component {
       firebaseService.onGroupMembersRemoved(groupId, (childSnapshot) => {
          const {markers, memberMap} = this.props.travel
          const {hasInitialized} = this.state
-         if (hasInitialized) {
-            const key = childSnapshot.key
-            const member = memberMap[key]
-            if (member) {
-              PushNotification.localNotification({bigText: 'Followme', message: `${member.userName}${LANGUAGE_KEY.LEAVED_GROUP}`})
-              this.props.removeMember(markers, memberMap, key)
-            }
+         const key = childSnapshot.key
+         const member = memberMap[key]
+         if (hasInitialized && userId !== key && member) {
+            PushNotification.localNotification({bigText: 'Followme', message: `${member.userName}${LANGUAGE_KEY.LEAVED_GROUP}`})
+            this.props.removeMember(markers, memberMap, key)
          }
       })
 
@@ -162,7 +160,10 @@ class TravelContainer extends Component {
    }
 
    componentWillUnmount() {
+      const groupId = this.props.groupId
       navigator.geolocation.clearWatch(this.watchID)
+      firebaseService.destroyGroupMemberListener(groupId)
+      firebaseService.destroyGroupAlertListener(groupId)
    }
 
    //Event handler

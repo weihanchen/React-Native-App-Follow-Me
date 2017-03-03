@@ -10,6 +10,14 @@ class FirebaseService {
       this.requestFetchGroup = this.requestFetchGroup.bind(this)
    }
 
+   destroyGroupAlertListener(groupName) {
+      Firebase.database().ref(`groups/${groupName}/alert`).off()
+   }
+
+   destroyGroupMemberListener(groupName) {
+      Firebase.database().ref(`groups/${groupName}/members`).off()
+   }
+
    onGroupAlertChanged(groupName, callback) {
       const groupRef = Firebase.database().ref(`groups/${groupName}/alert`)
       groupRef.on('child_changed', callback)
