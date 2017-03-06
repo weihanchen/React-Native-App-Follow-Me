@@ -1,7 +1,7 @@
 'use strict'
 import React, {Component, PropTypes} from 'react'
 //plugins
-import {Dimensions, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {Dimensions, Image,Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {Button, Icon} from 'react-native-elements'
 import MapView, {Marker, Polyline} from 'react-native-maps'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -104,13 +104,13 @@ const _markerSection = (marker) => {
    const renderType = {
       self: () => (
          <View style={styles.member}>
-            <FontAwesomeIcon name='circle' style={styles.memberText}/>
+            <FontAwesomeIcon name='circle' style={styles.selfText}/>
          </View>
       ),
       member: () => (
          <View style={styles.member}>
-            <FontAwesomeIcon name='user' style={styles.memberText}/>
             <Text style={styles.memberText}>{marker.name}</Text>
+            <Image source={marker.imageUrl} style={styles.memberImage}></Image>
          </View>
       ),
       leader: () => (

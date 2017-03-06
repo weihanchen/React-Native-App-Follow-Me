@@ -41,12 +41,20 @@ export default StyleSheet.create({
       ...StyleSheet.absoluteFillObject
    },
    member: {
-      flexDirection: 'row'
+      flexDirection: 'column'
+   },
+   memberImage: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      borderWidth: 1,
+      borderColor: MainStyle.color.skyblue
    },
    memberText: {
       color: MainStyle.color.skyblue,
       fontSize: MainStyle.font.medium,
       fontWeight: "bold",
+      textAlign: 'center',
       marginRight: 2
    },
    menuBottom: {
@@ -89,6 +97,13 @@ export default StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'flex-end',
       marginTop: 15
+   },
+   selfText: {
+     color: MainStyle.color.skyblue,
+     fontSize: MainStyle.font.medium,
+     fontWeight: "bold",
+     textAlign: 'center',
+     marginRight: 2
    },
    toolContainer: {
       flexDirection: 'column',

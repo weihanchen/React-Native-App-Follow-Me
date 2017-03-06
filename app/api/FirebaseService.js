@@ -1,8 +1,9 @@
 import * as Firebase from 'firebase'
 import {AsyncStorage} from 'react-native'
-import {ERROR_MESSAGE, FIREBASE_ROOT} from '../config'
+import {ERROR_MESSAGE, FIREBASE_ROOT, FIREBASE_STORAGE_BUCKET} from '../config'
 const firebaseConfig = {
-   databaseURL: FIREBASE_ROOT
+   databaseURL: FIREBASE_ROOT,
+   storageBucket: FIREBASE_STORAGE_BUCKET
 }
 Firebase.initializeApp(firebaseConfig)
 class FirebaseService {
@@ -145,14 +146,31 @@ const _fetchGroup = (groupId) => {
   })
 }
 
+const _fetchImageUrl = (type, userId, fileType) => {
+   const path = `images/${type}/${userId}.${fileType}` //test usage
+   const imageRef = Firebase.storage().ref(path)
+   return imageRef.getDownloadURL()
+}
+
+
 const _fetchUser = (userId) => {
    const userRef = Firebase.database().ref(`users/${userId}`)
+
    return userRef.once('value').then(snapshot => {
       const isExist = snapshot.exists()
       if (!isExist)
          throw ERROR_MESSAGE.USER_NOT_EXIST
       return Object.assign({}, snapshot.val(), {key: snapshot.key})
    })
+   .then(user => new Promise((resolve, reject) => {
+     _fetchImageUrl('facebook', user.key, 'jpg')
+       .then(imageUrl => resolve(Object.assign({}, user, {imageUrl})), error => {
+          if (error.code === 'storage/object-not-found') {
+            resolve(Object.assign({}, user, {imageUrl: require('../img/default.jpg')}))
+          }
+          else reject(error)
+       })
+   }))
 }
 
 const _onGroupMembersEvent = (eventName, groupName, callback) => {

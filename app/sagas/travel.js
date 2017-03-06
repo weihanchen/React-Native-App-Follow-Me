@@ -149,6 +149,7 @@ export function* requestTravelInitFlow(action) {
       let markers = users.map(user => {
          let memberCoordinate = group.members[user.key].coordinate
          let type = MARKER_TYPE.MEMBER
+
          if (user.key === currentUid) {
             type = MARKER_TYPE.SELF
             memberCoordinate = Object.assign({}, coordinate)
@@ -159,10 +160,12 @@ export function* requestTravelInitFlow(action) {
             isActive: false,
             key: user.key,
             name: user.userName,
-            type
+            type,
+            imageUrl: user.imageUrl
          })
       })
       markers.push(endPosition)
+      console.log(markers)
       yield put({
          type: REQUEST_TRAVEL_INIT_SUCCESS,
          coordinate,
