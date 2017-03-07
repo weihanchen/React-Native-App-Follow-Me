@@ -109,8 +109,7 @@ const _markerSection = (marker) => {
       ),
       member: () => (
          <View style={styles.member}>
-            <Text style={styles.memberText}>{marker.name}</Text>
-            <Image source={marker.imageUrl} style={styles.memberImage}></Image>
+            <Image source={{uri: marker.imageUrl}} style={styles.memberImage}></Image>
          </View>
       ),
       leader: () => (
