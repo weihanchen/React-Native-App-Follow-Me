@@ -61,9 +61,11 @@ class TravelMenu extends Component {
 const _markerSection = (marker, index) => {
    const isActive = marker.isActive
    if (!isActive)
-      return <ListItem key={index} roundAvatar={true} title={marker.name}/>
+      return <ListItem key={index} roundAvatar={true}
+                       avatar={{uri: marker.imageUrl}}
+                       title={marker.name}/>
    else
-      return <ListItem key={index} roundAvatar={true} title={marker.name} containerStyle={styles.modeButtonActive}/>
+      return <ListItem key={index} roundAvatar={true} title={marker.name} containerStyle={styles.modeButtonActive} avatar={{uri: marker.imageUrl}} />
 }
 
 TravelMenu.propTypes = {

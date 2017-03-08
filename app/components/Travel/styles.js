@@ -48,7 +48,7 @@ export default StyleSheet.create({
       height: 40,
       borderRadius: 20,
       borderWidth: 1,
-      borderColor: MainStyle.color.skyblue
+      borderColor: MainStyle.color.navy
    },
    memberText: {
       color: MainStyle.color.skyblue,
