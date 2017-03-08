@@ -1,9 +1,16 @@
 'use strict'
 import React, {Component, PropTypes} from 'react'
 //plugins
-import {Dimensions, Image,Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {
+   Dimensions,
+   Image,
+   Text,
+   TextInput,
+   TouchableOpacity,
+   View
+} from 'react-native'
 import {Button, Icon} from 'react-native-elements'
-import MapView, {Marker, Polyline} from 'react-native-maps'
+import MapView, {Callout, Marker, Polyline} from 'react-native-maps'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import FoundationIcon from 'react-native-vector-icons/Foundation'
 //stylesheets
@@ -60,7 +67,7 @@ class TravelMap extends Component {
             </MapView>
             <View style={styles.topContainer}>
                <TouchableOpacity activeOpacity={0.6} onPress={this.onToggleSideMenu.bind(this)}>
-                 <Icon name="bars" reverse color={mainStyle.color.skyblue} type="font-awesome"></Icon>
+                  <Icon name="bars" reverse color={mainStyle.color.skyblue} type="font-awesome"></Icon>
                </TouchableOpacity>
                <View style={styles.modeContainer}>
                   <TouchableOpacity style={_getModeStyle(travel.mode, 'driving')} activeOpacity={0.6} onPress={this.onChangeMode.bind(this, 'driving')}>
@@ -108,8 +115,11 @@ const _markerSection = (marker) => {
          </View>
       ),
       member: () => (
+
          <View style={styles.member}>
-            <Image source={{uri: marker.imageUrl}} style={styles.memberImage}></Image>
+            <Image source={{
+               uri: marker.imageUrl
+            }} style={styles.memberImage}></Image>
          </View>
       ),
       leader: () => (
@@ -126,7 +136,7 @@ const _markerSection = (marker) => {
       )
    }
    return (
-      <Marker {...marker}>
+      <Marker {...marker} title={marker.name}>
          {renderType[marker.type]()}
       </Marker>
    )

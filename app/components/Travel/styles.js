@@ -11,6 +11,10 @@ export default StyleSheet.create({
       marginVertical: 40,
       ...StyleSheet.absoluteFillObject
    },
+   calloutView: {
+     width: 120,
+     height: 25
+   },
    container: {
       flex: 1
    },

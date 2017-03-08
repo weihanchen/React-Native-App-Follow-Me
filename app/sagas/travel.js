@@ -165,7 +165,6 @@ export function* requestTravelInitFlow(action) {
          })
       })
       markers.push(endPosition)
-      console.log(markers)
       yield put({
          type: REQUEST_TRAVEL_INIT_SUCCESS,
          coordinate,
