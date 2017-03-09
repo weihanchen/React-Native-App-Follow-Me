@@ -2,7 +2,9 @@
 import React, {Component, PropTypes} from 'react'
 //plugins
 import {
+   Animated,
    Dimensions,
+   Easing,
    Image,
    Text,
    TextInput,
@@ -13,6 +15,7 @@ import {Button, Icon} from 'react-native-elements'
 import MapView, {Callout, Marker, Polyline} from 'react-native-maps'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import FoundationIcon from 'react-native-vector-icons/Foundation'
+import * as Animatable from 'react-native-animatable'
 //stylesheets
 import styles from './styles'
 import mainStyle from '../../stylesheets'
@@ -33,6 +36,8 @@ class TravelMap extends Component {
          }
       }
    }
+
+
 
    componentWillReceiveProps(nextProps) {
       if (nextProps.travel.status === 'update_region') {
@@ -59,10 +64,11 @@ class TravelMap extends Component {
 
    render() {
       const {travel} = this.props
+
       return (
          <View style={styles.container}>
             <MapView style={styles.map} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
-               <Polyline coordinates={travel.directions} strokeWidth={3} strokeColor={mainStyle.color.skyblue}></Polyline>
+               <Polyline coordinates={travel.directions} strokeWidth={3} strokeColor={mainStyle.color.navy}></Polyline>
                {travel.markers.map(marker => _markerSection(marker))}
             </MapView>
             <View style={styles.topContainer}>
@@ -111,11 +117,12 @@ const _markerSection = (marker) => {
    const renderType = {
       self: () => (
          <View style={styles.member}>
-            <FontAwesomeIcon name='circle' style={styles.selfText}/>
+            <View style={styles.selfView}>
+               <FontAwesomeIcon name='circle' style={styles.selfText}/>
+            </View>
          </View>
       ),
       member: () => (
-
          <View style={styles.member}>
             <Image source={{
                uri: marker.imageUrl
@@ -138,6 +145,10 @@ const _markerSection = (marker) => {
    return (
       <Marker {...marker} title={marker.name}>
          {renderType[marker.type]()}
+         <Callout style={styles.calloutView}>
+            <Text style={styles.calloutTitle}>{marker.name}</Text>
+            <Text style={styles.calloutContent}></Text>
+         </Callout>
       </Marker>
    )
 }

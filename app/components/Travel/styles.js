@@ -11,9 +11,15 @@ export default StyleSheet.create({
       marginVertical: 40,
       ...StyleSheet.absoluteFillObject
    },
+   calloutContent: {
+      color: MainStyle.color.muted
+   },
+   calloutTitle: {
+      color: MainStyle.color.navy,
+      fontWeight: 'bold'
+   },
    calloutView: {
-     width: 120,
-     height: 25
+      flexDirection: 'column'
    },
    container: {
       flex: 1
@@ -51,7 +57,7 @@ export default StyleSheet.create({
       width: 40,
       height: 40,
       borderRadius: 20,
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: MainStyle.color.navy
    },
    memberText: {
@@ -103,11 +109,15 @@ export default StyleSheet.create({
       marginTop: 15
    },
    selfText: {
-     color: MainStyle.color.skyblue,
-     fontSize: MainStyle.font.medium,
-     fontWeight: "bold",
-     textAlign: 'center',
-     marginRight: 2
+      color: MainStyle.color.navy,
+      fontSize: MainStyle.font.medium,
+      fontWeight: "bold",
+      textAlign: 'center'
+   },
+   selfView: {
+      borderColor: MainStyle.color.white,
+      borderWidth: 2,
+      borderRadius: 10
    },
    toolContainer: {
       flexDirection: 'column',

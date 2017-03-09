@@ -11,6 +11,7 @@ This application will help keep the car team traveling
   * `Android SDK Build-Tools 23.0.3+`
 
 ## Dependencies
+* [react-native-animatable](https://github.com/oblador/react-native-animatable)
 * [react-native-maps](https://github.com/airbnb/react-native-maps)
 * [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)
 * [react-native-elements](https://github.com/react-native-community/react-native-elements)

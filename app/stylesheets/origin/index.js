@@ -5,7 +5,9 @@ export default {
       coffee: '#775838',
       danger: '#ed5565',
       lightgreen: '#e0edf6',
+      muted: '#777',
       navy: '#1ab394',
+      red: '#FF0000',
       skyblue: '#43adf1',
       warning: '#f0ad4e',
       white: '#fff'
