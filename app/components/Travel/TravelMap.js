@@ -64,7 +64,6 @@ class TravelMap extends Component {
 
    render() {
       const {travel} = this.props
-
       return (
          <View style={styles.container}>
             <MapView style={styles.map} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
@@ -126,7 +125,8 @@ const _markerSection = (marker) => {
          <View style={styles.member}>
             <Image source={{
                uri: marker.imageUrl
-            }} style={styles.memberImage}></Image>
+            }} style={styles.memberImage}>
+            </Image>
          </View>
       ),
       leader: () => (

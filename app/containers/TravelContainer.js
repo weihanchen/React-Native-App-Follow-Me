@@ -119,7 +119,6 @@ class TravelContainer extends Component {
          timeout: 1000,
          maximumAge: 1000
       })
-
    }
 
    componentWillReceiveProps(nextProps) {

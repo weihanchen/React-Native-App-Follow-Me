@@ -137,6 +137,7 @@ export function* requestTravelInitFlow(action) {
       const leaderId = group.leader
       const isLeader = currentUid === leaderId
       const userIdList = Object.keys(group.members)
+      const alertMap = Object.assign({}, group.alert)
       const users = yield call(firebaseService.requestFetchUsers, userIdList)
       const endPosition = Object.assign({}, {
          coordinate: group.endPosition.coordinate,
@@ -147,6 +148,7 @@ export function* requestTravelInitFlow(action) {
       })
       let memberMap = {}
       let markers = users.map(user => {
+         let isAlerting = false
          let memberCoordinate = group.members[user.key].coordinate
          let type = MARKER_TYPE.MEMBER
 
@@ -154,10 +156,15 @@ export function* requestTravelInitFlow(action) {
             type = MARKER_TYPE.SELF
             memberCoordinate = Object.assign({}, coordinate)
          } else if (user.key === leaderId) type = MARKER_TYPE.LEADER
+
+         if (alertMap.hasOwnProperty(user.key)) {
+            isAlerting = alertMap[user.key].isAlerting === true
+         }
          memberMap[user.key] = user
          return Object.assign({}, {
             coordinate: memberCoordinate,
             isActive: false,
+            isAlerting,
             key: user.key,
             name: user.userName,
             type,
