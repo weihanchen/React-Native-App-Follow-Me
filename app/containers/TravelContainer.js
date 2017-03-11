@@ -14,7 +14,8 @@ import {
    requestTravelDirections,
    requestTravelUpdateCoordinate,
    updateMarkerActiveDirection,
-   updateTravelMarkers,
+   updateMarkerAlerting,
+   updateMarkerCoordinate,
    updateTravelRegion
 } from '../actions'
 //components
@@ -68,6 +69,7 @@ class TravelContainer extends Component {
             const timespan = value.timespan
             const now = moment()
             const alertTime = moment(new Date(timespan))
+            this.props.updateMarkerAlerting(this.props.travel.markers, key, isAlerting)
             if (now.diff(alertTime, 'seconds') <= 15) {
                PushNotification.localNotification({bigText: 'Followme', message: `${member.userName}${LANGUAGE_KEY.SENDALERT}`})
             }
@@ -88,7 +90,7 @@ class TravelContainer extends Component {
          const key = childSnapshot.key
          const value = childSnapshot.val()
          const coordinate = value.coordinate
-         this.props.updateTravelMarkers(this.props.travel.markers, key, coordinate)
+         this.props.updateMarkerCoordinate(this.props.travel.markers, key, coordinate)
       })
 
       firebaseService.onGroupMembersRemoved(groupId, (childSnapshot) => {
@@ -250,7 +252,8 @@ const mapDispatchToProps = (dispatch) => {
       requestTravelDirections,
       requestTravelUpdateCoordinate,
       updateMarkerActiveDirection,
-      updateTravelMarkers,
+      updateMarkerAlerting,
+      updateMarkerCoordinate,
       updateTravelRegion
    }, dispatch)
 }
@@ -275,7 +278,8 @@ TravelContainer.propTypes = {
    requestTravelUpdateCoordinate: PropTypes.func,
    travel: PropTypes.object,
    updateMarkerActiveDirection: PropTypes.func,
-   updateTravelMarkers: PropTypes.func,
+   updateMarkerAlerting: PropTypes.func,
+   updateMarkerCoordinate: PropTypes.func,
    updateTravelRegion: PropTypes.func,
    user: PropTypes.object
 }

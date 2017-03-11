@@ -68,7 +68,20 @@ const updateMarkerActiveDirection = (startCoordinate, markers, marker, mode) => 
    }
 }
 
-const updateTravelMarkers = (markers, key, coordinate) => {
+const updateMarkerAlerting = (markers, key, isAlerting) => {//duplicate code
+   const updatedMarkers = markers.map(marker => {
+      if (marker.key === key) marker = Object.assign({}, marker, {
+         isAlerting
+      })
+      return marker
+   })
+   return {
+      type: UPDATE_TRAVEL_MARKERS,
+      markers: updatedMarkers
+   }
+}
+
+const updateMarkerCoordinate = (markers, key, coordinate) => {//duplicate code
    const updatedMarkers = markers.map(marker => {
       if (marker.key === key) marker = Object.assign({}, marker, {
          coordinate
@@ -94,6 +107,7 @@ export {
    requestTravelDirections,
    requestTravelUpdateCoordinate,
    updateMarkerActiveDirection,
-   updateTravelMarkers,
+   updateMarkerAlerting,
+   updateMarkerCoordinate,
    updateTravelRegion
 }
