@@ -2,6 +2,13 @@ import {StyleSheet} from 'react-native'
 import MainStyle from '../../stylesheets'
 
 export default StyleSheet.create({
+   alertImage: {
+     width: 40,
+     height: 40,
+     borderRadius: 20,
+     borderWidth: 2,
+     borderColor: MainStyle.color.danger
+   },
    bottomContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-end',

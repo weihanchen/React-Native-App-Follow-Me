@@ -166,7 +166,7 @@ const _fetchUser = (userId) => {
      _fetchImageUrl('facebook', user.key, 'jpg')
        .then(imageUrl => resolve(Object.assign({}, user, {imageUrl})), error => {
           if (error.code === 'storage/object-not-found') {
-            resolve(Object.assign({}, user, {imageUrl: require('../img/default.jpg')}))
+            resolve(Object.assign({}, user, {imageUrl: null}))
           }
           else reject(error)
        })

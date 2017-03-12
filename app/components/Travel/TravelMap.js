@@ -37,8 +37,6 @@ class TravelMap extends Component {
       }
    }
 
-
-
    componentWillReceiveProps(nextProps) {
       if (nextProps.travel.status === 'update_region') {
          const region = Object.assign({}, this.state.region, nextProps.travel.region)
@@ -121,14 +119,24 @@ const _markerSection = (marker) => {
             </View>
          </View>
       ),
-      member: () => (
-         <View style={styles.member}>
+      member: () => {
+         let imageElement = (
             <Image source={{
                uri: marker.imageUrl
-            }} style={styles.memberImage}>
-            </Image>
-         </View>
-      ),
+            }} style={styles.memberImage}></Image>
+         )
+         if (!marker.imageUrl) {
+            imageElement = (<Image source={require('../../img/default.png')} style={styles.memberImage}/>)
+         }
+         if (marker.isAlerting) {
+            imageElement = (<Image source={require('../../img/isAlerting.png')} style={styles.alertImage}/>)
+         }
+         return (
+            <View style={styles.member}>
+               {imageElement}
+            </View>
+         )
+      },
       leader: () => (
          <View style={styles.member}>
             <FoundationIcon name="crown" style={styles.leaderText}></FoundationIcon>
