@@ -36,7 +36,7 @@ This application will help keep the car team traveling
   ```xml
   <meta-data android:name="com.google.android.geo.API_KEY" android:value="YOUR_API_KEY"/>
   ```
->3. `$ npm run dev-andriod`
+>3. `$ npm run dev-android`
 >4. on emulator then press `ctrl + m` can use reload、live reload、hot reload、remote debug
 
 #### iOS
@@ -54,13 +54,16 @@ Pending...
   $  cd android/ && ./gradlew clean && cd .. && react-native run-android
   ```
 
+### Unknown source file : com.android.dex.DexException: Multiple dex files define
+Duplicate dependencies we can reference [here](https://medium.com/@suchydan/how-to-solve-google-play-services-version-collision-in-gradle-dependencies-ef086ae5c75f#.lc0a563d5)
+
 ### Running on real device cause Execution failed for task ':app:installDebug'.
 
 trying some step like(recommand):
 >1. `$ adb install ./android/app/build/outputs/apk/app-debug.apk`
 >2. open the app
->3. `$ adb reverse tcp:8081 tcp:8081`
->4. `$ npm start`
+>3. `$ npm start`
+>4. `$ adb reverse tcp:8081 tcp:8081`
 >5. `$ npm run log-android`
 
 or edit android/build.grandle
