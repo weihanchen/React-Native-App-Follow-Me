@@ -132,6 +132,10 @@ dependencies {
     compile project(':react-native-maps')
     compile project(':react-native-vector-icons')
     compile project(':react-native-push-notification')
+    //use react native maps dependence version
+    compile ('com.google.android.gms:play-services-gcm:9.8.0') {
+        force = true;
+    }
 
     // For animated GIF support
     compile 'com.facebook.fresco:animated-gif:0.11.0'
