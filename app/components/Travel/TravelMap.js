@@ -52,6 +52,10 @@ class TravelMap extends Component {
       this.props.handleRequestRegion()
    }
 
+   onRequestAlert() {
+      this.props.handleRequestAlert()
+   }
+
    onRequestDirection() {
       this.props.handleRequestDirection()
    }
@@ -62,6 +66,8 @@ class TravelMap extends Component {
 
    render() {
       const {travel} = this.props
+      const {isAlerting} = travel
+
       return (
          <View style={styles.container}>
             <MapView style={styles.map} region={this.state.region} onRegionChange={(region) => this.setState({region})}>
@@ -86,8 +92,8 @@ class TravelMap extends Component {
             </View>
             <View style={styles.bottomContainer}>
                <View style={styles.toolContainer}>
-                  <TouchableOpacity activeOpacity={0.6}>
-                     <Icon raised name="bell" color={mainStyle.color.warning} type="font-awesome"></Icon>
+                  <TouchableOpacity activeOpacity={0.6} onPress={this.onRequestAlert.bind(this)}>
+                     {_getAlertIconBtn(isAlerting)}
                   </TouchableOpacity>
                   <TouchableOpacity activeOpacity={0.6} onPress={this.onRequestDirection.bind(this)}>
                      <Icon raised name="location-arrow" color={mainStyle.color.navy} type="font-awesome"></Icon>
@@ -103,6 +109,9 @@ class TravelMap extends Component {
 }
 
 //private methods
+const _getAlertIconBtn = (isAlerting) => isAlerting ? <Icon raised name="bell" containerStyle={{backgroundColor: mainStyle.color.warning}} color={mainStyle.color.white} type="font-awesome" />
+                                                   : <Icon raised name="bell" color={mainStyle.color.warning} type="font-awesome" />
+
 const _getModeStyle = (activeMode, currentMode) => {
    const results = [styles.modeButton]
    if (activeMode === currentMode)
@@ -163,10 +172,12 @@ const _markerSection = (marker) => {
 
 TravelMap.propTypes = {
    handleChangeMode: PropTypes.func,
+   handleRequestAlert: PropTypes.func,
    handleRequestDirection: PropTypes.func,
    handleRequestRegion: PropTypes.func,
    handleToggleSideMenu: PropTypes.func,
-   travel: PropTypes.object
+   travel: PropTypes.object,
+   userId: PropTypes.string
 }
 
 export default TravelMap

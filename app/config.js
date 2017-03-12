@@ -6,6 +6,7 @@ export const ERROR_MESSAGE = {
    POSITION_ERROR: '請開啟定位服務'
 }
 export const FIREBASE_ROOT = 'https://followmeapp-50e32.firebaseio.com'
+export const FIREBASE_STORAGE_BUCKET = 'gs://followmeapp-50e32.appspot.com'
 export const GOOGLE_API_KEY = 'Your API Key'
 export const GOOGLE_GEOCODING_URL = 'https://maps.google.com/maps/api/geocode/json'
 export const GOOGLE_DIRECTIONS_URL = 'https://maps.googleapis.com/maps/api/directions/json'

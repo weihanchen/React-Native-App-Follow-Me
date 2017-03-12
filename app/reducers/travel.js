@@ -28,6 +28,7 @@ const travel = (state = {
       }
    },
    isLeader: false,
+   isAlerting: false,
    region: {
       latitude: 0,
       longitude: 0
@@ -114,6 +115,7 @@ const travel = (state = {
             status: 'request_init_success',
             coordinate: action.coordinate,
             activePosition: action.endPosition,
+            isAlerting: action.isAlerting,
             isLeader: action.isLeader,
             markers: action.markers,
             memberMap: action.memberMap

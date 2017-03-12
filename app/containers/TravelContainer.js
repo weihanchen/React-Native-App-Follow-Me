@@ -206,6 +206,10 @@ class TravelContainer extends Component {
       this.props.updateMarkerActiveDirection(this.props.travel.coordinate, this.props.travel.markers, marker, this.props.travel.mode)
    }
 
+   handleRequestAlert() {
+
+   }
+
    handleRequestDirection() {
       this.props.requestTravelDirections(this.props.travel.coordinate, this.props.travel.activePosition.coordinate, this.props.travel.mode)
    }
@@ -221,7 +225,7 @@ class TravelContainer extends Component {
    }
 
    render() {
-      const {travel} = this.props
+      const {travel, userId} = this.props
       const menu = (
          <TravelMenu handleLeaveGroup={this.handleLeaveGroup.bind(this)} handleNavigateToMarker={this.handleNavigateToMarker.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} isMenuOpen={this.state.isMenuOpen} travel={travel}></TravelMenu>
       )
@@ -230,7 +234,10 @@ class TravelContainer extends Component {
             if (this.state.isMenuOpen != isMenuOpen)
                this.setState({isMenuOpen})
          }}>
-            <TravelMap handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)} handleRequestRegion={this.handleRequestRegion.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} travel={travel}></TravelMap>
+            <TravelMap handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)}
+                       handleRequestRegion={this.handleRequestRegion.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)}
+                       handleRequestAlert={this.handleRequestAlert.bind(this)}
+                       travel={travel} userId={userId}></TravelMap>
          </SideMenu>
       )
    }
