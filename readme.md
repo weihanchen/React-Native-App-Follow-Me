@@ -51,7 +51,7 @@ Pending...
 ### Unknown source file : UNEXPECTED TOP-LEVEL EXCEPTION:
 
   ```
-  $  cd android/ && ./gradlew clean && cd .. && react-native run-android
+  $  cd android/ && ./gradlew clean && cd .. && npm run run-android
   ```
 
 ### Unknown source file : com.android.dex.DexException: Multiple dex files define

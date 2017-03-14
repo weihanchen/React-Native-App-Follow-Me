@@ -1,7 +1,7 @@
 'use strict'
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 //actions
 import {
    changeTravelMode,
@@ -28,14 +28,14 @@ import {
    StyleSheet,
    Vibration
 } from 'react-native'
-import {SideMenu} from 'react-native-elements'
+import { SideMenu } from 'react-native-elements'
 const PushNotification = require('react-native-push-notification');
-import {TravelMap, TravelMenu} from '../components/Travel'
+import { TravelMap, TravelMenu } from '../components/Travel'
 import MenuContainer from './MenuContainer'
 //config
-import {ERROR_MESSAGE, LANGUAGE_KEY} from '../config'
+import { ERROR_MESSAGE, LANGUAGE_KEY } from '../config'
 //service
-import {FirebaseService} from '../api'
+import { FirebaseService } from '../api'
 import moment from 'moment'
 
 const firebaseService = new FirebaseService()
@@ -47,22 +47,21 @@ class TravelContainer extends Component {
          isMenuOpen: false,
          hasInitialized: false
       }
+      this.watchID = null
    }
 
-   watchID :
-      ? number = null
    //Component life circle
    componentDidMount() {
       const groupId = this.props.groupId
       const userId = this.props.userId
       this.props.requestGeolocation()
 
-      PushNotification.configure({popInitialNotification: true, requestPermissions: true})
+      PushNotification.configure({ popInitialNotification: true, requestPermissions: true })
 
       firebaseService.onGroupAlertChanged(groupId, (childSnapshot) => {
          const key = childSnapshot.key
          const value = childSnapshot.val()
-         const {travel} = this.props
+         const { travel } = this.props
          const member = travel.memberMap[key]
          if (key !== userId && member) {
             const isAlerting = value.isAlerting
@@ -71,17 +70,17 @@ class TravelContainer extends Component {
             const alertTime = moment(new Date(timespan))
             this.props.updateMarkerAlerting(this.props.travel.markers, key, isAlerting)
             if (now.diff(alertTime, 'seconds') <= 15) {
-               PushNotification.localNotification({bigText: 'Followme', message: `${member.userName}${LANGUAGE_KEY.SENDALERT}`})
+               PushNotification.localNotification({ bigText: 'Followme', message: `${member.userName}${LANGUAGE_KEY.SENDALERT}` })
             }
          }
       })
 
       firebaseService.onGroupMembersAdded(groupId, (childSnapshot) => {
-         const {hasInitialized} = this.state
+         const { hasInitialized } = this.state
          if (hasInitialized) {
             const key = childSnapshot.key
             const value = childSnapshot.val()
-            const member = Object.assign({}, value, {key})
+            const member = Object.assign({}, value, { key })
             this.props.requestAddTravelMember(member)
          }
       })
@@ -94,12 +93,12 @@ class TravelContainer extends Component {
       })
 
       firebaseService.onGroupMembersRemoved(groupId, (childSnapshot) => {
-         const {markers, memberMap} = this.props.travel
-         const {hasInitialized} = this.state
+         const { markers, memberMap } = this.props.travel
+         const { hasInitialized } = this.state
          const key = childSnapshot.key
          const member = memberMap[key]
          if (hasInitialized && userId !== key && member) {
-            PushNotification.localNotification({bigText: 'Followme', message: `${member.userName}${LANGUAGE_KEY.LEAVED_GROUP}`})
+            PushNotification.localNotification({ bigText: 'Followme', message: `${member.userName}${LANGUAGE_KEY.LEAVED_GROUP}` })
             this.props.removeMember(markers, memberMap, key)
          }
       })
@@ -109,24 +108,24 @@ class TravelContainer extends Component {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
          }
-         const {hasInitialized} = this.state
+         const { hasInitialized } = this.state
 
          if (!hasInitialized)
             this.props.requestGeolocation()
          else
             this.props.requestTravelUpdateCoordinate(groupId, userId, currentCoordinate)
       }, (error) => ToastAndroid.show(ERROR_MESSAGE.POSITION_ERROR, ToastAndroid.SHORT), {
-         enableHighAccuracy: true,
-         distanceFilter: 5,
-         timeout: 1000,
-         maximumAge: 1000
-      })
+            enableHighAccuracy: true,
+            distanceFilter: 5,
+            timeout: 1000,
+            maximumAge: 1000
+         })
    }
 
    componentWillReceiveProps(nextProps) {
       const groupId = this.props.groupId
       const userId = this.props.userId
-      const {navigator} = nextProps
+      const { navigator } = nextProps
       const groupStatusFunc = {
          leave_success: () => {
             InteractionManager.runAfterInteractions(() => {
@@ -143,10 +142,10 @@ class TravelContainer extends Component {
       }
       const travelStatusFunc = {
          change_mode: () => this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.activePosition.coordinate, nextProps.travel.mode),
-         request_add_member_success: () => PushNotification.localNotification({bigText: 'Followme', message: `${nextProps.travel.newMember.userName}${LANGUAGE_KEY.ADDTOGROUP}`}),
+         request_add_member_success: () => PushNotification.localNotification({ bigText: 'Followme', message: `${nextProps.travel.newMember.userName}${LANGUAGE_KEY.ADDTOGROUP}` }),
          request_init_success: () => {
             this.props.requestTravelDirections(nextProps.travel.coordinate, nextProps.travel.activePosition.coordinate, nextProps.travel.mode)
-            this.setState({hasInitialized: true})
+            this.setState({ hasInitialized: true })
          },
          error: (error) => this.errorHandler(error)
       }
@@ -225,26 +224,26 @@ class TravelContainer extends Component {
    }
 
    render() {
-      const {travel, userId} = this.props
+      const { travel, userId } = this.props
       const menu = (
          <TravelMenu handleLeaveGroup={this.handleLeaveGroup.bind(this)} handleNavigateToMarker={this.handleNavigateToMarker.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)} isMenuOpen={this.state.isMenuOpen} travel={travel}></TravelMenu>
       )
       return (
          <SideMenu isOpen={this.state.isMenuOpen} menu={menu} onChange={(isMenuOpen) => {
             if (this.state.isMenuOpen != isMenuOpen)
-               this.setState({isMenuOpen})
+               this.setState({ isMenuOpen })
          }}>
             <TravelMap handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)}
-                       handleRequestRegion={this.handleRequestRegion.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)}
-                       handleRequestAlert={this.handleRequestAlert.bind(this)}
-                       travel={travel} userId={userId}></TravelMap>
+               handleRequestRegion={this.handleRequestRegion.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)}
+               handleRequestAlert={this.handleRequestAlert.bind(this)}
+               travel={travel} userId={userId}></TravelMap>
          </SideMenu>
       )
    }
 }
 
 const mapStateToProps = (state) => {
-   return {group: state.group, travel: state.travel, location: state.location}
+   return { group: state.group, travel: state.travel, location: state.location }
 }
 
 const mapDispatchToProps = (dispatch) => {

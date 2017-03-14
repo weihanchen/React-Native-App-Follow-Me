@@ -44,6 +44,13 @@ export default StyleSheet.create({
       fontWeight: "bold",
       margin: 2
    },
+   leaderImage: {
+       width: 40,
+      height: 40,
+      borderRadius: 20,
+      borderWidth: 3,
+      borderColor: MainStyle.color.orange
+   },
    leaderText: {
       color: MainStyle.color.danger,
       fontSize: MainStyle.font.medium,

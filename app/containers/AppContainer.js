@@ -14,7 +14,7 @@ import Splash from '../components/Splash'
 class AppContainer extends React.Component {
 
     constructor(props) {
-      super(props)
+        super(props)
     }
 
     componentWillMount() {

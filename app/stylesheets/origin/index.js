@@ -7,6 +7,7 @@ export default {
       lightgreen: '#e0edf6',
       muted: '#777',
       navy: '#1ab394',
+      orange: '#f49542',
       red: '#FF0000',
       skyblue: '#43adf1',
       warning: '#f0ad4e',
