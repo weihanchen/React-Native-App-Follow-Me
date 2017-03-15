@@ -10,6 +10,8 @@ import {
    REQUEST_TRAVEL_FAILED,
    REQUEST_TRAVEL_INIT,
    REQUEST_TRAVEL_INIT_SUCCESS,
+   REQUEST_TRAVEL_UPDATE_ALERTING,
+   REQUEST_TRAVEL_UPDATE_ALERTING_SUCCESS,
    REQUEST_TRAVEL_UPDATE_COORDINATE,
    REQUEST_TRAVEL_UPDATE_COORDINATE_SUCCESS,
    UPDATE_TRAVEL_MARKERS,
@@ -131,6 +133,18 @@ const travel = (state = {
          return Object.assign({}, state, {
             status: 'update_region',
             region: action.coordinate
+         })
+         break
+      case REQUEST_TRAVEL_UPDATE_ALERTING:
+         return Object.assign({}, state, {
+            status: 'loading',
+            error: null
+         })
+         break
+      case REQUEST_TRAVEL_UPDATE_ALERTING_SUCCESS:
+         return Object.assign({}, state, {
+            status: 'update_alerting_success',
+            isAlerting: action.isAlerting
          })
          break
       case REQUEST_TRAVEL_UPDATE_COORDINATE:

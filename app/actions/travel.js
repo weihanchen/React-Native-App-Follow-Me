@@ -9,6 +9,8 @@ export const REQUEST_TRAVEL_DIRECTIONS_SUCCESS = 'REQUEST_TRAVEL_DIRECTIONS_SUCC
 export const REQUEST_TRAVEL_FAILED = 'REQUEST_TRAVEL_FAILED'
 export const REQUEST_TRAVEL_INIT = 'REQUEST_TRAVEL_INIT'
 export const REQUEST_TRAVEL_INIT_SUCCESS = 'REQUEST_TRAVEL_INIT_SUCCESS'
+export const REQUEST_TRAVEL_UPDATE_ALERTING = 'REQUEST_TRAVEL_UPDATE_ALERTING'
+export const REQUEST_TRAVEL_UPDATE_ALERTING_SUCCESS = 'REQUEST_TRAVEL_UPDATE_ALERTING_SUCCESS'
 export const REQUEST_TRAVEL_UPDATE_COORDINATE = 'REQUEST_TRAVEL_UPDATE_COORDINATE'
 export const REQUEST_TRAVEL_UPDATE_COORDINATE_SUCCESS = 'REQUEST_TRAVEL_UPDATE_COORDINATE_SUCCESS'
 export const UPDATE_TRAVEL_MARKERS = 'UPDATE_TRAVEL_MARKERS'
@@ -20,7 +22,7 @@ const changeTravelMode = (mode) => ({
 })
 
 const removeMember = (markers, memberMap, key) => {
-   markers = markers.slice()
+   markers = markers.slice()//prevent side effect
    memberMap = Object.assign({}, memberMap)
    const markerIdx = markers.findIndex(marker => marker.key === key)
    markers.splice(markerIdx, 1)
@@ -49,6 +51,13 @@ const requestTravelDirections = (startCoordinate, endCoordinate, mode) => ({
    startCoordinate,
    endCoordinate,
    mode
+})
+
+const requestTravelUpdateAlerting = (groupId, userId, isAlerting) => ({
+   type: REQUEST_TRAVEL_UPDATE_ALERTING,
+   groupId,
+   userId,
+   isAlerting
 })
 
 const requestTravelUpdateCoordinate = (groupId, userId, coordinate) => ({
@@ -105,6 +114,7 @@ export {
    requestAddTravelMember,
    requestFetchTravelInit,
    requestTravelDirections,
+   requestTravelUpdateAlerting,
    requestTravelUpdateCoordinate,
    updateMarkerActiveDirection,
    updateMarkerAlerting,

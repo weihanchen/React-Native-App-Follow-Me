@@ -12,6 +12,7 @@ import {
    requestIdentify,
    requestLeaveGroup,
    requestTravelDirections,
+   requestTravelUpdateAlerting,
    requestTravelUpdateCoordinate,
    updateMarkerActiveDirection,
    updateMarkerAlerting,
@@ -168,9 +169,8 @@ class TravelContainer extends Component {
 
    //Event handler
    confirmLeaveGroup() {
-      const groupId = this.props.groupId
-      const userId = this.props.userId
-      const isLeader = this.props.travel.isLeader
+      const {groupId, userId, travel} = this.props
+      const isLeader = travel.isLeader
       this.props.requestLeaveGroup(groupId, userId, isLeader)
    }
 
@@ -183,9 +183,8 @@ class TravelContainer extends Component {
    }
 
    handleLeaveGroup() {
-      const groupId = this.props.groupId
-      const userId = this.props.userId
-      const isLeader = this.props.travel.isLeader
+      const {groupId, userId, travel} = this.props
+      const isLeader = travel.isLeader
       const alertTitle = LANGUAGE_KEY.LEAVE_GROUP
       let alertBody = `${LANGUAGE_KEY.LEAVE_GROUP_CONFIRM_TIP}?`
       const alertFooter = [
@@ -205,8 +204,9 @@ class TravelContainer extends Component {
       this.props.updateMarkerActiveDirection(this.props.travel.coordinate, this.props.travel.markers, marker, this.props.travel.mode)
    }
 
-   handleRequestAlert() {
-
+   handleRequestToggleAlerting(isAlerting) {
+      const {groupId, userId} = this.props
+      this.props.requestTravelUpdateAlerting(groupId, userId, !isAlerting)
    }
 
    handleRequestDirection() {
@@ -235,7 +235,7 @@ class TravelContainer extends Component {
          }}>
             <TravelMap handleChangeMode={this.handleChangeMode.bind(this)} handleRequestDirection={this.handleRequestDirection.bind(this)}
                handleRequestRegion={this.handleRequestRegion.bind(this)} handleToggleSideMenu={this.handleToggleSideMenu.bind(this)}
-               handleRequestAlert={this.handleRequestAlert.bind(this)}
+               handleRequestToggleAlerting={this.handleRequestToggleAlerting.bind(this)}
                travel={travel} userId={userId}></TravelMap>
          </SideMenu>
       )
@@ -256,6 +256,7 @@ const mapDispatchToProps = (dispatch) => {
       requestIdentify,
       requestLeaveGroup,
       requestTravelDirections,
+      requestTravelUpdateAlerting,
       requestTravelUpdateCoordinate,
       updateMarkerActiveDirection,
       updateMarkerAlerting,
@@ -281,6 +282,7 @@ TravelContainer.propTypes = {
    requestLeaveGroup: PropTypes.func,
    requestIdentify: PropTypes.func,
    requestGeolocation: PropTypes.func,
+   requestTravelUpdateAlerting: PropTypes.func,
    requestTravelUpdateCoordinate: PropTypes.func,
    travel: PropTypes.object,
    updateMarkerActiveDirection: PropTypes.func,

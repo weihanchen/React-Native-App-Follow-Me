@@ -18,6 +18,7 @@ import {
    watchRequestMarkerActiveDirection,
    watchRequestTravelDirections,
    watchRequestTravelInit,
+   watchRequestTravelUpdateAlerting,
    watchRequestTravelUpdateCoordinate
 } from './travel'
 import {
@@ -38,6 +39,7 @@ export default function* rootSaga() {
       watchRequestMarkerActiveDirection(),
       watchRequestTravelDirections(),
       watchRequestTravelInit(),
+      watchRequestTravelUpdateAlerting(),
       watchRequestTravelUpdateCoordinate()
    ]
 }

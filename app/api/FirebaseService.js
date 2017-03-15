@@ -126,6 +126,12 @@ class FirebaseService {
          return groupMemberRef.remove().then(() => userRef.remove()).then(() => leaveSuccess())
    }
 
+   requestUpdateAlerting(groupId, userId, isAlerting) {
+      const updates = {}
+      updates[`groups/${groupId}/alert/${userId}`] = Object.assign({}, {isAlerting, timespan: new Date().getTime()})
+      return Firebase.database().ref().update(updates)
+   }
+
    updateCoordinate(groupId, userId, coordinate) {
       return _fetchGroup(groupId).then(() => _fetchUser(userId)).then(user => {
          const updates = {}

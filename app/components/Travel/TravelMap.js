@@ -52,8 +52,8 @@ class TravelMap extends Component {
       this.props.handleRequestRegion()
    }
 
-   onRequestAlert() {
-      this.props.handleRequestAlert()
+   onRequestToggleAlerting(isAlerting) {
+      this.props.handleRequestToggleAlerting(isAlerting)
    }
 
    onRequestDirection() {
@@ -91,7 +91,7 @@ class TravelMap extends Component {
                </View>
                <View style={styles.bottomContainer}>
                   <View style={styles.toolContainer}>
-                     <TouchableOpacity activeOpacity={0.6} onPress={this.onRequestAlert.bind(this)}>
+                     <TouchableOpacity activeOpacity={0.6} onPress={this.onRequestToggleAlerting.bind(this, travel.isAlerting)}>
                         {_getAlertIconBtn(isAlerting)}
                      </TouchableOpacity>
                      <TouchableOpacity activeOpacity={0.6} onPress={this.onRequestDirection.bind(this)}>
@@ -180,7 +180,7 @@ const _markerSection = (marker, forceUpdate) => {
 
 TravelMap.propTypes = {
    handleChangeMode: PropTypes.func,
-   handleRequestAlert: PropTypes.func,
+   handleRequestToggleAlerting: PropTypes.func,
    handleRequestDirection: PropTypes.func,
    handleRequestRegion: PropTypes.func,
    handleToggleSideMenu: PropTypes.func,

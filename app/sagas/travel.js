@@ -15,6 +15,8 @@ import {
    REQUEST_TRAVEL_FAILED,
    REQUEST_TRAVEL_INIT,
    REQUEST_TRAVEL_INIT_SUCCESS,
+   REQUEST_TRAVEL_UPDATE_ALERTING,
+   REQUEST_TRAVEL_UPDATE_ALERTING_SUCCESS,
    REQUEST_TRAVEL_UPDATE_COORDINATE,
    REQUEST_TRAVEL_UPDATE_COORDINATE_SUCCESS,
    UPDATE_TRAVEL_REGION
@@ -44,6 +46,10 @@ export function* watchRequestTravelDirections() {
 
 export function* watchRequestTravelInit() {
    yield call(takeEvery, REQUEST_TRAVEL_INIT, requestTravelInitFlow)
+}
+
+export function* watchRequestTravelUpdateAlerting() {
+   yield call(takeEvery, REQUEST_TRAVEL_UPDATE_ALERTING, requestTravelUpdateAlertingFlow)
 }
 
 export function* watchRequestTravelUpdateCoordinate() {
@@ -135,7 +141,7 @@ export function* requestTravelInitFlow(action) {
       const coordinate = action.coordinate
       const currentUid = action.currentUid
       const leaderId = group.leader
-      const {isAlerting} = group.alert[currentUid]
+      const { isAlerting } = group.alert[currentUid]
       const isLeader = currentUid === leaderId
       const userIdList = Object.keys(group.members)
       const users = yield call(firebaseService.requestFetchUsers, userIdList)
@@ -150,7 +156,7 @@ export function* requestTravelInitFlow(action) {
 
       let markers = users.map(user => {
          const member = group.members[user.key] || {}
-         const alert = group.alert[user.key] || {isAlerting: false}
+         const alert = group.alert[user.key] || { isAlerting: false }
 
          let memberCoordinate = member.coordinate
          let type = MARKER_TYPE.MEMBER
@@ -186,6 +192,21 @@ export function* requestTravelInitFlow(action) {
       yield put({
          type: UPDATE_TRAVEL_REGION,
          coordinate
+      })
+   } catch (error) {
+      yield put({
+         type: REQUEST_TRAVEL_FAILED,
+         error: error.toString()
+      })
+   }
+}
+
+export function* requestTravelUpdateAlertingFlow(action) {
+   try {
+      yield call(firebaseService.requestUpdateAlerting, action.groupId, action.userId, action.isAlerting)
+      yield put({
+         type: REQUEST_TRAVEL_UPDATE_ALERTING_SUCCESS,
+         isAlerting: action.isAlerting
       })
    } catch (error) {
       yield put({
