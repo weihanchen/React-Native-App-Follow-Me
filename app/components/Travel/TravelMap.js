@@ -23,7 +23,9 @@ const screen = Dimensions.get('window')
 const ASPECT_RATIO = screen.width / screen.height
 const LATITUDE_DELTA = 0.0122
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
-
+//resources
+const alertingImage = require('../../img/isAlerting.png')
+const defaultImage = require('../../img/default.png')
 class TravelMap extends Component {
    constructor(props) {
       super(props)
@@ -134,10 +136,10 @@ const _markerSection = (marker, forceUpdate) => {
             }} style={styles.memberImage} onLoad={() =>  forceUpdate()}></Image>
          )
          if (!marker.imageUrl) {
-            imageElement = (<Image source={require('../../img/default.jpg')} style={styles.memberImage} onLoad={() => forceUpdate()} />)
+            imageElement = (<Image source={defaultImage} style={styles.memberImage} onLoad={() => forceUpdate()} />)
          }
          if (marker.isAlerting) {
-            imageElement = (<Image source={require('../../img/isAlerting.png')} style={styles.alertImage} onLoad={() => forceUpdate()} />)
+            imageElement = (<Image source={alertingImage} style={styles.alertImage} onLoad={() => forceUpdate()} />)
          }
          return (
             <View style={styles.member}>
@@ -152,7 +154,7 @@ const _markerSection = (marker, forceUpdate) => {
             }} style={styles.leaderImage} onLoad={() =>  forceUpdate()}></Image>
          )
          if (!marker.imageUrl) {
-            imageElement = (<Image source={require('../../img/default.jpg')} style={styles.leaderImage} onLoad={() => forceUpdate()} />)
+            imageElement = (<Image source={defaultImage} style={styles.leaderImage} onLoad={() => forceUpdate()} />)
          }
          return (
          <View style={styles.member}>
